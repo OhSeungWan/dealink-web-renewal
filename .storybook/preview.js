@@ -1,3 +1,5 @@
+import { Container, ScreenWrapper } from 'Components/Atoms';
+
 // import theme from 'Styles/Theme';
 // import { withThemesProvider } from 'themeprovider-storybook';
 import { ThemeProvider } from 'styled-components';
@@ -23,7 +25,11 @@ export const parameters = {
 export const decorators = [
   Story => (
     <ThemeProvider theme={theme}>
-      <Story />
+      <ScreenWrapper>
+        <Container>
+          <Story />
+        </Container>
+      </ScreenWrapper>
     </ThemeProvider>
   )
 ];

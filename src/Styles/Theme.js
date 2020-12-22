@@ -66,6 +66,24 @@ const device = {
   tabletL: `only screen and (max-width: ${deviceSizes.tabletL})`
 };
 
+const Button = {
+  primary: {
+    padding: '20px',
+    margin: '10px',
+    backgroundColor: 'red'
+  },
+  kakao: {
+    backgroundColor: '#ffe500',
+    border: '1px solid #ffe500',
+    height: '45px',
+    marginTop: '',
+    borderRadius: '2px',
+    fontSize: '14px',
+    fontWeight: 'normal',
+    color: '#000'
+  }
+};
+
 const theme = {
   fontSizes,
   colors,
@@ -74,7 +92,8 @@ const theme = {
   paddings,
   margins,
   interval,
-  verticalInterval
+  verticalInterval,
+  Button
 };
 
 export default theme;

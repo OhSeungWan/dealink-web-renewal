@@ -1,9 +1,8 @@
-import '@testing-library/jest-dom/extend-expect';
-
 import { fireEvent, render, screen, waitFor } from 'Utils/test-utils';
 
 import React from 'react';
 import SignIn from 'Pages/SignIn';
+import { mount } from 'enzyme';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -23,6 +22,13 @@ afterAll(() => server.close());
 test('renders SigIn button', () => {
   render(<SignIn />);
   expect(screen.getByRole('button')).toHaveTextContent('카카오톡으로 로그인');
+});
+
+test('renders', () => {
+  const wrapper = mount(<SignIn />);
+  const Header = wrapper.find('Header');
+
+  expext(Header.length).toBe(1);
 });
 
 // 카카오톡 로그인 버튼 클릭시 로그인 확인
