@@ -53,7 +53,7 @@ const colors = {
   gray_1: '#222222',
   gray_2: '#767676',
   green_1: '#3cb46e',
-  primary: '#816da3',
+  primary: '#6E44FF',
   secondary: '#6d79a3',
   tertiary: '#6da39e'
 };

@@ -50,6 +50,7 @@
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/react": "^6.1.11",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.3.2",
+    "find-cache-dir": "^3.3.1",
     "themeprovider-storybook": "^1.6.4"
   }
 }

@@ -16,11 +16,11 @@ const ImgContainer = styled.div`
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 80vw;
-        height: 80vh;
-        max-width: 400px;
-        max-height: 300px;
-        border: 1px solid black;
+        width: 40vw;
+        height: 40vh;
+        max-width: 200px;
+        max-height: 150px;
+        border: 1px solid #eaeaea;
       `;
     }
   }}

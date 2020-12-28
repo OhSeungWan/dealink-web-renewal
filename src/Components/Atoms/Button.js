@@ -2,6 +2,9 @@ import styled, { css } from 'styled-components';
 
 export const Button = styled.button`
   margin: 5px;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
   ${props => {
     if (props.primary) {
       return css`
@@ -83,5 +86,5 @@ export const Button = styled.button`
         }}
       `;
     }
-  }}
+  }};
 `;
