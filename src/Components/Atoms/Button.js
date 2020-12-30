@@ -5,6 +5,9 @@ export const Button = styled.button`
   color: white;
   font-size: 20px;
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+  }
   ${props => {
     if (props.primary) {
       return css`

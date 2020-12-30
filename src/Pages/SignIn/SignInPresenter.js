@@ -16,9 +16,6 @@ const SignInPresenter = ({ SignUp, userInfo }) => {
           카카오톡으로 로그인
         </Button>
         {userInfo && <p role="alert">{userInfo.userInfo}</p>}
-        <a href="http://192.168.0.120:8080/oauth2/authorization/kakao">
-          asdfasdf
-        </a>
       </Container>
     </ScreenWrapper>
   );

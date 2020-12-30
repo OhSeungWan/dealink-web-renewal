@@ -11,8 +11,13 @@ const HeaderText = styled(Text)`
 `;
 
 const HeaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   text-align: left;
+  background-color: white;
+  width: 100%;
 `;
 
 const Header = () => {

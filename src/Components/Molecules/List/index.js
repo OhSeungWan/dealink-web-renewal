@@ -1,21 +1,24 @@
 import React from 'react';
-import styeld from 'styled-components';
 import styled from 'styled-components';
 
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: ${props => (props.direction == 'row' ? 'row' : 'column')};
   width: 100%;
-  flex: 1;
   justify-content: ${props =>
-    props.spaceBetween ? 'space-between' : 'center'};
+    props.spaceBetween
+      ? 'space-between'
+      : props.spaceAround
+      ? 'space-around'
+      : 'center'};
 `;
 
-const List = ({ children, direction, spaceBetween }) => {
+const List = ({ children, direction, spaceBetween, spaceAround }) => {
   return (
     <ListWrapper
       direction={direction}
       spaceBetween={spaceBetween ? true : false}
+      spaceAround={spaceAround ? true : false}
     >
       {children}
     </ListWrapper>

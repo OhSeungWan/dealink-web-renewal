@@ -12,7 +12,6 @@ const TimerInput = styled.input.attrs(props => {
     return { type: 'number', max: '60', min: '0' };
   }
 })`
-  padding: 10px 10px 10px 25px;
   text-align: center;
   font-size: 30px;
   font-weight: 900;
@@ -22,6 +21,7 @@ const TimerInput = styled.input.attrs(props => {
 const TimeText = styled.div``;
 
 const TimeWrapper = styled.div`
+  width:100%
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -40,7 +40,9 @@ const TimerItem = ({
   day = 100,
   hour = 23,
   minute = 59,
-  second = 59
+  second = 59,
+  value,
+  onChange
 }) => {
   const [days, setDays] = useState(isSet ? day : 0);
   const [hours, setHours] = useState(isSet ? hour : 0);
@@ -68,16 +70,29 @@ const TimerItem = ({
   }, [days, hour, minutes, seconds, isSet]);
 
   //TODO: use useCallback()
+  //TODO: refectoring
   const onChangeD = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    onChange(name, value);
     setDays(e.target.value);
   };
   const onChangeH = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    onChange(name, value);
     setHours(e.target.value);
   };
   const onChangeM = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    onChange(name, value);
     setMinutes(e.target.value);
   };
   const onChangeS = e => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    onChange(name, value);
     setSeconds(e.target.value);
   };
 
@@ -90,6 +105,7 @@ const TimerItem = ({
           onChange={!isSet ? onChangeD : null}
           value={days}
           type="d"
+          name="d"
         />
       </TimerItemWrapper>
       <Colon />
@@ -101,6 +117,7 @@ const TimerItem = ({
           onChange={!isSet ? onChangeH : null}
           value={hours}
           type="h"
+          name="h"
         />
       </TimerItemWrapper>
       <Colon />
@@ -112,6 +129,7 @@ const TimerItem = ({
           onChange={!isSet ? onChangeM : null}
           value={minutes}
           type="m"
+          name="m"
         />
       </TimerItemWrapper>
       <Colon />
@@ -123,6 +141,7 @@ const TimerItem = ({
           onChange={!isSet ? onChangeS : null}
           value={seconds}
           type="s"
+          name="s"
         />
       </TimerItemWrapper>
     </TimeWrapper>
@@ -143,9 +162,11 @@ const Colon = () => {
   );
 };
 
-const Timer = ({ isSet, day, hour, minute, second }) => {
+const Timer = ({ isSet, day, hour, minute, second, value, onChange }) => {
   console.log(new Date());
-  return <TimerItem isSet={isSet ? true : false} />;
+  return (
+    <TimerItem isSet={isSet ? true : false} value={value} onChange={onChange} />
+  );
 };
 
 export default Timer;

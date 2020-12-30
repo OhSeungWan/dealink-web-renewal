@@ -10,6 +10,5 @@ export const Container = styled.div`
   margin-top: 50px;
   border: ${props => props.border};
   width: 95vw;
-  height: 95vh;
   max-width: 400px;
 `;
