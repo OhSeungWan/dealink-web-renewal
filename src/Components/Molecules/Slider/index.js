@@ -1,4 +1,3 @@
-import Banner1 from 'assets/img/Banner1.png';
 import React from 'react';
 import styled from 'styled-components';
 const SliderWrapper = styled.div`
@@ -17,8 +16,6 @@ const SliderImage = styled.img`
   max-width: 100px;
   max-height:100px;
 `;
-
-const Button = styled.button``;
 
 const Slider = ({ ImageList }) => {
   console.log(ImageList);

@@ -18,7 +18,7 @@ const ProductInfo = props => {
     props.onChange(name, value);
   };
 
-  return (
+  return !props.type ? (
     <List>
       <Text>상품사진</Text>
       <ImageBox type="upload" onChange={props.onChange} />
@@ -46,6 +46,59 @@ const ProductInfo = props => {
         placeholder={'추후 낙찰자와 대화하기 위한 채팅방 입니다.'}
         onChange={onChange}
       />
+      <Border height="8px" />
+    </List>
+  ) : (
+    <ProductInfoForBuyer {...props} />
+  );
+};
+
+const ProductTitle = styled.div`
+  margin: 10px;
+
+  font-weight: 700;
+  font-size: 20px;
+`;
+
+const ProductPrice = styled.div`
+  font-weight: 700;
+  font-size: 18px;
+  flex: 8;
+`;
+
+const ProductText = styled.div`
+  flex: 2;
+`;
+
+const ProductWrapper = styled.div`
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+`;
+
+const ProductInfoForBuyer = props => {
+  console.log(props);
+  return (
+    <List>
+      <ImageBox url={props.imageUrl} />
+      <ProductTitle>{props.name}</ProductTitle>
+      <ProductWrapper>
+        <ProductText>현재가</ProductText>
+        <ProductPrice>{props.currentPrice}</ProductPrice>
+      </ProductWrapper>
+      <ProductWrapper>
+        <ProductText>시작가</ProductText>
+        <ProductPrice>{props.startingPrice}</ProductPrice>
+      </ProductWrapper>
+      <ProductWrapper>
+        <ProductText>내입찰가</ProductText>
+        <ProductPrice>{props.currentPrice}</ProductPrice>
+      </ProductWrapper>
+      <Border height="8px" />
+      <ProductWrapper>
+        <ProductText>공유</ProductText>
+        <ProductPrice>{props.currentPrice}</ProductPrice>
+      </ProductWrapper>
       <Border height="8px" />
     </List>
   );

@@ -9,11 +9,14 @@ const ProductEnrollmentContainer = () => {
     let form = new FormData();
 
     var now = new Date();
+    console.log(input.imageList[0]);
 
     now.setDate((input.d = 0));
     console.log(now.format('yyyy-MM-dd hh:mm:ss'));
     // TODO:이미지 1개만 가도록 해놓음
-    form.append('productImages', input.imageList[0]);
+    input.imageList.map(item => {
+      form.append('productImages', item);
+    });
     form.append(
       'auctionInfoRequest',
       JSON.stringify({

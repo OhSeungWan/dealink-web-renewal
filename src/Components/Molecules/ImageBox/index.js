@@ -39,7 +39,7 @@ const ImageBox = ({ url, type, onChange }) => {
   const [Type, setType] = useState(type);
   const [imageList, setImageList] = useState([]);
 
-  //TODO: Think about refect
+  //TODO: Think about refect , 이미지 업로드 개수 제한 적용해야함
   //이미지 슬라이드에 들어갈 썸네일 생성
   const setThumbnail = event => {
     [...event.target.files].map(file => {
@@ -58,13 +58,15 @@ const ImageBox = ({ url, type, onChange }) => {
     form.current.click();
   };
 
+  //파일 선택시 썸네일 생성
   const fileChangeHandler = e => {
-    e.stopPropagation();
     e.preventDefault();
-    var file = e.target.files;
     const { name, files } = e.target;
-    onChange(name, files);
-    // setType(true);
+    var fileList = [];
+    [...files].map(item => {
+      fileList.push(item);
+    });
+    onChange(name, fileList);
     setThumbnail(e);
   };
 

@@ -44,10 +44,14 @@ const TimerItem = ({
   value,
   onChange
 }) => {
-  const [days, setDays] = useState(isSet ? day : 0);
-  const [hours, setHours] = useState(isSet ? hour : 0);
-  const [minutes, setMinutes] = useState(isSet ? minute : 0);
-  const [seconds, setSeconds] = useState(isSet ? second : 0);
+  const [days, setDays] = useState(isSet ? day : '');
+  const [hours, setHours] = useState(isSet ? hour : '');
+  const [minutes, setMinutes] = useState(isSet ? minute : '');
+  const [seconds, setSeconds] = useState(isSet ? second : '');
+  // console.log(day);
+  // console.log(hours);
+  // console.log(minutes);
+  // console.log(seconds);
 
   useEffect(() => {
     if (isSet) {
@@ -67,7 +71,7 @@ const TimerItem = ({
 
       return () => clearInterval(countdown);
     }
-  }, [days, hour, minutes, seconds, isSet]);
+  }, [days, hours, minutes, seconds]);
 
   //TODO: use useCallback()
   //TODO: refectoring
@@ -162,10 +166,26 @@ const Colon = () => {
   );
 };
 
-const Timer = ({ isSet, day, hour, minute, second, value, onChange }) => {
-  console.log(new Date());
+const Timer = ({ isSet, value, onChange, closingTime }) => {
+  const date = new Date(closingTime);
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
+
+  useEffect(() => {}, []);
+
   return (
-    <TimerItem isSet={isSet ? true : false} value={value} onChange={onChange} />
+    <TimerItem
+      isSet={isSet ? true : false}
+      value={value}
+      onChange={onChange}
+      date={30}
+      day={day}
+      hour={hour}
+      minute={minute}
+      second={second}
+    />
   );
 };
 
