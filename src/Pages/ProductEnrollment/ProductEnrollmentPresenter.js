@@ -5,7 +5,7 @@ import {
   ProductInfo
 } from 'Components/Organisms';
 import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
-import { List, Timer } from 'Components/Molecules';
+import { List, Share, Timer } from 'Components/Molecules';
 import React, { useContext, useState } from 'react';
 
 import { AiOutlineClose } from 'react-icons/ai';
@@ -15,36 +15,29 @@ import { ImageBox } from 'Components/Molecules';
 import { useInput } from 'Hooks/useInput';
 
 // TODO: 리펙토링 꼮꼬꼬꼬꼬꼮!!!
-const ProductEnrollmentPresenter = ({ onSubmit }) => {
+const ProductEnrollmentPresenter = ({
+  onSubmit,
+  closeModal,
+  openModal,
+  isOpen,
+  data
+}) => {
   const [value, onChange] = useInput({
     imageList: [],
     productTitle: '',
     productDetail: '',
     productPrice: '',
     kakaoUrl: '',
+    description: '',
     d: '',
     h: '',
     m: '',
     s: ''
   });
 
-  console.log(value);
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const onClick = async () => {
     await onSubmit(value);
     openModal();
-  };
-
-  const openModal = () => {
-    console.log('modal open');
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    console.log('modal open');
-    setIsOpen(false);
   };
 
   return (
@@ -63,7 +56,7 @@ const ProductEnrollmentPresenter = ({ onSubmit }) => {
           상품등록
         </Button>
         <Modal isOpen={isOpen}>
-          {
+          {data && (
             <div
               style={{
                 padding: 20,
@@ -110,14 +103,15 @@ const ProductEnrollmentPresenter = ({ onSubmit }) => {
                   padding: 20
                 }}
               >
-                <div style={{ fontWeight: 700, flex: 1 }}>공유</div>
-                <div style={{ flex: 7, textAlign: 'center' }}>공유 링크 </div>
+                <Share
+                  url={`http://192.168.0.107:3000/Product/seller/0/${data.url}`}
+                />
               </div>
               <div style={{ color: '#6E44FF' }}>
-                자세한 사항은 '내링크 관리'에서 확인할 수 있습니다.
+                생성된 링크들은 내링크 관리'에서 확인할 수 있습니다.
               </div>
             </div>
-          }
+          )}
         </Modal>
       </Container>
     </ScreenWrapper>

@@ -11,14 +11,22 @@ const ListWrapper = styled.div`
       : props.spaceAround
       ? 'space-around'
       : 'center'};
+  align-items: ${props => (props.alignCenter ? 'center' : '')};
 `;
 
-const List = ({ children, direction, spaceBetween, spaceAround }) => {
+const List = ({
+  children,
+  direction,
+  spaceBetween,
+  spaceAround,
+  alignCenter
+}) => {
   return (
     <ListWrapper
       direction={direction}
       spaceBetween={spaceBetween ? true : false}
       spaceAround={spaceAround ? true : false}
+      alignCenter={alignCenter ? true : false}
     >
       {children}
     </ListWrapper>

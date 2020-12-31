@@ -11,7 +11,10 @@ const MainRouter = () => {
         <Route exact path="/SignIn" component={SignIn}></Route>
         <Route exact path="/" component={SignIn}></Route>
         <Route path="/ProductEnrollment" component={ProductEnrollment}></Route>
-        <Route exact path="/ProductDetail" component={ProductDetail}></Route>
+        <Route
+          path="/Product/:type/:userIndex/:url"
+          component={ProductDetail}
+        ></Route>
       </Switch>
     </>
   );

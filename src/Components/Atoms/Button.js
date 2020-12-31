@@ -15,7 +15,7 @@ export const Button = styled.button`
         ${props => {
           if (props.common) {
             return css`
-              width: 100vw;
+              width: 100%;
               max-width: 400px;
               padding: 15px;
             `;
@@ -30,7 +30,7 @@ export const Button = styled.button`
         ${props => {
           if (props.common) {
             return css`
-              width: 100vw;
+              width: 100%;
               max-width: 400px;
               padding: 15px;
             `;
@@ -44,7 +44,7 @@ export const Button = styled.button`
         ${props => {
           if (props.common) {
             return css`
-              width: 100vw;
+              width: 100%;
               max-width: 400px;
               padding: 15px;
             `;

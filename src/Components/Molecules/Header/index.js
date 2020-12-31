@@ -18,6 +18,8 @@ const HeaderContainer = styled.div`
   text-align: left;
   background-color: white;
   width: 100%;
+  height: 10%;
+  max-height: 50px;
 `;
 
 const Header = () => {

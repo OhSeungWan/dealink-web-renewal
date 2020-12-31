@@ -11,19 +11,18 @@ const SliderContainer = styled.div`
 
 const SliderImage = styled.img`
   margin: 10px;
-  width: 30%;
-  height:30%
-  max-width: 100px;
-  max-height:100px;
+  width: ${props => (props.big ? '100%' : '30%')};
+  height: ${props => (props.big ? '100%' : '30%')};
+  max-width: ${props => (props.big ? '400px' : '100px')};
+  max-height: ${props => (props.big ? '400px' : '100px')};
 `;
 
-const Slider = ({ ImageList }) => {
-  console.log(ImageList);
+const Slider = ({ ImageList, big }) => {
   return ImageList ? (
     <SliderWrapper>
       <SliderContainer>
         {ImageList.map(img => {
-          return <SliderImage src={img} />;
+          return <SliderImage src={img} big={big ? true : false} />;
         })}
       </SliderContainer>
     </SliderWrapper>

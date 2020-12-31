@@ -1,14 +1,16 @@
+import { CookiesProvider } from 'react-cookie';
 import MainRouter from 'Routers/MainRouter';
 import { ThemeProvider } from 'styled-components';
 import theme from 'Styles/Theme';
-
 function App() {
   return (
-    <div className="App">
-      <ThemeProvider theme={theme}>
-        <MainRouter />
-      </ThemeProvider>
-    </div>
+    <CookiesProvider>
+      <div className="App">
+        <ThemeProvider theme={theme}>
+          <MainRouter />
+        </ThemeProvider>
+      </div>
+    </CookiesProvider>
   );
 }
 
