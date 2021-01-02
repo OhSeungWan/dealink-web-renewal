@@ -6,18 +6,12 @@ import Cookies from 'js-cookie';
 import Date from 'Utils/date-utils';
 import React from 'react';
 import { comma } from 'Utils/comma-utils';
-import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useInput } from 'Hooks/useInput';
 
 const Bidding = ({ data, userInfo, closeModal }) => {
   const [value, setValue] = useInput({});
-  const history = useHistory();
-  const userid = Cookies.get('userInfo');
-  const beforePage = Cookies.get('beforePage');
 
-  console.log(userid);
-  console.log(value);
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -25,9 +19,12 @@ const Bidding = ({ data, userInfo, closeModal }) => {
   };
 
   const biddingHandler = async () => {
-    console.log(value);
+    if (value.bidPrice <= data.currentPrice) {
+      alert('입찰가는 현재가보다 작거나 같을수 없습닌다.');
+      return;
+    }
     await fetch(
-      `http://192.168.0.120:8080/user/${userid}/auction/${data.url}/bid`,
+      `http://192.168.0.120:8080/user/${userInfo.id}/auction/${data.url}/bid`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -38,7 +35,6 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       }
     );
     closeModal();
-    history.push(beforePage);
   };
 
   return (

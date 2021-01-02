@@ -38,11 +38,11 @@ const ProductDetailPresenter = props => {
 
         <ProductDetail {...props.data} />
 
-        {props.data.userType != 'SELLER' && (
-          <Button onClick={props.openModal} primary common>
-            입찰하기
-          </Button>
-        )}
+        {/* {props.data.userType != 'SELLER' && ( */}
+        <Button onClick={props.openModal} primary common>
+          입찰하기
+        </Button>
+        {/* )} */}
 
         <Modal isOpen={props.isOpen}>
           <Biddging

@@ -6,40 +6,22 @@ import {
 } from 'Components/Organisms';
 import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
 import { List, Share, Timer } from 'Components/Molecules';
-import React, { useContext, useState } from 'react';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import Banner1 from 'assets/img/Banner1.png';
 import Header from 'Components/Molecules/Header';
 import { ImageBox } from 'Components/Molecules';
-import { useInput } from 'Hooks/useInput';
+import React from 'react';
 
 // TODO: 리펙토링 꼮꼬꼬꼬꼬꼮!!!
 const ProductEnrollmentPresenter = ({
   onSubmit,
   closeModal,
-  openModal,
+  onChange,
+  value,
   isOpen,
-  data
+  url
 }) => {
-  const [value, onChange] = useInput({
-    imageList: [],
-    productTitle: '',
-    productDetail: '',
-    productPrice: '',
-    kakaoUrl: '',
-    description: '',
-    d: '',
-    h: '',
-    m: '',
-    s: ''
-  });
-
-  const onClick = async () => {
-    await onSubmit(value);
-    openModal();
-  };
-
   return (
     <ScreenWrapper>
       <Container>
@@ -52,11 +34,11 @@ const ProductEnrollmentPresenter = ({
         </List>
         <AuctionOptions value={value} onChange={onChange} />
         <AccountInfo value={value} onChange={onChange} />
-        <Button onClick={onClick} primary common>
+        <Button onClick={onSubmit} primary common>
           상품등록
         </Button>
         <Modal isOpen={isOpen}>
-          {data && (
+          {url && (
             <div
               style={{
                 padding: 20,
@@ -104,7 +86,7 @@ const ProductEnrollmentPresenter = ({
                 }}
               >
                 <Share
-                  url={`http://192.168.0.107:3000/Product/seller/0/${data.url}`}
+                  url={`http://192.168.0.107:3000/Product/seller/0/${url}`}
                 />
               </div>
               <div style={{ color: '#6E44FF' }}>

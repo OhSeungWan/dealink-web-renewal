@@ -83,7 +83,6 @@ const ProductWrapper = styled.div`
 `;
 
 const ProductInfoForBuyer = props => {
-  console.log(props);
   return (
     <List>
       {/* <ImageBox url={props.imageUrls[0]} /> */}

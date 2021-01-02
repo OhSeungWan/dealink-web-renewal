@@ -3,48 +3,38 @@ import { useHistory, useParams } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 import ProductDetailPresenter from 'Pages/ProductDetail/ProductDetailPresenter';
+import { useFetch } from 'Hooks/useFetch';
 import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ProductDetailContainer = () => {
-  const [data, setData] = useState();
-  const { type, userIndex, url } = useParams();
-  const [userInfo, setUserInfo] = useState(userIndex);
-  const [loading, setLoading] = useState(false);
+  const { url } = useParams();
+  const userInfo = useSelector(state => (state.user ? state.user : 0));
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const hitory = useHistory();
+  //getAuction
+  const [data, isLoading, error, refetch] = useFetch(
+    `  http://192.168.0.120:8080/user/${userInfo.id}/auction/${url}`
+  );
+
   const closeModal = () => {
-    console.log('modal open');
     setIsOpen(false);
+    refetch(true);
   };
-  console.log(location.pathname);
+
   const openModal = () => {
-    if (Cookies.get('accessToken')) {
+    if (sessionStorage.getItem('userInfo')) {
       setIsOpen(true);
     } else {
       alert('로그인 후 사용해주세요');
       Cookies.set('beforePage', location.pathname);
       hitory.push('/SignIn');
     }
-    console.log('modal open');
   };
 
-  useEffect(() => {
-    const getAuction = async () => {
-      const res = await fetch(
-        `http://192.168.0.120:8080/user/${userIndex}/auction/${url}`
-      );
-      const data = await res.json();
-      console.log(data);
-      setData(data);
-      setLoading(true);
-    };
-
-    getAuction();
-  }, []);
-
   return (
-    loading && (
+    isLoading && (
       <ProductDetailPresenter
         data={data}
         closeModal={closeModal}
