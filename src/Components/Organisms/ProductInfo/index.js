@@ -1,5 +1,5 @@
+import { BidHistory, ImageBox, List } from 'Components/Molecules';
 import { Border, Input, Text } from 'Components/Atoms';
-import { ImageBox, List } from 'Components/Molecules';
 
 import React from 'react';
 import { comma } from 'Utils/comma-utils';
@@ -56,7 +56,7 @@ const ProductInfo = props => {
 
 const ProductTitle = styled.div`
   margin: 10px;
-
+  padding: 15px;
   font-weight: 700;
   font-size: 20px;
 `;
@@ -74,7 +74,7 @@ const ProductText = styled.div`
 `;
 
 const ProductWrapper = styled.div`
-  padding: 5px;
+  padding: 15px;
   margin: 10px;
   display: flex;
   flex-direction: row;
@@ -97,6 +97,7 @@ const ProductInfoForBuyer = props => {
         <ProductText>시작가</ProductText>
         <ProductPrice>{comma(props.startingPrice)} 원</ProductPrice>
       </ProductWrapper>
+      <BidHistory bidHistoryCount={props.bidHistoryCount} link={props.url} />
       {/* <ProductWrapper>
         <ProductText>내입찰가</ProductText>
         <ProductPrice>{comma(props.currentPrice)} 원</ProductPrice>

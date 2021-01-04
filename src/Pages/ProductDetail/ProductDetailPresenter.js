@@ -11,16 +11,16 @@ import {
   ScreenWrapper,
   Text
 } from 'Components/Atoms';
-import { ImageBox, List, Share, Slider, Timer } from 'Components/Molecules';
-import React, { useState } from 'react';
+import { List, Share, Slider, Timer } from 'Components/Molecules';
 
 import Header from 'Components/Molecules/Header';
+import React from 'react';
 
 const ProductDetailPresenter = props => {
   return (
     <ScreenWrapper>
       <Container>
-        <Header />
+        <Header banner />
         <Slider ImageList={props.data.imageUrls} big />
         <ProductInfo type={'buyer'} {...props.data} />
         <Share
@@ -31,7 +31,13 @@ const ProductDetailPresenter = props => {
 
         <List alignCenter>
           <Text>Count Down</Text>
-          <Timer isSet={true} closingTime={props.data.closingTime} />
+          <Timer
+            isSet={true}
+            days={props.days}
+            hours={props.hours}
+            minutes={props.minutes}
+            seconds={props.seconds}
+          />
         </List>
 
         <Border height="8px" />

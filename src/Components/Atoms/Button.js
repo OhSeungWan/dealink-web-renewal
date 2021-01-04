@@ -12,6 +12,7 @@ export const Button = styled.button`
     if (props.primary) {
       return css`
         background-color: ${({ theme }) => theme.colors.primary};
+        color: white;
         ${props => {
           if (props.common) {
             return css`
@@ -26,7 +27,11 @@ export const Button = styled.button`
     } else if (props.secondary) {
       return css`
         background-color: ${({ theme }) => theme.colors.secondary};
-        border-radius: 5px;
+        color: black;
+        font-weight: 400;
+        border: none;
+        padding: 12px;
+        font-size: 16px;
         ${props => {
           if (props.common) {
             return css`

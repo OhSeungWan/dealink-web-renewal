@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 const TransactionMethodWrapper = styled.div`
+  padding: 15px;
   display: flex;
   flex-direction: row;
 `;
@@ -20,11 +21,11 @@ const TransactionMethod = ({ method }) => {
   );
 };
 const TransactionMethodItem = styled.div`
-  padding: 10px;
+  padding: 15px;
   color: ${props => (props.selected ? 'black' : 'gray')};
 `;
 const DetailText = styled.div`
-  padding: 10px;
+  width: 100%;
   font-size: 20px;
 `;
 
@@ -32,7 +33,11 @@ const ProductDetail = props => {
   return (
     <Wrapper>
       <TransactionMethod method={props.tradingMethod} />
-      <DetailText>{props.description}</DetailText>
+      <div style={{ padding: 15 }}>
+        <DetailText style={{ wordBreak: 'break-all' }}>
+          {props.description}
+        </DetailText>
+      </div>
     </Wrapper>
   );
 };

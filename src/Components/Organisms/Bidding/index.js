@@ -2,11 +2,9 @@ import { Border, Button, Input, Text } from 'Components/Atoms';
 import { ImageBox, List } from 'Components/Molecules';
 
 import { AiOutlineClose } from 'react-icons/ai';
-import Cookies from 'js-cookie';
 import Date from 'Utils/date-utils';
 import React from 'react';
 import { comma } from 'Utils/comma-utils';
-import { useHistory } from 'react-router-dom';
 import { useInput } from 'Hooks/useInput';
 
 const Bidding = ({ data, userInfo, closeModal }) => {
@@ -19,15 +17,20 @@ const Bidding = ({ data, userInfo, closeModal }) => {
   };
 
   const biddingHandler = async () => {
-    if (value.bidPrice <= data.currentPrice) {
-      alert('입찰가는 현재가보다 작거나 같을수 없습닌다.');
+    console.log(value.bidPrice);
+    console.log(data.currentPrice);
+    if (parseInt(value.bidPrice) <= parseInt(data.currentPrice)) {
+      alert('입찰가는 현재가보다 작거나 같을수 없습니다.');
       return;
     }
     await fetch(
       `http://192.168.0.120:8080/user/${userInfo.id}/auction/${data.url}/bid`,
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          AUTH_TOKEN: userInfo.accessToken
+        },
         body: JSON.stringify({
           bidPrice: value.bidPrice,
           auctionId: data.id
@@ -60,7 +63,7 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       <Input
         readOnly
         name="startingPrice"
-        value={`${comma(data.startingPrice)} 원`}
+        value={`${comma(data.currentPrice)} 원`}
       />
       <Text>경매 참여일</Text>
       <Input

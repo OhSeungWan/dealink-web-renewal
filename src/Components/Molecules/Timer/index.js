@@ -18,8 +18,6 @@ const TimerInput = styled.input.attrs(props => {
   border: none;
 `;
 
-const TimeText = styled.div``;
-
 const TimeWrapper = styled.div`
   width:100%
   align-items: center;
@@ -166,25 +164,21 @@ const Colon = () => {
   );
 };
 
-const Timer = ({ isSet, value, onChange, closingTime }) => {
-  const date = new Date(closingTime);
-  const day = date.getDate();
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-  const second = date.getSeconds();
+const Timer = props => {
+  const { days, hours, minutes, seconds } = props;
 
   useEffect(() => {}, []);
 
   return (
     <TimerItem
-      isSet={isSet ? true : false}
-      value={value}
-      onChange={onChange}
+      isSet={props.isSet ? true : false}
+      value={props.value}
+      onChange={props.onChange}
       date={30}
-      day={day}
-      hour={hour}
-      minute={minute}
-      second={second}
+      day={days}
+      hour={hours}
+      minute={minutes}
+      second={seconds}
     />
   );
 };

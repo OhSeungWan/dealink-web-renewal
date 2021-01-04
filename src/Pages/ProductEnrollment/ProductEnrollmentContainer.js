@@ -43,8 +43,12 @@ const ProductEnrollmentContainer = () => {
   const onSubmit = async () => {
     let form = new FormData();
     var now = new Date();
-    now.setDate(value.d);
-    now.setMonth(now.getMonth() + 1);
+    console.log(value);
+    // console.log(`날짜 : ${now.format('yyyy-MM-dd hh:mm:ss')}`);
+    // now.setMonth(now.getMonth() + 1);
+    now.setDate(now.getDate() + parseInt(value.d));
+    console.log(`서버로 보내는 날짜 : ${now.format('yyyy-MM-dd hh:mm:ss')}`);
+
     value.imageList.map(item => {
       form.append('productImages', item);
     });
@@ -60,11 +64,12 @@ const ProductEnrollmentContainer = () => {
         description: value.description
       })
     );
-
+    console.log(`accessToken: ${userInfo.accessToken}`);
     const res = await fetch(
       `http://192.168.0.120:8080/user/${userInfo.id}/auction`,
       {
         method: 'POST',
+        headers: { AUTH_TOKEN: userInfo.accessToken },
         body: form
       }
     );

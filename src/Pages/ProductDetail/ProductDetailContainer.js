@@ -9,13 +9,16 @@ import { useSelector } from 'react-redux';
 
 const ProductDetailContainer = () => {
   const { url } = useParams();
-  const userInfo = useSelector(state => (state.user ? state.user : 0));
+  const userInfo = useSelector(state => state.user);
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const hitory = useHistory();
   //getAuction
+
+  //로그인 하지 않은 사용자일 경우
+  const userId = userInfo.id || '0';
   const [data, isLoading, error, refetch] = useFetch(
-    `  http://192.168.0.120:8080/user/${userInfo.id}/auction/${url}`
+    `  http://192.168.0.120:8080/user/${userId}/auction/${url}`
   );
 
   const closeModal = () => {
@@ -41,6 +44,10 @@ const ProductDetailContainer = () => {
         openModal={openModal}
         isOpen={isOpen}
         userInfo={userInfo}
+        days={data.days}
+        hours={data.hours}
+        minutes={data.minutes}
+        seconds={data.seconds}
       />
     )
   );

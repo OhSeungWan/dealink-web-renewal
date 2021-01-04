@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components';
 import store from 'Store';
 import theme from 'Styles/Theme';
 function App() {
-  console.log('certification');
   return (
     <Provider store={store}>
       <Auth>

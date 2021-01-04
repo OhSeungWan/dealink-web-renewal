@@ -5,10 +5,9 @@ export const Container = styled.div`
   flex: 1;
   justify-content: center;
   align-items: center;
-  padding: 30px;
   flex-direction: ${props => (props.row ? 'row' : 'column')};
-  margin-top: 50px;
+  margin-top: 150px;
   border: ${props => props.border};
-  width: 95vw;
+  width: 100%;
   max-width: 400px;
 `;

@@ -8,7 +8,6 @@ const Img = styled.img`
   width: 100%;
   height: 100%;
 `;
-
 const ImgContainer = styled.div`
   margin: 15px 0px 15px 0px;
 
@@ -34,7 +33,6 @@ const ImgContainer = styled.div`
 
 const ImageBox = ({ url, type, onChange }) => {
   const fileInput = useRef();
-  const Image = useRef();
   const [Url, setUrl] = useState(url);
   const [Type, setType] = useState(type);
   const [imageList, setImageList] = useState([]);
@@ -70,8 +68,12 @@ const ImageBox = ({ url, type, onChange }) => {
     setThumbnail(e);
   };
 
+  const Wrapper = styled.div`
+    width: 100%;
+  `;
+
   return Type == 'upload' ? (
-    <>
+    <Wrapper>
       <ImgContainer upload onClick={() => open_filebrowser(fileInput)}>
         <BiPlusMedical size={25} />
         <div>0/10</div>
@@ -87,7 +89,7 @@ const ImageBox = ({ url, type, onChange }) => {
         </form>
       </ImgContainer>
       <Slider ImageList={imageList}></Slider>
-    </>
+    </Wrapper>
   ) : (
     <>
       <ImgContainer>

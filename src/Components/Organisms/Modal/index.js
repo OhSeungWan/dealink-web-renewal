@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { Container, ScreenWrapper } from 'Components/Atoms';
+import styled, { keyframes } from 'styled-components';
 
-import { AiOutlineClose } from 'react-icons/ai';
-import styled from 'styled-components';
+import React from 'react';
 
+const boxFade = keyframes`
+  0% {
+    flex: 0;
+  }
+  50% {
+    flex: 8
+  }
+  100% {
+    flex: 9;
+  }
+`;
 const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -17,11 +28,12 @@ const ModalWrapper = styled.div`
 const ModalContainer = styled.div`
   flex: 9;
   overflow: auto;
-  padding: 30px;
   z-index: 1;
   background-color: white;
-  width: 90%;
+  width: 95%;
   max-width: 400px;
+  padding: 15px;
+  animation: ${boxFade} 1s 0s linear alternate;
 `;
 const ModalTop = styled.div`
   flex: 2;
@@ -31,7 +43,6 @@ const ModalTop = styled.div`
 const Modal = ({ ...props }) => {
   console.log(props.isOpen);
   const offset = { ...props.offset };
-
   return props.isOpen ? (
     <ModalWrapper>
       <ModalTop></ModalTop>
