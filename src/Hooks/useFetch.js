@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useFetch = (url, option) => {
+export const useFetch = (payload, option) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
@@ -12,31 +12,48 @@ export const useFetch = (url, option) => {
     setIsRefetch(state => !state);
   };
 
-  const process = async url => {
-    console.log(url);
+  const process = async payload => {
+    console.log('⇣-------------useFetch Start-------------⇣');
+
+    // if (type == 'url') {
+    console.log(`✓ fetch Start ✓`);
+    console.log(`✓ type: url >> ${payload}`);
     setIsLoading(false);
     setError(null);
-
     try {
-      const data = await fetch(url, option).then(res => res.json());
+      const data = await fetch(payload, option).then(res => res.json());
       setData(data);
-      console.log('``````````data``````````');
+      console.log(`✓ response⬇️`);
       console.log(data);
       data.status == 500 ? setIsLoading(false) : setIsLoading(true);
     } catch (error) {
-      //   console.log('````````fetch faild````````');
-      //   console.log(```````Error : ${error}```````);
+      console.log(`⚠︎ Error ⚠︎ : ${error}`);
       setError(error);
       setIsLoading(false);
     }
+    // } else if (type == 'api') {
+    //   console.log(`✓ fetch Start ✓`);
+    //   console.log(`✓ type: api `);
+    //   try {
+    //     const data = await payload;
+    //     setData(data);
+    //     console.log(`✓ response⬇️`);
+    //     console.log(data);
+    //   } catch (error) {
+    //     console.log(`⚠︎ Error ⚠︎ : ${error}`);
+
+    //     setError(error);
+    //     setIsLoading(false);
+    //   }
+    // }
+    console.log('⇡_____________useFetch End_____________⇡');
   };
 
   useEffect(() => {
-    console.log(url);
-    if (url) {
-      process(url);
+    if (payload) {
+      process(payload);
     }
-  }, [url, isrefetch]);
+  }, [isrefetch]);
 
   return [data, isLoading, error, refetch];
 };

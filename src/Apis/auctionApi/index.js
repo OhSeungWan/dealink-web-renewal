@@ -1,5 +1,15 @@
+import { request } from 'Apis/Request';
 export const auctionApi = {
-  getAuction: (userId, url) => {
-    return fetch(`http://192.168.0.120:8080/user/${userId}/auction/${url}`);
+  getAuction: async (userId, link, option) => {
+    return await request(`user/${userId}/auction/${link}`, option);
+  },
+  registerAuction: async (userId, option) => {
+    return await request(`user/${userId}/auction`, option);
+  },
+  getBidHistory: async (link, option) => {
+    return await request(`auction/${link}/history`, option);
+  },
+  registerBid: async (userId, link, option) => {
+    return await request(`user/${userId}/auction/${link}/bid`, option);
   }
 };

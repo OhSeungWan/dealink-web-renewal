@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { BiPlusMedical } from 'react-icons/bi';
@@ -6,11 +6,8 @@ import { Slider } from 'Components/Molecules';
 
 const Img = styled.img`
   width: 100%;
-  height: 100%;
 `;
 const ImgContainer = styled.div`
-  margin: 15px 0px 15px 0px;
-
   ${props => {
     if (props.upload) {
       return css`
@@ -28,7 +25,7 @@ const ImgContainer = styled.div`
         }
       `;
     }
-  }}
+  }};
 `;
 
 const ImageBox = ({ url, type, onChange }) => {
@@ -68,12 +65,8 @@ const ImageBox = ({ url, type, onChange }) => {
     setThumbnail(e);
   };
 
-  const Wrapper = styled.div`
-    width: 100%;
-  `;
-
   return Type == 'upload' ? (
-    <Wrapper>
+    <div style={{ display: 'flex', flex: 1, width: '90%' }}>
       <ImgContainer upload onClick={() => open_filebrowser(fileInput)}>
         <BiPlusMedical size={25} />
         <div>0/10</div>
@@ -89,13 +82,11 @@ const ImageBox = ({ url, type, onChange }) => {
         </form>
       </ImgContainer>
       <Slider ImageList={imageList}></Slider>
-    </Wrapper>
+    </div>
   ) : (
-    <>
-      <ImgContainer>
-        <Img src={Url}></Img>
-      </ImgContainer>
-    </>
+    <ImgContainer>
+      <Img src={Url}></Img>
+    </ImgContainer>
   );
 };
 

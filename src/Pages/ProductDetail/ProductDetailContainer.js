@@ -18,7 +18,8 @@ const ProductDetailContainer = () => {
   //로그인 하지 않은 사용자일 경우
   const userId = userInfo.id || '0';
   const [data, isLoading, error, refetch] = useFetch(
-    `  http://192.168.0.120:8080/user/${userId}/auction/${url}`
+    `https://rest.dealink.co.kr/user/${userId}/auction/${url}`
+    // `http://192.168.0.102:8080/user/${userId}/auction/${url}`
   );
 
   const closeModal = () => {

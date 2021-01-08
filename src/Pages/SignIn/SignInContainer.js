@@ -16,12 +16,12 @@ const SignInContainer = () => {
   //카카오 로그인
   const SignUp = async () => {
     await Kakao.Auth.authorize({
-      redirectUri: 'http://192.168.0.107:3000'
+      redirectUri: 'http://www.dealink.co.kr'
+      // redirectUri: 'http://192.168.0.107:3000'
     });
   };
 
   const initUserInfo = () => {
-    // 인가코드
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
 

@@ -1,9 +1,27 @@
+import {
+  FacebookShareButton,
+  LineShareButton,
+  TwitterShareButton
+} from 'react-share';
 import React, { useState } from 'react';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FaLink } from 'react-icons/fa';
+import HelmetMetaData from 'Utils/helmet-utils';
+import btnCopy from 'assets/img/btnCopy.png';
+import btnFaceBook from 'assets/img/btnFaceBook.png';
+import btnKakao from 'assets/img/btnKakao.png';
+import btnLine from 'assets/img/btnLine.png';
+import btnTwiter from 'assets/img/btnTwiter.png';
 import styled from 'styled-components';
 
+const ShareImageContainer = styled.div`
+  flex: 1;
+  padding: 10px;
+`;
+
+const ShareImage = styled.img`
+  width: 100%;
+`;
 const Wrapper = styled.div`
   width: 100%;
   display: flex;
@@ -22,21 +40,71 @@ const Container = styled.div`
 
 const Text = styled.div`
   font-size: 25px;
-  font-weight: 700;
+  font-weight: 700;s
   padding: 0px 30px 0px 30px;
 `;
 
-const Share = ({ url }) => {
+const Share = ({ url, data }) => {
   const [value, setValue] = useState(url);
   const [copied, setCopied] = useState(false);
+  const { Kakao } = window;
+  console.log(data);
+  //TODO: 카카오 로그인 리펙토링
+  const sendLink = () => {
+    Kakao.Link.sendDefault({
+      objectType: 'commerce',
+      content: {
+        title: `시작가:${data.startingPrice}\n${data.description}`,
+        imageUrl: data.imageUrls[0],
+        link: {
+          mobileWebUrl: url,
+          webUrl: url
+        }
+      },
+      commerce: {
+        productName: `${data.name}\n현재입찰가:${data.currentPrice}원 `,
+        regularPrice: parseInt(data.currentPrice)
+      },
+      buttons: [
+        {
+          title: '경매 참여하기',
+          link: {
+            mobileWebUrl: url,
+            webUrl: url
+          }
+        }
+      ]
+    });
+  };
 
   return (
     <Container>
       <Wrapper>
-        <Text>공유</Text>
-        <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
-          <FaLink size={30} color="#6E44FF" style={{ paddingRight: 30 }} />
-        </CopyToClipboard>
+        <ShareImageContainer>
+          <div id="kakao-link-btn" onClick={sendLink}>
+            <ShareImage src={btnKakao} />
+          </div>
+        </ShareImageContainer>
+        <ShareImageContainer>
+          <FacebookShareButton url={value}>
+            <ShareImage src={btnFaceBook} />
+          </FacebookShareButton>
+        </ShareImageContainer>
+        <ShareImageContainer>
+          <LineShareButton url={value}>
+            <ShareImage src={btnLine} />
+          </LineShareButton>
+        </ShareImageContainer>
+        <ShareImageContainer>
+          <TwitterShareButton url={value}>
+            <ShareImage src={btnTwiter} />
+          </TwitterShareButton>
+        </ShareImageContainer>
+        <ShareImageContainer>
+          <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
+            <ShareImage src={btnCopy} />
+          </CopyToClipboard>
+        </ShareImageContainer>
       </Wrapper>
       {copied ? (
         <div style={{ color: '#6E44FF', padding: 20, fontSize: 20 }}>

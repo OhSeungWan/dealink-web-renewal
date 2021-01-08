@@ -34,7 +34,7 @@ const ProductDetail = props => {
     <Wrapper>
       <TransactionMethod method={props.tradingMethod} />
       <div style={{ padding: 15 }}>
-        <DetailText style={{ wordBreak: 'break-all' }}>
+        <DetailText style={{ whiteSpace: 'pre' }}>
           {props.description}
         </DetailText>
       </div>

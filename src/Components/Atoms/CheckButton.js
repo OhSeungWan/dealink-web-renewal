@@ -6,18 +6,17 @@ import styled from 'styled-components';
 const CheckButtonWrapper = styled.div`
   margin: 5px;
   color: ${props => (props.checked ? '#6E44FF' : '#a09fa7;')};
-  width: 100%;
   background-color: #eaeaea;
   border-radius: 5px;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 20px 5px 20px;
   text-align: center;
-  font-size: 20px;
   &:hover {
     cursor: pointer;
   }
+  flex: 1;
 `;
 const CheckButtonText = styled.p`
-  font-size: 20px;
+  font-size: 16px;
   &:hover {
     cursor: pointer;
   }

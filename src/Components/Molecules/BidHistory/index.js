@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsTriangleFill } from 'react-icons/bs';
-import { Container } from 'Components/Atoms';
 import Date from 'Utils/date-utils';
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import { Modal } from 'Components/Organisms';
@@ -55,26 +54,9 @@ const HistoryInfo = ({ item }) => {
     </HistoryInfoWrapper>
   );
 };
-const HistoryList = ({ link }) => {
-  const userInfo = useSelector(state => state.user);
-  // const [data, isLoading, error, refetch] = useFetch(
-  //   `http://192.168.0.120:8080//auction/${link}/history`,
-  //   {
-  //     headers: { AUTH_TOKEN: userInfo.accessToken }
-  //   }
-  // );
-  const data = [
-    {
-      id: null,
-      userName: '',
-      bidPrice: 1000000,
-      createdDate: '2020-12-31T13:21:25.661824'
-    }
-  ];
-  console.log(data);
-
+const HistoryList = ({ link, data, isLoading }) => {
   return (
-    true && (
+    isLoading && (
       <HistoryWrapper>
         {data
           .map((item, index) => {
@@ -86,32 +68,49 @@ const HistoryList = ({ link }) => {
   );
 };
 
-const BidHistory = ({ bidHistoryCount, link }) => {
+const BidHistory = ({ link }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const userInfo = useSelector(state => state.user);
+  const [data, isLoading, error, refetch] = useFetch(
+    `https://rest.dealink.co.kr/auction/${link}/history`,
+    // `http://192.168.0.102:8080/auction/${link}/history`,
+    {
+      headers: { AUTH_TOKEN: userInfo.accessToken }
+    }
+  );
+
   const modalOpen = () => {
+    if (data.length == 0) {
+      alert('현재 입찰건이 존재하지 않습니다.');
+      return;
+    }
     setIsOpen(true);
   };
 
   const closeModal = () => {
-    if (bidHistoryCount == 0) {
-      alert('현재 입찰건이 존재하지 않습니다.');
-      return;
-    }
     setIsOpen(false);
   };
+  //TODO: 누적입찰수 리셋하는 타이머
+  // useEffect(() => {
+  //   const countdown = setInterval(async () => {
+  //     refetch(true);
+  //   }, 3000);
+
+  //   return () => clearInterval(countdown);
+  // }, []);
 
   return (
-    <>
-      <Wrapper onClick={modalOpen}>
-        <Text>누적 입찰수</Text>
-        <Text style={{ color: 'red' }}>{bidHistoryCount}회</Text>
-        <Text style={{ fontSize: 17 }}>
-          경매기록 확인
-          <IoIosArrowDroprightCircle size={25} />
-        </Text>
-      </Wrapper>
-      <Container>
+    isLoading && (
+      <>
+        <Wrapper onClick={modalOpen}>
+          <Text>누적 입찰수</Text>
+          <Text style={{ color: 'red' }}>{data.length}회</Text>
+          <Text style={{ fontSize: 17 }}>
+            경매기록 확인
+            <IoIosArrowDroprightCircle size={25} />
+          </Text>
+        </Wrapper>
         <Modal isOpen={isOpen}>
           <div
             style={{
@@ -125,10 +124,10 @@ const BidHistory = ({ bidHistoryCount, link }) => {
             <div>경매기록 </div>
             <AiOutlineClose size={20} onClick={closeModal} />
           </div>
-          <HistoryList link={link} />
+          <HistoryList link={link} data={data} isLoading={isLoading} />
         </Modal>
-      </Container>
-    </>
+      </>
+    )
   );
 };
 

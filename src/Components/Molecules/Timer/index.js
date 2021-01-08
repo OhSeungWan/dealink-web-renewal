@@ -1,5 +1,8 @@
+import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+
+import { FadeBox } from 'Components/Organisms/Modal';
 
 const TimerInput = styled.input.attrs(props => {
   if (props.type == 'd') {
@@ -13,21 +16,27 @@ const TimerInput = styled.input.attrs(props => {
   }
 })`
   text-align: center;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 900;
-  border: none;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: 100%;
+  margin: 0 5 0 5px;
 `;
 
 const TimeWrapper = styled.div`
-  width:100%
   align-items: center;
+  justify-content: center;
   display: flex;
+  width: 100%;
   flex-direction: row;
   flex: 1;
 `;
 
 const TimerItemWrapper = styled.div`
+  width: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -39,13 +48,14 @@ const TimerItem = ({
   hour = 23,
   minute = 59,
   second = 59,
-  value,
+  link,
   onChange
 }) => {
   const [days, setDays] = useState(isSet ? day : '');
   const [hours, setHours] = useState(isSet ? hour : '');
   const [minutes, setMinutes] = useState(isSet ? minute : '');
   const [seconds, setSeconds] = useState(isSet ? second : '');
+  const [complete, setComplete] = useState(false);
   // console.log(day);
   // console.log(hours);
   // console.log(minutes);
@@ -53,14 +63,35 @@ const TimerItem = ({
 
   useEffect(() => {
     if (isSet) {
-      const countdown = setInterval(() => {
+      const countdown = setInterval(async () => {
+        if (
+          parseInt(days) <= 0 &&
+          parseInt(hour) <= 0 &&
+          parseInt(minutes) <= 0 &&
+          parseInt(seconds) <= 0
+        ) {
+          clearInterval(countdown);
+          await fetch(
+            `https://rest.dealink.co.kr/auction/${link}`,
+            // `http://192.168.0.102:8080/auction/${link}`,
+            {
+              method: 'GET'
+            }
+          );
+          setComplete(true);
+          return;
+        }
         if (parseInt(seconds) > 0) {
           setSeconds(parseInt(seconds) - 1);
         } else {
           if (parseInt(minutes) > 0) {
             setMinutes(parseInt(minutes) - 1);
           } else {
-            setDays(parseInt(days) - 1);
+            if (parseInt(hour) > 0) {
+              setDays(parseInt(days) - 1);
+            } else {
+              setHours(24);
+            }
             setMinutes(59);
           }
           setSeconds(59);
@@ -98,7 +129,7 @@ const TimerItem = ({
     setSeconds(e.target.value);
   };
 
-  return (
+  return !complete ? (
     <TimeWrapper>
       <TimerItemWrapper>
         <TimerInput
@@ -111,7 +142,6 @@ const TimerItem = ({
         />
       </TimerItemWrapper>
       <Colon />
-
       <TimerItemWrapper>
         <TimerInput
           readOnly={isSet ? true : false}
@@ -123,7 +153,6 @@ const TimerItem = ({
         />
       </TimerItemWrapper>
       <Colon />
-
       <TimerItemWrapper>
         <TimerInput
           readOnly={isSet ? true : false}
@@ -147,39 +176,78 @@ const TimerItem = ({
         />
       </TimerItemWrapper>
     </TimeWrapper>
+  ) : (
+    // TODO: 리펙토링
+    <ScreenWrapper>
+      <Container>
+        <FadeBox isOpen={true}></FadeBox>
+      </Container>
+    </ScreenWrapper>
   );
 };
 
 const ColonText = styled.div`
-  padding: 10px;
-  font-size: 30px;
+  padding: 5px;
+  text-align: center;
+  font-size: 20px;
   font-weight: 900;
 `;
 
 const Colon = () => {
-  return (
-    <TimeWrapper>
-      <ColonText>:</ColonText>
-    </TimeWrapper>
-  );
+  return <ColonText>:</ColonText>;
 };
 
+const Bold = styled.div`
+  font-size: 22px;
+  font-weight: 600;
+  padding: 5px;
+`;
+
 const Timer = props => {
-  const { days, hours, minutes, seconds } = props;
+  const { days, hours, minutes, seconds, link } = props;
 
   useEffect(() => {}, []);
 
   return (
-    <TimerItem
-      isSet={props.isSet ? true : false}
-      value={props.value}
-      onChange={props.onChange}
-      date={30}
-      day={days}
-      hour={hours}
-      minute={minutes}
-      second={seconds}
-    />
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
+    >
+      <TimerItem
+        isSet={props.isSet ? true : false}
+        value={props.value}
+        onChange={props.onChange}
+        date={30}
+        day={days <= 0 ? 0 : days}
+        hour={hours <= 0 ? 0 : hours}
+        minute={minutes <= 0 ? 0 : minutes}
+        second={seconds <= 0 ? 0 : seconds}
+        link={link}
+      />
+      <div
+        style={{
+          marginTop: 10,
+          fontSize: 18,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <Bold>{props.value.d}</Bold>
+        <div>일</div>
+        <Bold>{props.value.h}</Bold>
+        <div>시간</div>
+        <Bold>{props.value.m}</Bold>
+        <div>분</div>
+        <Bold>{props.value.s}</Bold>
+        <div>초</div>
+        <div style={{ marginLeft: 5 }}> 후 마감</div>
+      </div>
+    </div>
   );
 };
 

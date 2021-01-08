@@ -1,9 +1,10 @@
 import { Border, Button, Input, Text } from 'Components/Atoms';
-import { ImageBox, List } from 'Components/Molecules';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import Date from 'Utils/date-utils';
+import { List } from 'Components/Molecules';
 import React from 'react';
+import { auctionApi } from 'Apis/auctionApi';
 import { comma } from 'Utils/comma-utils';
 import { useInput } from 'Hooks/useInput';
 
@@ -23,25 +24,23 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       alert('입찰가는 현재가보다 작거나 같을수 없습니다.');
       return;
     }
-    await fetch(
-      `http://192.168.0.120:8080/user/${userInfo.id}/auction/${data.url}/bid`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          AUTH_TOKEN: userInfo.accessToken
-        },
-        body: JSON.stringify({
-          bidPrice: value.bidPrice,
-          auctionId: data.id
-        })
-      }
-    );
+
+    await auctionApi.registerBid(userInfo.id, data.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        AUTH_TOKEN: userInfo.accessToken
+      },
+      body: JSON.stringify({
+        bidPrice: value.bidPrice,
+        auctionId: data.id
+      })
+    });
     closeModal();
   };
 
   return (
-    <List>
+    <List alignCenter={true}>
       <div
         style={{
           width: '100%',
@@ -76,12 +75,15 @@ const Bidding = ({ data, userInfo, closeModal }) => {
         name="bidPrice"
         placeholder={'시작가를 입력해주세요.'}
         onChange={onChange}
+        style={{ border: '1px solid #6E44FF' }}
       />
-      <Text>입찰자</Text>
-      <Input name="productPrice" placeholder={'시작가를 입력해주세요.'} />
-      <Text>연락처</Text>
-      <Input name="productPrice" placeholder={'시작가를 입력해주세요.'} />
-      <Button onClick={biddingHandler} primary common>
+
+      <Button
+        onClick={biddingHandler}
+        primary
+        common
+        style={{ position: 'fixed', bottom: 5 }}
+      >
         입찰하기
       </Button>
     </List>

@@ -1,7 +1,7 @@
 import { BidHistory, ImageBox, List } from 'Components/Molecules';
 import { Border, Input, Text } from 'Components/Atoms';
+import React, { useState } from 'react';
 
-import React from 'react';
 import { comma } from 'Utils/comma-utils';
 import styled from 'styled-components';
 
@@ -10,17 +10,30 @@ const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
   border: 1px solid #eaeaea;
   border-radius: 5px;
   margin: 15px 0px 15px 0px;
+  width: 80%;
+  text-align: center;
 `;
 
 const ProductInfo = props => {
+  const [productPrice, setProductPrice] = useState('');
+
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
     props.onChange(name, value);
+
+    if (name == 'productPrice') {
+      const price = value;
+      console.log(value);
+      price.replaceAll(',', '');
+      const formattingPrice = price.replace(/[^0-9]/g, '');
+      console.log(formattingPrice.replace(/[^0-9]/g, ''));
+      setProductPrice(`${comma(formattingPrice)}`);
+    }
   };
 
   return !props.type ? (
-    <List>
+    <List alignCenter={true}>
       <Text>상품사진</Text>
       <ImageBox type="upload" onChange={props.onChange} />
       <Text>상품명</Text>
@@ -36,11 +49,33 @@ const ProductInfo = props => {
         onChange={onChange}
       />
       <Text>상품가격</Text>
-      <Input
-        name="productPrice"
-        placeholder={'시작가를 입력해주세요.'}
-        onChange={onChange}
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '90%',
+          borderRadius: 5,
+          border: `1px solid #eaeaea`
+        }}
+      >
+        <Input
+          style={{ textAlign: 'center', flex: 6, border: 'none', margin: 0 }}
+          value={comma(productPrice)}
+          name="productPrice"
+          placeholder={'시작가를 입력해주세요.'}
+          onChange={onChange}
+        ></Input>
+        <div
+          style={{
+            flex: 1,
+            textAlign: 'center'
+          }}
+        >
+          원
+        </div>
+      </div>
+
       <Text>카카오 오픈채팅 URL</Text>
       <Input
         name="kakaoUrl"
@@ -55,8 +90,7 @@ const ProductInfo = props => {
 };
 
 const ProductTitle = styled.div`
-  margin: 10px;
-  padding: 15px;
+  padding: 10px;
   font-weight: 700;
   font-size: 20px;
 `;
@@ -74,8 +108,7 @@ const ProductText = styled.div`
 `;
 
 const ProductWrapper = styled.div`
-  padding: 15px;
-  margin: 10px;
+  padding: 10px;
   display: flex;
   flex-direction: row;
   justify-content: center;

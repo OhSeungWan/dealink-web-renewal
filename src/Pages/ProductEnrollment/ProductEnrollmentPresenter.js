@@ -8,10 +8,11 @@ import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
 import { List, Share, Timer } from 'Components/Molecules';
 
 import { AiOutlineClose } from 'react-icons/ai';
-import Banner1 from 'assets/img/Banner1.png';
 import Header from 'Components/Molecules/Header';
 import { ImageBox } from 'Components/Molecules';
+import { Loading } from 'Components/Organisms/Modal';
 import React from 'react';
+import panmeza from 'assets/img/panmeza.png';
 
 // TODO: 리펙토링 꼮꼬꼬꼬꼬꼮!!!
 const ProductEnrollmentPresenter = ({
@@ -20,25 +21,32 @@ const ProductEnrollmentPresenter = ({
   onChange,
   value,
   isOpen,
-  url
+  data,
+  loading
 }) => {
-  return (
+  return loading ? (
     <ScreenWrapper>
+      <Header />
       <Container>
-        <Header />
-        <ImageBox url={Banner1} />
+        {/* <ImageBox url={panmeza} /> */}
         <ProductInfo value={value} onChange={onChange} />
-        <List>
+        <List alignCenter={true}>
           <Text>경매 마감일</Text>
           <Timer isSet={false} value={value} onChange={onChange} />
         </List>
         <AuctionOptions value={value} onChange={onChange} />
         <AccountInfo value={value} onChange={onChange} />
-        <Button onClick={onSubmit} primary common>
+        <Button
+          onClick={onSubmit}
+          primary
+          common
+          style={{ position: 'relative', bottom: 5 }}
+        >
           상품등록
         </Button>
+        {/* <Loading isOpen={true}></Loading> */}
         <Modal isOpen={isOpen}>
-          {url && (
+          {data && (
             <div
               style={{
                 padding: 20,
@@ -74,7 +82,7 @@ const ProductEnrollmentPresenter = ({
               >
                 <div style={{ fontWeight: 700, flex: 1 }}>상품명</div>
                 <div style={{ flex: 7, textAlign: 'center' }}>
-                  {value.productTitle} 애플워치 se
+                  {value.productTitle}
                 </div>
               </div>
               <div
@@ -86,7 +94,9 @@ const ProductEnrollmentPresenter = ({
                 }}
               >
                 <Share
-                  url={`http://192.168.0.107:3000/Product/seller/0/${url}`}
+                  url={`http://www.dealink.co.kr/Product/seller/0/${data.url}`}
+                  // url={`http://192.168.0.102:8080/Product/seller/0/${data.url}`}
+                  data={data}
                 />
               </div>
               <div style={{ color: '#6E44FF' }}>
@@ -95,6 +105,12 @@ const ProductEnrollmentPresenter = ({
             </div>
           )}
         </Modal>
+      </Container>
+    </ScreenWrapper>
+  ) : (
+    <ScreenWrapper>
+      <Container>
+        <Loading isOpen={true}></Loading>
       </Container>
     </ScreenWrapper>
   );

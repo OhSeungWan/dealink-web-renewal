@@ -1,5 +1,6 @@
 import { Route, Router, Switch } from 'react-router-dom';
 
+import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
 import SignIn from 'Pages/SignIn';
@@ -15,6 +16,7 @@ const MainRouter = () => {
           path="/Product/:type/:userIndex/:url"
           component={ProductDetail}
         ></Route>
+        <Route exact path="/MyLink" component={MyLink}></Route>
       </Switch>
     </>
   );

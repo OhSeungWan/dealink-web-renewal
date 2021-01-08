@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import Cookies from 'js-cookie';
 import Date from 'Utils/date-utils';
 import ProductEnrollmentPresenter from 'Pages/ProductEnrollment/ProductEnrollmentPresenter';
+import { auctionApi } from 'Apis/auctionApi';
 import { useHistory } from 'react-router-dom';
 import { useInput } from 'Hooks/useInput';
 import { useSelector } from 'react-redux';
@@ -12,10 +12,9 @@ const ProductEnrollmentContainer = () => {
   // const [data, isLoading, error, refetch] = useFetch()
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
-  const [url, setUrl] = useState();
+  const [modalData, setModalData] = useState();
   const userInfo = useSelector(state => state.user);
-  console.log(userInfo);
-
+  const [loading, setLoading] = useState(true);
   const [value, setValue] = useInput({
     imageList: [],
     productTitle: '',
@@ -23,15 +22,16 @@ const ProductEnrollmentContainer = () => {
     productPrice: '',
     kakaoUrl: '',
     description: '',
-    d: '',
-    h: '',
-    m: '',
-    s: ''
+    d: 0,
+    h: 0,
+    m: 0,
+    s: 0
   });
 
   const closeModal = () => {
+    console.log(modalData);
     setIsOpen(false);
-    history.push(`/Product/seller/${userInfo.id}/${url}`, {
+    history.push(`/Product/seller/${userInfo.id}/${modalData.url}`, {
       before: true
     });
   };
@@ -44,10 +44,17 @@ const ProductEnrollmentContainer = () => {
     let form = new FormData();
     var now = new Date();
     console.log(value);
-    // console.log(`날짜 : ${now.format('yyyy-MM-dd hh:mm:ss')}`);
-    // now.setMonth(now.getMonth() + 1);
+    if (value.productPrice == '') {
+      alert('가격은 필수입니다.');
+      return;
+    }
     now.setDate(now.getDate() + parseInt(value.d));
-    console.log(`서버로 보내는 날짜 : ${now.format('yyyy-MM-dd hh:mm:ss')}`);
+    now.setHours(now.getHours() + parseInt(value.h));
+    now.setMinutes(now.getMinutes() + parseInt(value.m));
+    now.setSeconds(now.getSeconds() + parseInt(value.s));
+    // now.setDate(now.getMonth() - 1);
+
+    console.log(now.format('yyyy-MM-dd hh:mm:ss'));
 
     value.imageList.map(item => {
       form.append('productImages', item);
@@ -57,27 +64,24 @@ const ProductEnrollmentContainer = () => {
       JSON.stringify({
         startingPrice: value.productPrice, // 경매 시작가
         currentPrice: value.productPrice, // 경매 현재가
-        closingTime: now.format('yyyy-MM-dd hh:mm:ss'), // 경매 마감시간
+        closingTime: now.format('yyyy-MM-dd HH:mm:ss'), // 경매 마감시간
         tradingMethod: '직거래', //
         chatUrl: value.kakaoUrl, // 오픈채팅 주소
         name: value.productTitle,
-        description: value.description
+        description: value.description,
+        status: '0',
+        url: null
       })
     );
-    console.log(`accessToken: ${userInfo.accessToken}`);
-    const res = await fetch(
-      `http://192.168.0.120:8080/user/${userInfo.id}/auction`,
-      {
-        method: 'POST',
-        headers: { AUTH_TOKEN: userInfo.accessToken },
-        body: form
-      }
-    );
-
-    const data = await res.json();
+    setLoading(false);
+    const data = await auctionApi.registerAuction(userInfo.id, {
+      method: 'POST',
+      headers: { AUTH_TOKEN: userInfo.accessToken },
+      body: form
+    });
     console.log(data);
-    setUrl(data.url);
-
+    setModalData(data);
+    setLoading(true);
     openModal();
   };
 
@@ -87,9 +91,10 @@ const ProductEnrollmentContainer = () => {
       closeModal={closeModal}
       isOpen={isOpen}
       openModal={openModal}
-      url={url}
+      data={modalData}
       onChange={setValue}
       value={value}
+      loading={loading}
     />
   );
 };

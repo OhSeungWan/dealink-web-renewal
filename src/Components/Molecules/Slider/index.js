@@ -1,17 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 const SliderWrapper = styled.div`
-  width: 100%;
+  overflow: auto;
 `;
 const SliderContainer = styled.div`
-  width: 100%;
-  overflow: auto;
   display: flex;
+  width: 100%;
+  height: 100%;
 `;
 
 const SliderImage = styled.img`
-  margin: 10px 10px 0px 10px;
+  margin: 0px 10px 0px 10px;
   width: 100%;
+  height: 100%;
   max-width: ${props => (props.big ? '400px' : '100px')};
   max-height: ${props => (props.big ? '400px' : '100px')};
 `;

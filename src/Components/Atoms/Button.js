@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export const Button = styled.button`
-  margin: 5px;
+  margin: 0 auto;
   color: white;
   font-size: 20px;
   font-weight: 600;
@@ -17,8 +17,9 @@ export const Button = styled.button`
           if (props.common) {
             return css`
               width: 100%;
-              max-width: 400px;
-              padding: 15px;
+              max-width: 360px;
+              padding: 10px;
+              border: none;
             `;
           }
         }}
@@ -30,14 +31,16 @@ export const Button = styled.button`
         color: black;
         font-weight: 400;
         border: none;
-        padding: 12px;
-        font-size: 16px;
+        padding: 5px;
+        border-radius: 5px;
+        margin: 10px;
+        font-size: 14px;
         ${props => {
           if (props.common) {
             return css`
               width: 100%;
-              max-width: 400px;
-              padding: 15px;
+              max-width: 360px;
+              padding: 10px;
             `;
           }
         }}
@@ -50,8 +53,8 @@ export const Button = styled.button`
           if (props.common) {
             return css`
               width: 100%;
-              max-width: 400px;
-              padding: 15px;
+              max-width: 360px;
+              padding: 10px;
             `;
           }
         }}
@@ -68,12 +71,13 @@ export const Button = styled.button`
         font-weight: ${({ theme }) => theme.Button.kakao.fontWeight};
         color: ${({ theme }) => theme.Button.kakao.color};
         width: 100vw;
-        max-width: 400px;
+        max-width: 360px;
+
         ${props => {
           if (props.common) {
             return css`
               width: 100vw;
-              max-width: 400px;
+              max-width: 360px;
               padding: 15px;
             `;
           }
@@ -87,7 +91,7 @@ export const Button = styled.button`
           if (props.common) {
             return css`
               width: 100vw;
-              max-width: 400px;
+              max-width: 360px;
               padding: 15px;
             `;
           }
