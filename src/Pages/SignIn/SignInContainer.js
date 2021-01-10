@@ -14,6 +14,7 @@ const SignInContainer = () => {
   const { Kakao } = window;
 
   //카카오 로그인
+  // TODO: 리다이렉트 url 변경해야함
   const SignUp = async () => {
     await Kakao.Auth.authorize({
       redirectUri: 'http://www.dealink.co.kr'
@@ -21,28 +22,7 @@ const SignInContainer = () => {
     });
   };
 
-  const initUserInfo = () => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-
-    if (!code) return; // 인가 코드 없다면 리턴.
-
-    //인가코드가 있다면 fetchUserByCode(code)
-    dispatch(fetchUserByCode(code));
-
-    //전에 보던 상품페이지가 있다면 그곳으로
-    if (Cookies.get('beforePage')) {
-      const beforePage = Cookies.get('beforePage');
-      Cookies.remove('beforePage');
-      history.push(beforePage);
-    } else {
-      history.push('/ProductEnrollment');
-    }
-  };
-
-  useEffect(() => {
-    initUserInfo();
-  }, []);
+  useEffect(() => {}, []);
   return <SignInPresenter SignUp={SignUp} userInfo={userInfo} />;
 };
 

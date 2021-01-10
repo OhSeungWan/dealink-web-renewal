@@ -4,7 +4,8 @@ import { userApi } from 'Apis/userApi';
 
 const initialState = {
   id: null,
-  accessToken: null
+  accessToken: null,
+  isLogin: false
 };
 
 export const fetchUserByCode = createAsyncThunk(
@@ -38,10 +39,12 @@ const userSlice = createSlice({
       console.log(action.payload);
 
       sessionStorage.setItem('userInfo', action.payload.accessToken);
+      sessionStorage.setItem('accessToken', action.payload.accessToken);
       sessionStorage.setItem('userId', action.payload.id);
 
       state.id = id;
       state.accessToken = accessToken;
+      state.isLogin = true;
     }
   }
 });

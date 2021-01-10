@@ -1,3 +1,4 @@
+import { Border, Button, Container, ScreenWrapper } from 'Components/Atoms';
 import React, { useEffect, useState } from 'react';
 
 import { AiOutlineClose } from 'react-icons/ai';
@@ -111,21 +112,22 @@ const BidHistory = ({ link }) => {
             <IoIosArrowDroprightCircle size={25} />
           </Text>
         </Wrapper>
-        <Modal isOpen={isOpen}>
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              marginBottom: 10
-            }}
-          >
-            <div>경매기록 </div>
-            <AiOutlineClose size={20} onClick={closeModal} />
-          </div>
-          <HistoryList link={link} data={data} isLoading={isLoading} />
-        </Modal>
+        {/* TODO: 수정해야함  */}
+        {isOpen && (
+          <ScreenWrapper>
+            <Container>
+              <Modal isOpen={isOpen}>
+                <div
+                  style={{ display: 'flex', justifyContent: 'space-between' }}
+                >
+                  <div>경매기록 </div>
+                  <AiOutlineClose size={20} onClick={closeModal} />
+                </div>
+                <HistoryList link={link} data={data} isLoading={isLoading} />
+              </Modal>
+            </Container>
+          </ScreenWrapper>
+        )}
       </>
     )
   );

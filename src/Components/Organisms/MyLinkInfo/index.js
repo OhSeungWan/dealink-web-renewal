@@ -74,13 +74,15 @@ const Status = ({ status }) => {
   );
 };
 const MyLink = ({ data }) => {
+  console.log(`url ${data.url}`);
+
   return (
     <MyLinkWrapper>
       <Status
         status={data.auctionStatus ? data.auctionStatus : data.bidStatus}
       />
       <Name>{data.productName}</Name>
-      <ConfirmBtn href={data.url}>링크확인</ConfirmBtn>
+      <ConfirmBtn href={data.url.replace('http://', '')}>링크확인</ConfirmBtn>
       <Border height="8px" />
     </MyLinkWrapper>
   );

@@ -31,7 +31,6 @@ const ImgContainer = styled.div`
 const ImageBox = ({ url, type, onChange }) => {
   const fileInput = useRef();
   const [Url, setUrl] = useState(url);
-  const [Type, setType] = useState(type);
   const [imageList, setImageList] = useState([]);
 
   //TODO: Think about refect , 이미지 업로드 개수 제한 적용해야함
@@ -65,7 +64,7 @@ const ImageBox = ({ url, type, onChange }) => {
     setThumbnail(e);
   };
 
-  return Type == 'upload' ? (
+  return type == 'upload' ? (
     <div style={{ display: 'flex', flex: 1, width: '90%' }}>
       <ImgContainer upload onClick={() => open_filebrowser(fileInput)}>
         <BiPlusMedical size={25} />

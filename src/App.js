@@ -10,13 +10,11 @@ import theme from 'Styles/Theme';
 function App() {
   return (
     <Provider store={store}>
-      <Auth>
-        <CookiesProvider>
-          <ThemeProvider theme={theme}>
-            <MainRouter />
-          </ThemeProvider>
-        </CookiesProvider>
-      </Auth>
+      <CookiesProvider>
+        <ThemeProvider theme={theme}>
+          <MainRouter />
+        </ThemeProvider>
+      </CookiesProvider>
     </Provider>
   );
 }

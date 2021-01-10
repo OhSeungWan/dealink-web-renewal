@@ -20,7 +20,6 @@ const TimerInput = styled.input.attrs(props => {
   font-weight: 900;
   border: 1px solid #eaeaea;
   border-radius: 10px;
-  width: 100%;
   margin: 0 5 0 5px;
 `;
 
@@ -34,9 +33,7 @@ const TimeWrapper = styled.div`
 `;
 
 const TimerItemWrapper = styled.div`
-  width: 100%;
   display: flex;
-  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -141,7 +138,7 @@ const TimerItem = ({
           name="d"
         />
       </TimerItemWrapper>
-      <Colon />
+      <Colon text={'일'} />
       <TimerItemWrapper>
         <TimerInput
           readOnly={isSet ? true : false}
@@ -152,7 +149,9 @@ const TimerItem = ({
           name="h"
         />
       </TimerItemWrapper>
-      <Colon />
+
+      <Colon text={'시간'} />
+
       <TimerItemWrapper>
         <TimerInput
           readOnly={isSet ? true : false}
@@ -163,18 +162,23 @@ const TimerItem = ({
           name="m"
         />
       </TimerItemWrapper>
-      <Colon />
+      <Colon text={'분'} />
 
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? onChangeS : null}
-          value={seconds}
-          type="s"
-          name="s"
-        />
-      </TimerItemWrapper>
+      {isSet && (
+        <>
+          <TimerItemWrapper>
+            <TimerInput
+              readOnly={isSet ? true : false}
+              placeholder="0"
+              onChange={!isSet ? onChangeS : null}
+              value={seconds}
+              type="s"
+              name="s"
+            />
+          </TimerItemWrapper>
+          <Colon text={'초'} />
+        </>
+      )}
     </TimeWrapper>
   ) : (
     // TODO: 리펙토링
@@ -193,8 +197,8 @@ const ColonText = styled.div`
   font-weight: 900;
 `;
 
-const Colon = () => {
-  return <ColonText>:</ColonText>;
+const Colon = ({ text }) => {
+  return <ColonText>{text}</ColonText>;
 };
 
 const Bold = styled.div`
@@ -205,8 +209,11 @@ const Bold = styled.div`
 
 const Timer = props => {
   const { days, hours, minutes, seconds, link } = props;
-
-  useEffect(() => {}, []);
+  const now = new Date();
+  now.setDate(now.getDate() + parseInt(props.value.d));
+  now.setHours(now.getHours() + parseInt(props.value.h));
+  now.setMinutes(now.getMinutes() + parseInt(props.value.m));
+  now.setSeconds(now.getSeconds() + parseInt(props.value.s));
 
   return (
     <div
@@ -214,7 +221,8 @@ const Timer = props => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%'
       }}
     >
       <TimerItem
@@ -228,25 +236,22 @@ const Timer = props => {
         second={seconds <= 0 ? 0 : seconds}
         link={link}
       />
-      <div
-        style={{
-          marginTop: 10,
-          fontSize: 18,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <Bold>{props.value.d}</Bold>
-        <div>일</div>
-        <Bold>{props.value.h}</Bold>
-        <div>시간</div>
-        <Bold>{props.value.m}</Bold>
-        <div>분</div>
-        <Bold>{props.value.s}</Bold>
-        <div>초</div>
-        <div style={{ marginLeft: 5 }}> 후 마감</div>
-      </div>
+      {!props.isSet && (
+        <div
+          style={{
+            marginTop: 10,
+            fontSize: 18,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#F5F5F7',
+            width: '100%'
+          }}
+        >
+          <Bold>{now.toLocaleString()}</Bold>
+          <div style={{ marginLeft: 5 }}> 마감</div>
+        </div>
+      )}
     </div>
   );
 };

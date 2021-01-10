@@ -1,7 +1,7 @@
+import React, { useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import { Container } from 'Components/Atoms';
-import React from 'react';
 
 const boxFade = keyframes`
  0%{
@@ -54,6 +54,7 @@ const ModalContainer = styled.div`
   width: 95%;
   height: 80%;
   max-width: 400px;
+  margin-bottom: 30px;
   padding: 15px;
   ${props => {
     if (props.isOpen) {
@@ -80,6 +81,18 @@ const ModalTop = styled.div`
 
 //TODO: 애니메이션 효과 추가해야함
 const Modal = ({ ...props }) => {
+  useEffect(() => {
+    if (props.isOpen) {
+      // document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
+      document.body.style.cssText = `overflow: hidden; height:90vh`;
+    } else {
+      document.body.style.cssText = `overflow: ''; height:'100%`;
+    }
+    return () => {
+      document.body.style.cssText = `overflow: ''; height:'100%`;
+    };
+  }, [props.isOpen]);
+
   return props.isOpen ? (
     <Container>
       <ModalWrapper>

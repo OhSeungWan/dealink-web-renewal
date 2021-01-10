@@ -46,7 +46,7 @@ export const BannerTop = ({ type }) => {
   const history = useHistory();
   const userInfo = useSelector(state => state.user);
   const onClick = () => {
-    if (userInfo.accessToken) {
+    if (userInfo.isLogin) {
       history.push('/ProductEnrollment');
       return;
     }

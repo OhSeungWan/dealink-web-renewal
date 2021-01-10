@@ -75,14 +75,14 @@ const MyLink = ({ type }) => {
 };
 
 const Header = ({ banner, front, type }) => {
-  const userInfo = useSelector(state => state.user);
+  const isLogin = useSelector(state => state.user.isLogin);
   return (
     <HeaderWrapper front={front}>
       <HeaderToTalContainer>
         {banner && <BannerTop></BannerTop>}
         <HeaderContainer>
           <HeaderText> DeaLink</HeaderText>
-          {userInfo.accessToken && <MyLink type={type}></MyLink>}
+          {isLogin && <MyLink type={type}></MyLink>}
         </HeaderContainer>
       </HeaderToTalContainer>
     </HeaderWrapper>

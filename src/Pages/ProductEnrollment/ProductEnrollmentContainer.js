@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 const ProductEnrollmentContainer = () => {
   // TODO: refectorying
   // const [data, isLoading, error, refetch] = useFetch()
+
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState();
@@ -29,7 +30,6 @@ const ProductEnrollmentContainer = () => {
   });
 
   const closeModal = () => {
-    console.log(modalData);
     setIsOpen(false);
     history.push(`/Product/seller/${userInfo.id}/${modalData.url}`, {
       before: true
@@ -43,7 +43,11 @@ const ProductEnrollmentContainer = () => {
   const onSubmit = async () => {
     let form = new FormData();
     var now = new Date();
-    console.log(value);
+    if (value.imageList.length == 0) {
+      //TODO: 이미지 없어도 등록할수 있도록 해야함
+      alert('이미지는 필수입니다.');
+      return;
+    }
     if (value.productPrice == '') {
       alert('가격은 필수입니다.');
       return;
@@ -54,16 +58,15 @@ const ProductEnrollmentContainer = () => {
     now.setSeconds(now.getSeconds() + parseInt(value.s));
     // now.setDate(now.getMonth() - 1);
 
-    console.log(now.format('yyyy-MM-dd hh:mm:ss'));
-
     value.imageList.map(item => {
       form.append('productImages', item);
     });
+
     form.append(
       'auctionInfoRequest',
       JSON.stringify({
-        startingPrice: value.productPrice, // 경매 시작가
-        currentPrice: value.productPrice, // 경매 현재가
+        startingPrice: value.productPrice.replaceAll(',', ''), // 경매 시작가
+        currentPrice: value.productPrice.replaceAll(',', ''), // 경매 현재가
         closingTime: now.format('yyyy-MM-dd HH:mm:ss'), // 경매 마감시간
         tradingMethod: '직거래', //
         chatUrl: value.kakaoUrl, // 오픈채팅 주소
@@ -79,7 +82,6 @@ const ProductEnrollmentContainer = () => {
       headers: { AUTH_TOKEN: userInfo.accessToken },
       body: form
     });
-    console.log(data);
     setModalData(data);
     setLoading(true);
     openModal();

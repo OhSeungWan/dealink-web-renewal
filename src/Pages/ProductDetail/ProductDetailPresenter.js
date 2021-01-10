@@ -18,7 +18,6 @@ import Header from 'Components/Molecules/Header';
 import React from 'react';
 
 const ProductDetailPresenter = props => {
-  console.log(props.data.auctionStatus);
   return (
     <ScreenWrapper>
       <Header

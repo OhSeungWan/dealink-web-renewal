@@ -31,7 +31,19 @@ const ProductEnrollmentPresenter = ({
         {/* <ImageBox url={panmeza} /> */}
         <ProductInfo value={value} onChange={onChange} />
         <List alignCenter={true}>
-          <Text>경매 마감일</Text>
+          <div
+            style={{
+              display: 'flex',
+              width: '90%',
+              alignItems: 'center',
+              marginBottom: 10
+            }}
+          >
+            <div>경매 마감일</div>
+            <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
+              경매 진행 시간을 설정해 주세요.
+            </div>
+          </div>
           <Timer isSet={false} value={value} onChange={onChange} />
         </List>
         <AuctionOptions value={value} onChange={onChange} />

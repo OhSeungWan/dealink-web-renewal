@@ -28,13 +28,14 @@ const ProductDetailContainer = () => {
   };
 
   const openModal = () => {
-    if (sessionStorage.getItem('userInfo')) {
-      setIsOpen(true);
-    } else {
-      alert('로그인 후 사용해주세요');
-      Cookies.set('beforePage', location.pathname);
-      hitory.push('/SignIn');
-    }
+    setIsOpen(true);
+    // if (sessionStorage.getItem('userInfo')) {
+    //   setIsOpen(true);
+    // } else {
+    //   alert('로그인 후 사용해주세요');
+    //   Cookies.set('beforePage', location.pathname);
+    //   hitory.push('/SignIn');
+    // }
   };
 
   return (

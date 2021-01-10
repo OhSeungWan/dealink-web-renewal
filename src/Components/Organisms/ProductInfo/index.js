@@ -24,10 +24,7 @@ const ProductInfo = props => {
 
     if (name == 'productPrice') {
       const price = value;
-      console.log(value);
-      price.replaceAll(',', '');
       const formattingPrice = price.replace(/[^0-9]/g, '');
-      console.log(formattingPrice.replace(/[^0-9]/g, ''));
       setProductPrice(`${comma(formattingPrice)}`);
     }
   };

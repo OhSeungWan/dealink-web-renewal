@@ -43,16 +43,18 @@ const Bidding = ({ data, userInfo, closeModal }) => {
     <List alignCenter={true}>
       <div
         style={{
+          backgroundColor: 'white',
           width: '100%',
           display: 'flex',
           justifyContent: 'flex-end',
-          alignItems: 'flex-end'
+          alignItems: 'flex-end',
+          position: 'sticky',
+          top: 0
         }}
       >
         <AiOutlineClose size={30} onClick={closeModal} />
       </div>
-      <Text>상품명</Text>
-      <Input readOnly name="name" value={data.name} />
+
       <Text>경매 마감일</Text>
       <Input readOnly name="closingTime" value={data.closingTime} />
 
@@ -64,20 +66,14 @@ const Bidding = ({ data, userInfo, closeModal }) => {
         name="startingPrice"
         value={`${comma(data.currentPrice)} 원`}
       />
-      <Text>경매 참여일</Text>
-      <Input
-        readOnly
-        name="productPrice"
-        value={new Date().format('yyyy-MM-dd hh:mm:ss')}
-      />
+
       <Text>입찰 금액</Text>
       <Input
         name="bidPrice"
         placeholder={'시작가를 입력해주세요.'}
         onChange={onChange}
-        style={{ border: '1px solid #6E44FF' }}
+        style={{ border: '1px solid #6E44FF', marginBottom: 40 }}
       />
-
       <Button
         onClick={biddingHandler}
         primary
