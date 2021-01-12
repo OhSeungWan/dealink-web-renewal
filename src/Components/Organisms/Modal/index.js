@@ -1,29 +1,30 @@
 import React, { useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
+import { AiOutlineClose } from 'react-icons/ai';
 import { Container } from 'Components/Atoms';
 
-const boxFade = keyframes`
+const boxFade = (h = 80) => keyframes`
  0%{
   height:200%
  }
  30%{
-  height:20%
+  height:${90 - h}%
  }
  100%{
-  height:20%
+  height:${100 - h}%
  }
 `;
 
-const boxFade2 = keyframes`
+const boxFade2 = (h = 80) => keyframes`
  0%{
   height:0%
  }
  30%{
-  height:80%
+  height:${h}%
  }
  100%{
-  height:80%
+  height:${h}%
  }
 `;
 
@@ -38,6 +39,7 @@ const rotation = keyframes`
 
 const ModalWrapper = styled.div`
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   position: fixed;
   top: 0;
@@ -52,14 +54,14 @@ const ModalContainer = styled.div`
   overflow: auto;
   background-color: white;
   width: 95%;
-  height: 80%;
+  overflow-x: hidden;
+  height: ${props => (props.height ? `${props.height}%` : '80%')};
   max-width: 400px;
-  margin-bottom: 30px;
-  padding: 15px;
+  padding: 0px 15px 60px 15px;
   ${props => {
     if (props.isOpen) {
       return css`
-        animation: ${boxFade2} 1s 0s linear alternate;
+        animation: ${props => boxFade2(props.height)} 1s 0s linear alternate;
       `;
     }
   }}
@@ -69,18 +71,18 @@ const Progress = styled.div`
 `;
 
 const ModalTop = styled.div`
-  height: 20%;
+  height: ${props => (props.height ? `${100 - props.height}%` : '20%')};
   ${props => {
     if (props.isOpen) {
       return css`
-        animation: ${boxFade} 1s 0s linear alternate;
+        animation: ${props => boxFade(props.height)} 1s 0s linear alternate;
       `;
     }
-  }}
+  }};
 `;
 
 //TODO: 애니메이션 효과 추가해야함
-const Modal = ({ ...props }) => {
+const Modal = props => {
   useEffect(() => {
     if (props.isOpen) {
       // document.body.style.cssText = `position: fixed; top: -${window.scrollY}px`;
@@ -96,8 +98,26 @@ const Modal = ({ ...props }) => {
   return props.isOpen ? (
     <Container>
       <ModalWrapper>
-        <ModalTop isOpen={props.isOpen}></ModalTop>
-        <ModalContainer isOpen={props.isOpen}>{props.children}</ModalContainer>
+        <ModalTop isOpen={props.isOpen} height={props.height}></ModalTop>
+        <ModalContainer isOpen={props.isOpen} height={props.height}>
+          <div
+            style={{
+              backgroundColor: 'white',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-end',
+              position: 'sticky',
+              top: 0,
+              fontSize: 20,
+              width: '95%',
+              padding: 20
+            }}
+          >
+            <div style={{ width: '100%' }}>{props.title}</div>
+            <AiOutlineClose size={30} onClick={props.closeModal} />
+          </div>
+          {props.children}
+        </ModalContainer>
       </ModalWrapper>
     </Container>
   ) : null;

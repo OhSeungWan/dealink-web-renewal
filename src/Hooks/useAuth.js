@@ -10,12 +10,15 @@ export const useAuth = type => {
   const dispatch = useDispatch();
 
   const [auth, setAuth] = useState(isLogin);
+  const [complete, setComplete] = useState(false);
+
   // 로그인 유무 검사
   const certificate = async () => {
     // 세션 스토리지에서 엑세스 토큰 정보 가져옴
     const accessToken = sessionStorage.getItem('accessToken');
     console.log(`accessToken : ${accessToken}`);
     // 엑세스 토큰 유효성 검사
+    setComplete(false);
     const isAuth = await accessTokenValidate(accessToken);
     console.log(`isAuth : ${isAuth}`);
     if (isAuth) {
@@ -24,6 +27,8 @@ export const useAuth = type => {
       dispatch(fetchUser({ id: id, accessToken: accessToken }));
     }
     setAuth(isAuth);
+    setComplete(true);
+
     return isAuth;
   };
 
@@ -50,5 +55,5 @@ export const useAuth = type => {
     certificate();
   }, []);
 
-  return [auth, certificate];
+  return [auth, certificate, complete];
 };

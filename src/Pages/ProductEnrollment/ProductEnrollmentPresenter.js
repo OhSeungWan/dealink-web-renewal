@@ -28,7 +28,7 @@ const ProductEnrollmentPresenter = ({
     <ScreenWrapper>
       <Header />
       <Container>
-        {/* <ImageBox url={panmeza} /> */}
+        <ImageBox url={panmeza} />
         <ProductInfo value={value} onChange={onChange} />
         <List alignCenter={true}>
           <div
@@ -47,7 +47,7 @@ const ProductEnrollmentPresenter = ({
           <Timer isSet={false} value={value} onChange={onChange} />
         </List>
         <AuctionOptions value={value} onChange={onChange} />
-        <AccountInfo value={value} onChange={onChange} />
+        {/* <AccountInfo value={value} onChange={onChange} /> */}
         <Button
           onClick={onSubmit}
           primary
@@ -56,8 +56,7 @@ const ProductEnrollmentPresenter = ({
         >
           상품등록
         </Button>
-        {/* <Loading isOpen={true}></Loading> */}
-        <Modal isOpen={isOpen}>
+        <Modal isOpen={isOpen} closeModal={closeModal}>
           {data && (
             <div
               style={{
@@ -68,16 +67,6 @@ const ProductEnrollmentPresenter = ({
                 alignItems: 'center'
               }}
             >
-              <div
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  alignItems: 'flex-end'
-                }}
-              >
-                <AiOutlineClose size={30} onClick={closeModal} />
-              </div>
               <div style={{ fontSize: 30, color: '#6E44FF', margin: 20 }}>
                 (ஐ╹◡╹)ノ
               </div>

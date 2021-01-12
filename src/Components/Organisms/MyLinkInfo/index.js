@@ -4,6 +4,7 @@ import { Border } from 'Components/Atoms';
 import { List } from 'Components/Molecules';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const MyLinkWrapper = styled.div`
@@ -51,7 +52,7 @@ const Name = styled.div`
   font-size: 18px;
 `;
 
-const ConfirmBtn = styled.a`
+const ConfirmBtn = styled.button`
   flex: 1;
   width: 100%;
   border: none;
@@ -74,15 +75,22 @@ const Status = ({ status }) => {
   );
 };
 const MyLink = ({ data }) => {
-  console.log(`url ${data.url}`);
-
+  const history = useHistory();
+  const userInfo = useSelector(state => state.user);
+  const link = data.url.substring(data.url.lastIndexOf('/'));
+  const onClick = e => {
+    e.preventDefault();
+    history.push(`/Product/seller/${userInfo.id}${link}`, {
+      before: true
+    });
+  };
   return (
     <MyLinkWrapper>
       <Status
         status={data.auctionStatus ? data.auctionStatus : data.bidStatus}
       />
       <Name>{data.productName}</Name>
-      <ConfirmBtn href={data.url.replace('http://', '')}>링크확인</ConfirmBtn>
+      <ConfirmBtn onClick={onClick}>링크확인</ConfirmBtn>
       <Border height="8px" />
     </MyLinkWrapper>
   );

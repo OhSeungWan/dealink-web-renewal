@@ -1,8 +1,8 @@
 import { Border, Button, Input, Text } from 'Components/Atoms';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { AiOutlineClose } from 'react-icons/ai';
-import Date from 'Utils/date-utils';
 import { List } from 'Components/Molecules';
+import { PrivateContents } from 'Routers/MainRouter';
 import React from 'react';
 import { auctionApi } from 'Apis/auctionApi';
 import { comma } from 'Utils/comma-utils';
@@ -18,8 +18,6 @@ const Bidding = ({ data, userInfo, closeModal }) => {
   };
 
   const biddingHandler = async () => {
-    console.log(value.bidPrice);
-    console.log(data.currentPrice);
     if (parseInt(value.bidPrice) <= parseInt(data.currentPrice)) {
       alert('입찰가는 현재가보다 작거나 같을수 없습니다.');
       return;
@@ -41,20 +39,6 @@ const Bidding = ({ data, userInfo, closeModal }) => {
 
   return (
     <List alignCenter={true}>
-      <div
-        style={{
-          backgroundColor: 'white',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'flex-end',
-          position: 'sticky',
-          top: 0
-        }}
-      >
-        <AiOutlineClose size={30} onClick={closeModal} />
-      </div>
-
       <Text>경매 마감일</Text>
       <Input readOnly name="closingTime" value={data.closingTime} />
 
@@ -70,7 +54,7 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       <Text>입찰 금액</Text>
       <Input
         name="bidPrice"
-        placeholder={'시작가를 입력해주세요.'}
+        placeholder={'입찰가를 입력해주세요.'}
         onChange={onChange}
         style={{ border: '1px solid #6E44FF', marginBottom: 40 }}
       />
@@ -78,7 +62,7 @@ const Bidding = ({ data, userInfo, closeModal }) => {
         onClick={biddingHandler}
         primary
         common
-        style={{ position: 'fixed', bottom: 5 }}
+        style={{ position: 'sticky', bottom: 5 }}
       >
         입찰하기
       </Button>

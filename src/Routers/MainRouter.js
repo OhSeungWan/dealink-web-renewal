@@ -1,5 +1,7 @@
+import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
+import { Loading } from 'Components/Organisms/Modal';
 import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
@@ -16,9 +18,9 @@ const MainRouter = () => {
         path="/Product/:type/:userIndex/:url"
         component={ProductDetail}
       ></Route>
-      <Route path="/ProductEnrollment">
+      <PrivateRoute path="/ProductEnrollment">
         <ProductEnrollment />
-      </Route>
+      </PrivateRoute>
       <PrivateRoute path="/MyLink">
         <MyLink />
       </PrivateRoute>
@@ -26,10 +28,11 @@ const MainRouter = () => {
   );
 };
 
-const PrivateRoute = ({ children, ...rest }) => {
-  const [isAuth] = useAuth();
+export const PrivateRoute = ({ children, ...rest }) => {
+  const [isAuth, { complete }] = useAuth();
   console.log('privateRouter');
-  return (
+  console.log(isAuth);
+  return !complete ? (
     <Route
       {...rest}
       render={() =>
@@ -44,6 +47,39 @@ const PrivateRoute = ({ children, ...rest }) => {
         )
       }
     />
+  ) : (
+    <ScreenWrapper>
+      <Container>
+        <Loading isOpen={true}></Loading>
+      </Container>
+    </ScreenWrapper>
+  );
+};
+
+export const PrivateContents = ({ children, ...rest }) => {
+  const [isAuth, { complete }] = useAuth();
+  return !complete ? (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        isAuth ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/SignIn',
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  ) : (
+    <ScreenWrapper>
+      <Container>
+        <Loading isOpen={true}></Loading>
+      </Container>
+    </ScreenWrapper>
   );
 };
 

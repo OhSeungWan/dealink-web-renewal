@@ -44,13 +44,8 @@ const TitleText = styled.div`
 
 export const BannerTop = ({ type }) => {
   const history = useHistory();
-  const userInfo = useSelector(state => state.user);
   const onClick = () => {
-    if (userInfo.isLogin) {
-      history.push('/ProductEnrollment');
-      return;
-    }
-    history.push('/SignIn');
+    history.push('/ProductEnrollment');
   };
   return (
     <Container onClick={onClick}>

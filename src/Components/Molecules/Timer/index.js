@@ -1,8 +1,45 @@
-import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { FadeBox } from 'Components/Organisms/Modal';
+import Picker from 'react-scrollable-picker';
+import styled from 'styled-components';
+
+const generateNumberArray = (begin, end) => {
+  let array = [];
+  for (let i = begin; i <= end; i++) {
+    const value = (i < 10 ? '0' : '') + i;
+    array.push({
+      value: (i < 10 ? '0' : '') + i,
+      label: (i < 10 ? '0' : '') + i
+    });
+  }
+  return array;
+};
+
+const TimePicker = () => {
+  const [valueGroups, setValueGroups] = useState({
+    d: 0,
+    h: 0,
+    m: 0,
+    s: 0
+  });
+
+  const [optionGroups, setOptionGroups] = useState({
+    d: generateNumberArray(0, 50),
+    h: generateNumberArray(0, 50),
+    m: generateNumberArray(0, 50),
+    s: generateNumberArray(0, 50)
+  });
+
+  return (
+    <Picker
+      optionGroups={optionGroups}
+      valueGroups={valueGroups}
+      onChange={() => {
+        return;
+      }}
+    />
+  );
+};
 
 const TimerInput = styled.input.attrs(props => {
   if (props.type == 'd') {
@@ -16,11 +53,13 @@ const TimerInput = styled.input.attrs(props => {
   }
 })`
   text-align: center;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 900;
   border: 1px solid #eaeaea;
   border-radius: 10px;
-  margin: 0 5 0 5px;
+  width: 100%;
+  padding: 5px;
+  max-width: 25px;
 `;
 
 const TimeWrapper = styled.div`
@@ -46,26 +85,41 @@ const TimerItem = ({
   minute = 59,
   second = 59,
   link,
-  onChange
+  onChange,
+  fetchData,
+  auctionStatus
 }) => {
-  const [days, setDays] = useState(isSet ? day : '');
-  const [hours, setHours] = useState(isSet ? hour : '');
-  const [minutes, setMinutes] = useState(isSet ? minute : '');
-  const [seconds, setSeconds] = useState(isSet ? second : '');
-  const [complete, setComplete] = useState(false);
-  // console.log(day);
-  // console.log(hours);
-  // console.log(minutes);
-  // console.log(seconds);
+  const [time, setTime] = useState({
+    d: isSet ? day : '',
+    h: isSet ? hour : '',
+    m: isSet ? minute : '',
+    s: isSet ? second : ''
+  });
+
+  const timeChangeHandler = useCallback(
+    e => {
+      e.preventDefault();
+      const { name, value } = e.target;
+      console.log(name, value);
+      onChange(name, value);
+      setTime(time => ({ ...time, [name]: value }));
+    },
+    [onChange]
+  );
+
+  const ChageTime = useCallback(payload => {
+    setTime(time => ({ ...time, [payload.key]: payload.value }));
+  });
 
   useEffect(() => {
+    if (auctionStatus) return;
     if (isSet) {
       const countdown = setInterval(async () => {
         if (
-          parseInt(days) <= 0 &&
-          parseInt(hour) <= 0 &&
-          parseInt(minutes) <= 0 &&
-          parseInt(seconds) <= 0
+          parseInt(time.d) <= 0 &&
+          parseInt(time.h) <= 0 &&
+          parseInt(time.m) <= 0 &&
+          parseInt(time.s) <= 0
         ) {
           clearInterval(countdown);
           await fetch(
@@ -75,65 +129,41 @@ const TimerItem = ({
               method: 'GET'
             }
           );
-          setComplete(true);
-          return;
+          fetchData();
+          return () => clearInterval(countdown);
         }
-        if (parseInt(seconds) > 0) {
-          setSeconds(parseInt(seconds) - 1);
+        if (parseInt(time.s) > 0) {
+          ChageTime({ key: 's', value: parseInt(time.s) - 1 });
         } else {
-          if (parseInt(minutes) > 0) {
-            setMinutes(parseInt(minutes) - 1);
+          if (parseInt(time.m) > 0) {
+            ChageTime({ key: 'm', value: parseInt(time.m) - 1 });
           } else {
-            if (parseInt(hour) > 0) {
-              setDays(parseInt(days) - 1);
+            if (parseInt(time.h) > 0) {
+              ChageTime({ key: 'd', value: parseInt(time.d) - 1 });
             } else {
-              setHours(24);
+              ChageTime({ key: 'h', value: 24 });
             }
-            setMinutes(59);
+            ChageTime({ key: 'm', value: 59 });
           }
-          setSeconds(59);
+          ChageTime({ key: 's', value: 59 });
         }
       }, 1000);
 
       return () => clearInterval(countdown);
     }
-  }, [days, hours, minutes, seconds]);
+  }, [time]);
 
   //TODO: use useCallback()
   //TODO: refectoring
-  const onChangeD = e => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    onChange(name, value);
-    setDays(e.target.value);
-  };
-  const onChangeH = e => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    onChange(name, value);
-    setHours(e.target.value);
-  };
-  const onChangeM = e => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    onChange(name, value);
-    setMinutes(e.target.value);
-  };
-  const onChangeS = e => {
-    e.preventDefault();
-    const { name, value } = e.target;
-    onChange(name, value);
-    setSeconds(e.target.value);
-  };
 
-  return !complete ? (
+  return (
     <TimeWrapper>
       <TimerItemWrapper>
         <TimerInput
           readOnly={isSet ? true : false}
           placeholder="0"
-          onChange={!isSet ? onChangeD : null}
-          value={days}
+          onChange={!isSet ? timeChangeHandler : null}
+          value={time.d}
           type="d"
           name="d"
         />
@@ -143,8 +173,8 @@ const TimerItem = ({
         <TimerInput
           readOnly={isSet ? true : false}
           placeholder="0"
-          onChange={!isSet ? onChangeH : null}
-          value={hours}
+          onChange={!isSet ? timeChangeHandler : null}
+          value={time.h}
           type="h"
           name="h"
         />
@@ -156,8 +186,8 @@ const TimerItem = ({
         <TimerInput
           readOnly={isSet ? true : false}
           placeholder="0"
-          onChange={!isSet ? onChangeM : null}
-          value={minutes}
+          onChange={!isSet ? timeChangeHandler : null}
+          value={time.m}
           type="m"
           name="m"
         />
@@ -170,8 +200,8 @@ const TimerItem = ({
             <TimerInput
               readOnly={isSet ? true : false}
               placeholder="0"
-              onChange={!isSet ? onChangeS : null}
-              value={seconds}
+              onChange={!isSet ? timeChangeHandler : null}
+              value={time.s}
               type="s"
               name="s"
             />
@@ -180,21 +210,13 @@ const TimerItem = ({
         </>
       )}
     </TimeWrapper>
-  ) : (
-    // TODO: 리펙토링
-    <ScreenWrapper>
-      <Container>
-        <FadeBox isOpen={true}></FadeBox>
-      </Container>
-    </ScreenWrapper>
   );
 };
 
 const ColonText = styled.div`
-  padding: 5px;
+  padding: 2px;
   text-align: center;
-  font-size: 20px;
-  font-weight: 900;
+  font-size: 18px;
 `;
 
 const Colon = ({ text }) => {
@@ -202,18 +224,30 @@ const Colon = ({ text }) => {
 };
 
 const Bold = styled.div`
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
   padding: 5px;
 `;
 
 const Timer = props => {
   const { days, hours, minutes, seconds, link } = props;
-  const now = new Date();
-  now.setDate(now.getDate() + parseInt(props.value.d));
-  now.setHours(now.getHours() + parseInt(props.value.h));
-  now.setMinutes(now.getMinutes() + parseInt(props.value.m));
-  now.setSeconds(now.getSeconds() + parseInt(props.value.s));
+  let endDate;
+  console.log(days, hours, minutes, seconds);
+  if (!props.isSet) {
+    const now = new Date();
+
+    now.setDate(now.getDate() + parseInt(props.value.d));
+    now.setHours(now.getHours() + parseInt(props.value.h));
+    now.setMinutes(now.getMinutes() + parseInt(props.value.m));
+    now.setSeconds(now.getSeconds() + parseInt(props.value.s));
+    let nowString = now.toLocaleString();
+    endDate = nowString.replace(':', '시').replace(':', '분분');
+    if (endDate == 'Invalid Date') {
+      endDate = '시간을 설정해 주세요.';
+    } else {
+      endDate = endDate.substring(0, endDate.lastIndexOf('분')) + ' 마감';
+    }
+  }
 
   return (
     <div
@@ -226,6 +260,8 @@ const Timer = props => {
       }}
     >
       <TimerItem
+        auctionStatus={props.auctionStatus}
+        fetchData={props.fetchData}
         isSet={props.isSet ? true : false}
         value={props.value}
         onChange={props.onChange}
@@ -236,11 +272,24 @@ const Timer = props => {
         second={seconds <= 0 ? 0 : seconds}
         link={link}
       />
+      {/* <div
+        style={{ position: 'sticky', top: 0 }}
+        onTouchStart={() => {
+          document.body.style.cssText = `overflow: hidden; height:100%; touch-action: none; `;
+        }}
+        onTouchEnd={() => {
+          setTimeout(() => {
+            document.body.style.cssText = `overflow: auto; height:''; touch-action: ''; `;
+          }, 1000);
+        }}
+      >
+        <TimePicker />
+      </div> */}
       {!props.isSet && (
         <div
           style={{
             marginTop: 10,
-            fontSize: 18,
+            fontSize: 16,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
@@ -248,8 +297,7 @@ const Timer = props => {
             width: '100%'
           }}
         >
-          <Bold>{now.toLocaleString()}</Bold>
-          <div style={{ marginLeft: 5 }}> 마감</div>
+          <Bold>{endDate}</Bold>
         </div>
       )}
     </div>

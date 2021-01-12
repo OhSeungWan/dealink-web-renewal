@@ -14,7 +14,7 @@ const HeaderText = styled.div`
   color: black;
 `;
 const HeaderWrapper = styled.div`
-  z-index: ${props => (props.front ? '10000' : '0')};
+  z-index: ${props => (props.front ? '9999' : '1')};
   position: fixed;
   flex: 1;
   top: 0;

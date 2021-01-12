@@ -36,9 +36,9 @@ const AuctionOptions = props => {
           alignItems: 'center'
         }}
       >
-        <div>배송 방식</div>
+        <div>거래 방식</div>
         <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
-          중복 선택 가능
+          다중 선택 가능
         </div>
       </div>
 
@@ -59,7 +59,7 @@ const AuctionOptions = props => {
         />
       </List>
 
-      <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
+      {/* <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
         <div>배송 방식</div>
         <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
           중복 선택 불가
@@ -78,7 +78,7 @@ const AuctionOptions = props => {
           onClick={CheckPaymentHandler}
           checked={paymentMethod}
         />
-      </List>
+      </List> */}
       <Border height="8px" />
     </List>
   );

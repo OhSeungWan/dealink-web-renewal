@@ -59,11 +59,9 @@ const HistoryList = ({ link, data, isLoading }) => {
   return (
     isLoading && (
       <HistoryWrapper>
-        {data
-          .map((item, index) => {
-            return <HistoryInfo item={item} key={index} />;
-          })
-          .reverse()}
+        {data.map((item, index) => {
+          return <HistoryInfo item={item} key={index} />;
+        })}
       </HistoryWrapper>
     )
   );
@@ -92,14 +90,6 @@ const BidHistory = ({ link }) => {
   const closeModal = () => {
     setIsOpen(false);
   };
-  //TODO: 누적입찰수 리셋하는 타이머
-  // useEffect(() => {
-  //   const countdown = setInterval(async () => {
-  //     refetch(true);
-  //   }, 3000);
-
-  //   return () => clearInterval(countdown);
-  // }, []);
 
   return (
     isLoading && (
@@ -115,17 +105,14 @@ const BidHistory = ({ link }) => {
         {/* TODO: 수정해야함  */}
         {isOpen && (
           <ScreenWrapper>
-            <Container>
-              <Modal isOpen={isOpen}>
-                <div
-                  style={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                  <div>경매기록 </div>
-                  <AiOutlineClose size={20} onClick={closeModal} />
-                </div>
-                <HistoryList link={link} data={data} isLoading={isLoading} />
-              </Modal>
-            </Container>
+            <Modal
+              isOpen={isOpen}
+              closeModal={closeModal}
+              title={'경매기록'}
+              height={60}
+            >
+              <HistoryList link={link} data={data} isLoading={isLoading} />
+            </Modal>
           </ScreenWrapper>
         )}
       </>

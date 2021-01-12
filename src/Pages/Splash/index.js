@@ -45,11 +45,11 @@ const SplashImgWrpper = styled.div`
 const Splash = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+  const [code, setCode] = useState(
+    new URLSearchParams(window.location.search).get('code')
+  );
 
   const initUserInfo = () => {
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-
     if (!code) return; // 인가 코드 없다면 리턴.
     //인가코드가 있다면 fetchUserByCode(code)
     dispatch(fetchUserByCode(code));
@@ -57,15 +57,20 @@ const Splash = () => {
 
   useEffect(() => {
     initUserInfo();
-    setTimeout(() => {
-      if (Cookies.get('beforePage')) {
-        const beforePage = Cookies.get('beforePage');
-        Cookies.remove('beforePage');
-        history.push(beforePage);
-      } else {
-        history.push('/ProductEnrollment');
-      }
-    }, 3000);
+    if (code) {
+      setTimeout(() => {
+        if (Cookies.get('beforePage')) {
+          console.log(Cookies.get('beforePage'));
+          const beforePage = Cookies.get('beforePage');
+          Cookies.remove('beforePage');
+          history.push(beforePage);
+        } else {
+          history.push('/ProductEnrollment');
+        }
+      }, 3000);
+    } else {
+      history.push('/ProductEnrollment');
+    }
   }, []);
   return (
     <SplashWrapper>

@@ -71,6 +71,7 @@ const ImageBox = ({ url, type, onChange }) => {
         <div>0/10</div>
         <form name="file_up_test">
           <input
+            accept="image/*"
             type="file"
             style={{ display: 'none' }}
             multiple={true}

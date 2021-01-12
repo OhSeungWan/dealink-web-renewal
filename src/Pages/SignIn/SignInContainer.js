@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 import SignInPresenter from 'Pages/SignIn/SignInPresenter';
 import { fetchUserByCode } from 'Store/Slice/userSlice';
-import { useHistory } from 'react-router-dom';
 
 const SignInContainer = () => {
   const userInfo = useSelector(state => state.user);
-
+  const location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
   const { Kakao } = window;
@@ -22,7 +22,13 @@ const SignInContainer = () => {
     });
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (location.state?.from?.pathname) {
+      Cookies.set('beforePage', location.state.from.pathname);
+      console.log(Cookies.get('beforePage'));
+    }
+    console.log(location.state);
+  }, []);
   return <SignInPresenter SignUp={SignUp} userInfo={userInfo} />;
 };
 
