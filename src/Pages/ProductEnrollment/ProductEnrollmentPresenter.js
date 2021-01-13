@@ -22,14 +22,24 @@ const ProductEnrollmentPresenter = ({
   value,
   isOpen,
   data,
-  loading
+  loading,
+  isTemp,
+  valueValidate,
+  templink,
+  tempdata
 }) => {
   return loading ? (
     <ScreenWrapper>
       <Header />
       <Container>
         <ImageBox url={panmeza} />
-        <ProductInfo value={value} onChange={onChange} />
+        <ProductInfo
+          value={value}
+          onChange={onChange}
+          valueValidate={valueValidate}
+          tempdata={tempdata}
+          templink={templink}
+        />
         <List alignCenter={true}>
           <div
             style={{
@@ -52,9 +62,9 @@ const ProductEnrollmentPresenter = ({
           onClick={onSubmit}
           primary
           common
-          style={{ position: 'relative', bottom: 5 }}
+          style={{ position: 'fixed', bottom: 5 }}
         >
-          상품등록
+          {isTemp ? '임시저장' : '상품등록'}
         </Button>
         <Modal isOpen={isOpen} closeModal={closeModal}>
           {data && (
@@ -71,37 +81,48 @@ const ProductEnrollmentPresenter = ({
                 (ஐ╹◡╹)ノ
               </div>
               <div style={{ fontSize: 30, color: '#6E44FF' }}>
-                상품업로드 완료
+                {data.auctionStatus == 'TEMPORARY_SAVE'
+                  ? '임시저장 완료'
+                  : '상품업로드 완료'}
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  padding: 20
-                }}
-              >
-                <div style={{ fontWeight: 700, flex: 1 }}>상품명</div>
-                <div style={{ flex: 7, textAlign: 'center' }}>
-                  {value.productTitle}
-                </div>
-              </div>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  width: '100%',
-                  padding: 20
-                }}
-              >
-                <Share
-                  url={`http://www.dealink.co.kr/Product/seller/0/${data.url}`}
-                  // url={`http://192.168.0.102:8080/Product/seller/0/${data.url}`}
-                  data={data}
-                />
-              </div>
+              {data.auctionStatus != 'TEMPORARY_SAVE' && (
+                <>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      padding: 20
+                    }}
+                  >
+                    <div style={{ fontWeight: 700, flex: 1, minWidth: 50 }}>
+                      상품명
+                    </div>
+                    <div style={{ flex: 7, textAlign: 'center' }}>
+                      {value.productTitle}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                      padding: 20
+                    }}
+                  >
+                    <Share
+                      url={`http://www.dealink.co.kr/Product/seller/0/${data.url}`}
+                      // url={`http://192.168.0.102:8080/Product/seller/0/${data.url}`}
+                      data={data}
+                    />
+                  </div>
+                </>
+              )}
               <div style={{ color: '#6E44FF' }}>
-                생성된 링크들은 내링크 관리'에서 확인할 수 있습니다.
+                {data.auctionStatus == 'TEMPORARY_SAVE'
+                  ? '임시저장된 링크'
+                  : '생성된 링크'}
+                들은 '내링크 관리'에서 확인할 수 있습니다.
               </div>
             </div>
           )}

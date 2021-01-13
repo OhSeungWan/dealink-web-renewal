@@ -8,4 +8,5 @@ export const Input = styled.input`
   flex: 1;
   width: 80%;
   text-align: center;
+  font-size: 16px;
 `;

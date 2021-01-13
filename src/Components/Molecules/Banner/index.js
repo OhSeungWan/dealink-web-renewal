@@ -1,5 +1,6 @@
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import React from 'react';
+import banerTop from 'assets/img/banerTop.png';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -20,7 +21,6 @@ const RegisterWrapper = styled.div`
 
 const Container = styled.div`
   background-color: #f5f5f7;
-  padding: 12px;
   display: flex;
   width: 100%;
   max-width: 400px;
@@ -50,14 +50,9 @@ export const BannerTop = ({ type }) => {
   return (
     <Container onClick={onClick}>
       <Wrapper style={{ flex: 1 }}>
-        <TitleText>이 구역 영업왕 되기</TitleText>
-        <BanerText>이것만큼은 잘 팔 것 같다는 사람</BanerText>
+        <img src={banerTop} width="100%" height="100%"></img>
       </Wrapper>
-      <RegisterWrapper style={{ flexDirection: 'row' }}>
-        {type == 'mylink' ? null : <BanerText>상품 등록하기</BanerText>}
-
-        <IoIosArrowDroprightCircle size={25} color="#6E44FF" />
-      </RegisterWrapper>
+      <RegisterWrapper style={{ flexDirection: 'row' }}></RegisterWrapper>
     </Container>
   );
 };

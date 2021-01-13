@@ -43,13 +43,13 @@ const TimePicker = () => {
 
 const TimerInput = styled.input.attrs(props => {
   if (props.type == 'd') {
-    return { type: 'number', max: '100', min: '0' };
+    return { type: 'tel', max: '100', min: '0' };
   } else if (props.type == 'h') {
-    return { type: 'number', max: '24', min: '0' };
+    return { type: 'tel', max: '24', min: '0' };
   } else if (props.type == 'm') {
-    return { type: 'number', max: '60', min: '0' };
+    return { type: 'tel', max: '60', min: '0' };
   } else if (props.type == 's') {
-    return { type: 'number', max: '60', min: '0' };
+    return { type: 'tel', max: '60', min: '0' };
   }
 })`
   text-align: center;
@@ -59,7 +59,7 @@ const TimerInput = styled.input.attrs(props => {
   border-radius: 10px;
   width: 100%;
   padding: 5px;
-  max-width: 25px;
+  max-width: 40px;
 `;
 
 const TimeWrapper = styled.div`
@@ -100,9 +100,39 @@ const TimerItem = ({
     e => {
       e.preventDefault();
       const { name, value } = e.target;
-      console.log(name, value);
-      onChange(name, value);
-      setTime(time => ({ ...time, [name]: value }));
+      const Value = value.replace(/[^0-9]/g, '');
+      console.log(name, Value);
+      if (name == 'd') {
+        if (parseInt(Value) > 50) {
+          alert('50일이 최대입니다.');
+          onChange(name, 50);
+          setTime(time => ({ ...time, [name]: 50 }));
+          return;
+        }
+      } else if (name == 'h') {
+        if (parseInt(Value) > 50) {
+          alert('24시간이 최대입니다.');
+          onChange(name, 24);
+          setTime(time => ({ ...time, [name]: 24 }));
+          return;
+        }
+      } else if (name == 'm') {
+        if (parseInt(Value) > 50) {
+          alert('60분이 최대입니다.');
+          onChange(name, 60);
+          setTime(time => ({ ...time, [name]: 60 }));
+          return;
+        }
+      } else if (name == 's') {
+        if (parseInt(Value) > 50) {
+          alert('60초가 최대입니다.');
+          onChange(name, 60);
+          setTime(time => ({ ...time, [name]: 60 }));
+          return;
+        }
+      }
+      onChange(name, Value);
+      setTime(time => ({ ...time, [name]: Value }));
     },
     [onChange]
   );
@@ -214,7 +244,7 @@ const TimerItem = ({
 };
 
 const ColonText = styled.div`
-  padding: 2px;
+  margin: 10px;
   text-align: center;
   font-size: 18px;
 `;

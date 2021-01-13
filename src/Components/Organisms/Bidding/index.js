@@ -1,20 +1,23 @@
 import { Border, Button, Input, Text } from 'Components/Atoms';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import React, { useState } from 'react';
 
 import { List } from 'Components/Molecules';
-import { PrivateContents } from 'Routers/MainRouter';
-import React from 'react';
 import { auctionApi } from 'Apis/auctionApi';
 import { comma } from 'Utils/comma-utils';
 import { useInput } from 'Hooks/useInput';
 
 const Bidding = ({ data, userInfo, closeModal }) => {
   const [value, setValue] = useInput({});
+  const [productPrice, setProductPrice] = useState('');
+  console.log(value);
 
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
-    setValue(name, value);
+    const price = value;
+    const formattingPrice = price.replace(/[^0-9]/g, '');
+    setValue(name, formattingPrice);
+    setProductPrice(`${comma(formattingPrice)}`);
   };
 
   const biddingHandler = async () => {
@@ -45,19 +48,62 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       <Border height="8px" />
 
       <Text>현재가</Text>
-      <Input
-        readOnly
-        name="startingPrice"
-        value={`${comma(data.currentPrice)} 원`}
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '90%',
+          borderRadius: 5,
+          border: `1px solid #EAEAEA`,
+          marginBottom: 20
+        }}
+      >
+        <Input
+          readOnly
+          style={{ textAlign: 'center', flex: 6, border: 'none', margin: 0 }}
+          value={`${comma(data.currentPrice)}`}
+          name="startingPrice"
+        ></Input>
+        <div
+          style={{
+            flex: 1,
+            textAlign: 'center'
+          }}
+        >
+          원
+        </div>
+      </div>
 
       <Text>입찰 금액</Text>
-      <Input
-        name="bidPrice"
-        placeholder={'입찰가를 입력해주세요.'}
-        onChange={onChange}
-        style={{ border: '1px solid #6E44FF', marginBottom: 40 }}
-      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '90%',
+          borderRadius: 5,
+          border: `1px solid #6E44FF`,
+          marginBottom: 40
+        }}
+      >
+        <Input
+          style={{ textAlign: 'center', flex: 6, border: 'none', margin: 0 }}
+          value={comma(productPrice)}
+          name="bidPrice"
+          placeholder={`${comma(data.currentPrice)}원 부터 입찰 가능합니다`}
+          onChange={onChange}
+        ></Input>
+        <div
+          style={{
+            flex: 1,
+            textAlign: 'center'
+          }}
+        >
+          원
+        </div>
+      </div>
+
       <Button
         onClick={biddingHandler}
         primary

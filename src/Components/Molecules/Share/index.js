@@ -12,6 +12,7 @@ import btnFaceBook from 'assets/img/btnFaceBook.png';
 import btnKakao from 'assets/img/btnKakao.png';
 import btnLine from 'assets/img/btnLine.png';
 import btnTwiter from 'assets/img/btnTwiter.png';
+import { comma } from 'Utils/comma-utils';
 import styled from 'styled-components';
 
 const ShareImageContainer = styled.div`
@@ -40,7 +41,7 @@ const Container = styled.div`
 
 const Text = styled.div`
   font-size: 25px;
-  font-weight: 700;s
+  font-weight: 700;
   padding: 0px 30px 0px 30px;
 `;
 
@@ -54,7 +55,7 @@ const Share = ({ url, data }) => {
     Kakao.Link.sendDefault({
       objectType: 'commerce',
       content: {
-        title: `시작가:${data.startingPrice}\n${data.description}`,
+        title: `${data.description}`,
         imageUrl: data.imageUrls[0],
         link: {
           mobileWebUrl: url,
@@ -62,7 +63,7 @@ const Share = ({ url, data }) => {
         }
       },
       commerce: {
-        productName: `${data.name}\n현재입찰가:${data.currentPrice}원 `,
+        productName: `${data.name}\n(시작가:${comma(data.currentPrice)}원) `,
         regularPrice: parseInt(data.currentPrice)
       },
       buttons: [

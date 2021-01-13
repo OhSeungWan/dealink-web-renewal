@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const MyLinkWrapper = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -74,16 +73,24 @@ const Status = ({ status }) => {
     </StatusWrapper>
   );
 };
-const MyLink = ({ data }) => {
+const MyLink = ({ data, selected }) => {
   const history = useHistory();
   const userInfo = useSelector(state => state.user);
   const link = data.url.substring(data.url.lastIndexOf('/'));
+
   const onClick = e => {
     e.preventDefault();
-    history.push(`/Product/seller/${userInfo.id}${link}`, {
-      before: true
-    });
+    if (selected == 'temporary') {
+      history.push(`/ProductEnrollment`, {
+        templink: link
+      });
+    } else {
+      history.push(`/Product/seller/${userInfo.id}${link}`, {
+        before: true
+      });
+    }
   };
+
   return (
     <MyLinkWrapper>
       <Status
@@ -96,11 +103,11 @@ const MyLink = ({ data }) => {
   );
 };
 
-const MyLinkList = ({ linklist }) => {
+const MyLinkList = ({ linklist, selected }) => {
   return linklist && linklist.length ? (
     <List>
       {linklist.map(item => {
-        return <MyLink data={item}></MyLink>;
+        return <MyLink data={item} selected={selected}></MyLink>;
       })}
     </List>
   ) : (
@@ -161,7 +168,7 @@ const MyLinkInfo = () => {
   const selectList = [
     { name: '입찰', status: 'purchase' },
     { name: '판매', status: 'sale' },
-    { name: '임시저장', status: 'temp' }
+    { name: '임시저장', status: 'temporary' }
   ];
   const [selected, setSelected] = useState(selectList[0].status);
   const [data, isLoading, error, refetch] = useFetch(
@@ -181,23 +188,14 @@ const MyLinkInfo = () => {
     refetch(true);
   };
 
-  return selected == 'temp' ? (
+  return (
     <Container>
       <MyLinkSelectBtn
         selectList={selectList}
         selected={selected}
         onSelected={onSelected}
       />
-      <div>준비중</div>
-    </Container>
-  ) : (
-    <Container>
-      <MyLinkSelectBtn
-        selectList={selectList}
-        selected={selected}
-        onSelected={onSelected}
-      />
-      {isLoading && <MyLinkList linklist={data} />}
+      {isLoading && <MyLinkList linklist={data} selected={selected} />}
     </Container>
   );
 };

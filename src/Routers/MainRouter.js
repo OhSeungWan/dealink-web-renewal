@@ -12,15 +12,15 @@ import { useAuth } from 'Hooks/useAuth';
 const MainRouter = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Splash}></Route>
+      <Route exact path="/" component={ProductEnrollment}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
       <Route
         path="/Product/:type/:userIndex/:url"
         component={ProductDetail}
       ></Route>
-      <PrivateRoute path="/ProductEnrollment">
+      <Route path="/ProductEnrollment">
         <ProductEnrollment />
-      </PrivateRoute>
+      </Route>
       <PrivateRoute path="/MyLink">
         <MyLink />
       </PrivateRoute>
@@ -30,8 +30,6 @@ const MainRouter = () => {
 
 export const PrivateRoute = ({ children, ...rest }) => {
   const [isAuth, { complete }] = useAuth();
-  console.log('privateRouter');
-  console.log(isAuth);
   return !complete ? (
     <Route
       {...rest}

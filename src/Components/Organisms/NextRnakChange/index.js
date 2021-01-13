@@ -70,7 +70,7 @@ const Nextrankchange = ({ link, closeModal }) => {
         setHighest('');
       }
 
-      if (s[1]) {
+      if (s[0]) {
         setSeconds(`${comma(s[1].bidPrice)}원`);
       } else {
         setSeconds('차순위 입찰자가 없습니다.');

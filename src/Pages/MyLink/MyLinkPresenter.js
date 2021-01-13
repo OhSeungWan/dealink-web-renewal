@@ -8,7 +8,7 @@ const MyLinkPresenter = () => {
   return (
     <ScreenWrapper>
       <Header banner type={'mylink'} />
-      <Container style={{ marginTop: 150 }}>
+      <Container style={{ marginTop: 250 }}>
         <MyLinkInfo />
       </Container>
     </ScreenWrapper>
