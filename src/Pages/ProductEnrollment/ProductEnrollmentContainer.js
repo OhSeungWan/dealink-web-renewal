@@ -2,36 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import Date from 'Utils/date-utils';
+import { Loading } from 'Components/Organisms/Modal';
 import ProductEnrollmentPresenter from 'Pages/ProductEnrollment/ProductEnrollmentPresenter';
 import { auctionApi } from 'Apis/auctionApi';
-import { useFetch } from 'Hooks/useFetch';
 import { useInput } from 'Hooks/useInput';
 import { useSelector } from 'react-redux';
 
 const ProductEnrollmentContainer = () => {
   // TODO: refectorying
-  // const [data, isLoading, error, refetch] = useFetch()
   const userInfo = useSelector(state => state.user);
 
   const userId = userInfo.id || '0';
   const location = useLocation();
-  const [templink, setTempLink] = useState(
-    'd3110cd3-1f24-4798-9a4c-239212d480e0-20210113181515'
-  );
-  console.log(location);
+  const [templink, setTempLink] = useState(location.state?.templink);
 
   //TODO: 리펙토링
-  const [tempdata, isLoading, error, refetch] = useFetch(
-    `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
-    // `http://192.168.0.102:8080/user/${userId}/auction/${url}`
-  );
 
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState();
   const [loading, setLoading] = useState(true);
+
+  const [loadingP, setPLoading] = useState(false);
+
   const [isTemp, setIsTemp] = useState(true);
-  const [value, setValue] = useInput({
+  const [value, setValue, setData] = useInput({
     imageList: [],
     productTitle: '',
     productDetail: '',
@@ -43,7 +38,6 @@ const ProductEnrollmentContainer = () => {
     m: 0,
     s: 0
   });
-
   const valueValidate = () => {
     if (
       value.imageList.length == 0 ||
@@ -75,27 +69,23 @@ const ProductEnrollmentContainer = () => {
   const onSubmit = async () => {
     let form = new FormData();
     let now = new Date();
-    // if (value.imageList.length == 0) {
-    //   //TODO: 이미지 없어도 등록할수 있도록 해야함
-    //   alert('이미지는 필수입니다.');
-    //   return;
-    // }
-    // if (value.productPrice == '') {
-    //   console.log(value);
-
-    //   alert('가격은 필수입니다.');
-    //   return;
-    // }
+    if (isTemp) {
+      alert('임시저장 됩니다.');
+    }
     now.setDate(now.getDate() + parseInt(value.d));
     now.setHours(now.getHours() + parseInt(value.h));
     now.setMinutes(now.getMinutes() + parseInt(value.m));
     now.setSeconds(now.getSeconds() + parseInt(value.s));
-    // now.setDate(now.getMonth() - 1);
 
+    // if (
+    //   now.getMonth() == today.getMonth() &&
+    //   now.getDate() == today.getDate() &&
+    //   now.getHours() == today.getHours() &&
+    //   now.getMinutes() - today.getMinutes() < 30
+    // ){alert('최소 경매 진행시간은 ')}
     value.imageList.map(item => {
       form.append('productImages', item);
     });
-    // alert(value.productPrice.replace(/[^0-9]/g, ''));
     form.append(
       'auctionInfoRequest',
       JSON.stringify({
@@ -107,7 +97,7 @@ const ProductEnrollmentContainer = () => {
         name: value.productTitle,
         description: value.description,
         status: isTemp ? '6' : '0',
-        url: null
+        url: templink ? templink.replace('/', '') : null
       })
     );
     setLoading(false);
@@ -124,41 +114,50 @@ const ProductEnrollmentContainer = () => {
   };
 
   useEffect(() => {
-    if (templink && isLoading) {
-      console.log('it is temp');
-      console.log(tempdata);
-      setValue({
-        imageList: [],
-        productTitle: tempdata.name,
-        productDetail: tempdata.description,
-        productPrice: tempdata.startingPrice,
-        kakaoUrl: tempdata.chatUrl,
-        description: tempdata.description,
-        d: 0,
-        h: 0,
-        m: 0,
-        s: 0
-      });
-    }
-  }, [isLoading]);
+    const process = async () => {
+      setPLoading(false);
+      const res = await fetch(
+        `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
+      );
+      const data = await res.json();
+      if (!data.message) {
+        setData({
+          imageList: [],
+          productTitle: data.name,
+          productDetail: data.description,
+          productPrice: data.startingPrice,
+          kakaoUrl: data.chatUrl,
+          description: data.description,
+          d: data.days,
+          h: data.hours,
+          m: data.minutes,
+          s: data.seconds
+        });
+      }
+      setPLoading(true);
+    };
 
-  return (
-    isLoading && (
-      <ProductEnrollmentPresenter
-        onSubmit={onSubmit}
-        closeModal={closeModal}
-        isOpen={isOpen}
-        openModal={openModal}
-        data={modalData}
-        onChange={setValue}
-        value={value}
-        loading={loading}
-        isTemp={isTemp}
-        valueValidate={valueValidate}
-        tempdata={tempdata}
-        templink={templink}
-      />
-    )
+    process();
+  }, []);
+
+  return loadingP ? (
+    <ProductEnrollmentPresenter
+      onSubmit={onSubmit}
+      closeModal={closeModal}
+      isOpen={isOpen}
+      openModal={openModal}
+      data={modalData}
+      onChange={setValue}
+      value={value}
+      loading={loading}
+      isTemp={isTemp}
+      valueValidate={valueValidate}
+      templink={templink}
+      userInfo={userInfo}
+      bannerType={location.pathname}
+    />
+  ) : (
+    <Loading isOpen={true} />
   );
 };
 

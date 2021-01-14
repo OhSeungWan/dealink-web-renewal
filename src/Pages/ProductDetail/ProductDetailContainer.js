@@ -11,16 +11,15 @@ const ProductDetailContainer = () => {
   const { url } = useParams();
   const userInfo = useSelector(state => state.user);
   const [isOpen, setIsOpen] = useState(false);
-
   //로그인 하지 않은 사용자일 경우
   const userId = userInfo.id || '0';
   const [data, isLoading, error, refetch] = useFetch(
     `https://rest.dealink.co.kr/user/${userId}/auction/${url}`
     // `http://192.168.0.102:8080/user/${userId}/auction/${url}`
   );
-  const fetchData = useCallback(() => {
+  const fetchData = () => {
     refetch(true);
-  });
+  };
 
   const closeModal = () => {
     setIsOpen(false);

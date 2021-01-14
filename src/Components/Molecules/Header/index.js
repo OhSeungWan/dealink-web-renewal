@@ -1,10 +1,13 @@
+import { useHistory, useLocation } from 'react-router-dom';
+
 import { AiOutlineLink } from 'react-icons/ai';
 import { BannerTop } from 'Components/Molecules';
+import { BiLogIn } from 'react-icons/bi';
 import { Button } from 'Components/Atoms';
 import React from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 const HeaderText = styled.div`
   font-weight: 700;
   font-size: 25px;
@@ -74,7 +77,23 @@ const MyLink = ({ type }) => {
   );
 };
 
+const SignInLink = () => {
+  const history = useHistory();
+
+  const goMyLink = () => {
+    history.push('/SignIn');
+  };
+  return (
+    <MyLinkWrapper>
+      <Button onClick={goMyLink} secondary>
+        <BiLogIn /> 로그인
+      </Button>
+    </MyLinkWrapper>
+  );
+};
+
 const Header = ({ banner, front, type }) => {
+  const location = useLocation();
   const isLogin = useSelector(state => state.user.isLogin);
   return (
     <HeaderWrapper front={front}>
@@ -83,6 +102,7 @@ const Header = ({ banner, front, type }) => {
         <HeaderContainer>
           <HeaderText> DeaLink</HeaderText>
           {isLogin && <MyLink type={type}></MyLink>}
+          {!isLogin && location.pathname != '/SignIn' && <SignInLink />}
         </HeaderContainer>
       </HeaderToTalContainer>
     </HeaderWrapper>

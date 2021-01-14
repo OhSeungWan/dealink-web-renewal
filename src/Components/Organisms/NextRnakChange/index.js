@@ -38,8 +38,6 @@ const Nextrankchange = ({ link, closeModal }) => {
     }
   );
 
-  console.log(seconds);
-
   const changeRankHandler = async () => {
     setIsChange(false);
     const res = await fetch(
@@ -55,7 +53,11 @@ const Nextrankchange = ({ link, closeModal }) => {
   };
 
   const sortBidList = (a, b) => {
-    return a.bidPrice < b.bidPrice ? 1 : a.bidPrice < b.bidPrice ? -1 : 0;
+    return parseInt(a.bidPrice) < parseInt(b.bidPrice)
+      ? 1
+      : parseInt(a.bidPrice) < parseInt(b.bidPrice)
+      ? -1
+      : 0;
   };
   useEffect(() => {
     if (isLoading) {
@@ -71,7 +73,7 @@ const Nextrankchange = ({ link, closeModal }) => {
       }
 
       if (s[0]) {
-        setSeconds(`${comma(s[1].bidPrice)}원`);
+        setSeconds(`${comma(s[0].bidPrice)}원`);
       } else {
         setSeconds('차순위 입찰자가 없습니다.');
         setSecondExist(false);

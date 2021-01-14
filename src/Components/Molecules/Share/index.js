@@ -49,7 +49,6 @@ const Share = ({ url, data }) => {
   const [value, setValue] = useState(url);
   const [copied, setCopied] = useState(false);
   const { Kakao } = window;
-  console.log(data);
   //TODO: 카카오 로그인 리펙토링
   const sendLink = () => {
     Kakao.Link.sendDefault({

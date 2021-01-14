@@ -88,6 +88,7 @@ const ProductDetailPresenter = props => {
                 data={props.data}
                 userInfo={props.userInfo}
                 closeModal={props.closeModal}
+                isOpen={props.isOpen}
               />
             </PrivateContents>
           ) : props.data.userType == 'SELLER' ? (

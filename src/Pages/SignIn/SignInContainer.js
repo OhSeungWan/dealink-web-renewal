@@ -34,11 +34,9 @@ const SignInContainer = () => {
     initUserInfo();
     if (location.state?.from?.pathname) {
       Cookies.set('beforePage', location.state.from.pathname);
-      console.log(location.state.from.pathname);
     }
     if (code) {
       if (Cookies.get('beforePage')) {
-        console.log(Cookies.get('beforePage'));
         const beforePage = Cookies.get('beforePage');
         Cookies.remove('beforePage');
         history.push(beforePage);

@@ -5,6 +5,7 @@ import ImageBox from 'Components/Molecules/ImageBox';
 import React from 'react';
 import { ScreenWrapper } from 'Components/Atoms';
 import kakaoLogin from 'assets/img/kakaoLogin.png';
+import kakaoSignIn from 'assets/img/kakaoSignIn.png';
 
 const SignInPresenter = ({ SignUp, userInfo }) => {
   return (
@@ -12,10 +13,7 @@ const SignInPresenter = ({ SignUp, userInfo }) => {
       <Container>
         <Header />
         <ImageBox url={kakaoLogin} />
-        <Button onClick={SignUp} kakao>
-          카카오톡으로 로그인
-        </Button>
-        {userInfo && <p role="alert">{userInfo.userInfo}</p>}
+        <img src={kakaoSignIn} onClick={SignUp} width={'100%'}></img>
       </Container>
     </ScreenWrapper>
   );

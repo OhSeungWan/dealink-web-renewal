@@ -4,10 +4,10 @@ import {
   Modal,
   ProductInfo
 } from 'Components/Organisms';
-import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
+import { Border, Button, Container, ScreenWrapper } from 'Components/Atoms';
 import { List, Share, Timer } from 'Components/Molecules';
 
-import { AiOutlineClose } from 'react-icons/ai';
+import Banner1 from 'assets/img/Banner1.png';
 import Header from 'Components/Molecules/Header';
 import { ImageBox } from 'Components/Molecules';
 import { Loading } from 'Components/Organisms/Modal';
@@ -26,13 +26,42 @@ const ProductEnrollmentPresenter = ({
   isTemp,
   valueValidate,
   templink,
-  tempdata
+  tempdata,
+  userInfo,
+  bannerType
 }) => {
+  const banner =
+    bannerType == '/Main'
+      ? Banner1
+      : bannerType == '/Survey'
+      ? panmeza
+      : Banner1;
   return loading ? (
     <ScreenWrapper>
       <Header />
       <Container>
-        <ImageBox url={panmeza} />
+        {!userInfo.isLogin && <ImageBox url={banner} />}
+        {bannerType == '/Main' && (
+          <>
+            <div
+              style={{
+                width: `100%`,
+                fontSize: 18,
+                margin: '10px 10px',
+                fontWeight: 500
+              }}
+            >
+              중고품 경매 커뮤니티
+            </div>
+            <div>
+              딜링크는 중고로 팔고싶은 상품을 공유하는 커뮤니티 입니다. 링크로
+              내 상품을 친구에게 공유해보세요!
+            </div>
+          </>
+        )}
+        <Border height={'8px'} />
+        <div style={{ fontSize: 20, fontWeight: 600 }}>딜링크에 상품등록</div>
+        <Border height={'1px'} />
         <ProductInfo
           value={value}
           onChange={onChange}
@@ -58,16 +87,18 @@ const ProductEnrollmentPresenter = ({
         </List>
         <AuctionOptions value={value} onChange={onChange} />
         {/* <AccountInfo value={value} onChange={onChange} /> */}
-        <Button
-          onClick={onSubmit}
-          primary
-          common
-          style={{ position: 'fixed', bottom: 5 }}
-        >
-          {isTemp ? '임시저장' : '상품등록'}
-        </Button>
+        {userInfo.isLogin && (
+          <Button
+            onClick={onSubmit}
+            primary
+            common
+            style={{ position: 'fixed', bottom: 5 }}
+          >
+            {isTemp ? '임시저장' : '상품등록'}
+          </Button>
+        )}
         <Modal isOpen={isOpen} closeModal={closeModal}>
-          {data && (
+          {data && loading && (
             <div
               style={{
                 padding: 20,

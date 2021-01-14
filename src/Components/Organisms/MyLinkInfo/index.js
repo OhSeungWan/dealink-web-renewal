@@ -34,7 +34,6 @@ const NoHistoryWrapper = styled.div`
 const StatusWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 10px 0px 10px 0px;
   justify-content: center;
   align-items: center;
   width: 100%;
@@ -164,7 +163,6 @@ const Container = styled.div`
 const MyLinkInfo = () => {
   const userInfo = useSelector(state => state.user);
 
-  console.log(userInfo.accessToken);
   const selectList = [
     { name: '입찰', status: 'purchase' },
     { name: '판매', status: 'sale' },

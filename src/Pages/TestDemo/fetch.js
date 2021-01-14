@@ -35,7 +35,6 @@ export default function Fetch({ url }) {
   const fetchGreeting = async () => {
     await fetch(url)
       .then(response => {
-        console.log(response);
         const { data } = response;
         const { greeting } = data;
         dispatch({ type: 'SUCCESS', greeting });

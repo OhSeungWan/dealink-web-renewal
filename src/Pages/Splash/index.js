@@ -60,7 +60,6 @@ const Splash = () => {
     if (code) {
       setTimeout(() => {
         if (Cookies.get('beforePage')) {
-          console.log(Cookies.get('beforePage'));
           const beforePage = Cookies.get('beforePage');
           Cookies.remove('beforePage');
           history.push(beforePage);

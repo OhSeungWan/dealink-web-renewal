@@ -21,7 +21,7 @@ const boxFade2 = (h = 80) => keyframes`
   height:0%
  }
  30%{
-  height:${h}%
+  height:${200}%
  }
  100%{
   height:${h}%

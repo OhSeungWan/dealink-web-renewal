@@ -40,8 +40,6 @@ export const Auth = ({ children }) => {
     // 인증정보가 없다면 리턴 >> 인증정보 없다면 로그인 창으로,,? 리다이렉트,,?
     //TODO: 여기 부분 인증 로직 추가해야함
     if (!isAuth || userInfo == 'undefined' || userInfo == null) {
-      console.log(isAuth);
-      console.log(userInfo);
       // history.push('/Signin');
       return;
       // history.push('/SignIn');

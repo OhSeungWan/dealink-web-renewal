@@ -21,8 +21,8 @@ const TransactionMethod = ({ method }) => {
   );
 };
 const TransactionMethodItem = styled.div`
-  padding: 15px;
   color: ${props => (props.selected ? 'black' : 'gray')};
+  margin-right: 10px;
 `;
 const DetailText = styled.div`
   width: 100%;

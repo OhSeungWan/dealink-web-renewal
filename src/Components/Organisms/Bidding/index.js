@@ -4,12 +4,21 @@ import React, { useState } from 'react';
 import { List } from 'Components/Molecules';
 import { auctionApi } from 'Apis/auctionApi';
 import { comma } from 'Utils/comma-utils';
+import styled from 'styled-components';
 import { useInput } from 'Hooks/useInput';
 
-const Bidding = ({ data, userInfo, closeModal }) => {
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+const Bidding = ({ data, userInfo, isOpen }) => {
   const [value, setValue] = useInput({});
   const [productPrice, setProductPrice] = useState('');
-  console.log(value);
+  const [complete, setIsComplete] = useState(!isOpen);
 
   const onChange = e => {
     e.preventDefault();
@@ -26,7 +35,7 @@ const Bidding = ({ data, userInfo, closeModal }) => {
       return;
     }
 
-    await auctionApi.registerBid(userInfo.id, data.url, {
+    const res = await auctionApi.registerBid(userInfo.id, data.url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,10 +46,16 @@ const Bidding = ({ data, userInfo, closeModal }) => {
         auctionId: data.id
       })
     });
-    closeModal();
+
+    // const err = await res.json();
+    // if (err.message == 'Continuous bidding is not possible.') {
+    //   alert('다음 입찰자가 생기기 전에 두번 연속 입찰 하실수 없습니다. ');
+    //   return;
+    // }
+    setIsComplete(true);
   };
 
-  return (
+  return !complete ? (
     <List alignCenter={true}>
       <Text>경매 마감일</Text>
       <Input readOnly name="closingTime" value={data.closingTime} />
@@ -104,15 +119,38 @@ const Bidding = ({ data, userInfo, closeModal }) => {
         </div>
       </div>
 
-      <Button
-        onClick={biddingHandler}
-        primary
-        common
-        style={{ position: 'sticky', bottom: 5 }}
-      >
+      <Button onClick={biddingHandler} primary common>
         입찰하기
       </Button>
     </List>
+  ) : (
+    <Container
+      style={{
+        height: '100%'
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: 10,
+          fontSize: 25,
+          color: '#6E44FF'
+        }}
+      >
+        ₊·*◟(˶╹̆ꇴ╹̆˵)◜‧*･
+      </div>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center'
+        }}
+      >
+        입찰 되었습니다.
+      </div>
+    </Container>
   );
 };
 

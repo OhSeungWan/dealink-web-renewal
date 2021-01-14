@@ -7,8 +7,8 @@ import React from 'react';
 const MyLinkPresenter = () => {
   return (
     <ScreenWrapper>
-      <Header banner type={'mylink'} />
-      <Container style={{ marginTop: 250 }}>
+      <Header type={'mylink'} />
+      <Container style={{ marginTop: 150 }}>
         <MyLinkInfo />
       </Container>
     </ScreenWrapper>

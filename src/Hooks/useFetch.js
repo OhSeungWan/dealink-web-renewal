@@ -13,21 +13,21 @@ export const useFetch = (payload, option) => {
   };
 
   const process = async payload => {
-    console.log('⇣-------------useFetch Start-------------⇣');
+    // console.log('⇣-------------useFetch Start-------------⇣');
 
-    // if (type == 'url') {
-    console.log(`✓ fetch Start ✓`);
-    console.log(`✓ type: url >> ${payload}`);
+    // // if (type == 'url') {
+    // console.log(`✓ fetch Start ✓`);
+    // console.log(`✓ type: url >> ${payload}`);
     setIsLoading(false);
     setError(null);
     try {
       const data = await fetch(payload, option).then(res => res.json());
       setData(data);
-      console.log(`✓ response⬇️`);
-      console.log(data);
+      // console.log(`✓ response⬇️`);
+      // console.log(data);
       data.status == 500 ? setIsLoading(false) : setIsLoading(true);
     } catch (error) {
-      console.log(`⚠︎ Error ⚠︎ : ${error}`);
+      // console.log(`⚠︎ Error ⚠︎ : ${error}`);
       setError(error);
       setIsLoading(false);
     }
@@ -46,7 +46,7 @@ export const useFetch = (payload, option) => {
     //     setIsLoading(false);
     //   }
     // }
-    console.log('⇡_____________useFetch End_____________⇡');
+    // console.log('⇡_____________useFetch End_____________⇡');
   };
 
   useEffect(() => {

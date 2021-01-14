@@ -5,5 +5,5 @@ export const useInput = initialValue => {
   const onChage = (key, value) => {
     setValue({ ...values, [key]: value });
   };
-  return [values, onChage];
+  return [values, onChage, setValue];
 };

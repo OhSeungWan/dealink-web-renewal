@@ -101,7 +101,6 @@ const TimerItem = ({
       e.preventDefault();
       const { name, value } = e.target;
       const Value = value.replace(/[^0-9]/g, '');
-      console.log(name, Value);
       if (name == 'd') {
         if (parseInt(Value) > 50) {
           alert('50일이 최대입니다.');
@@ -262,7 +261,6 @@ const Bold = styled.div`
 const Timer = props => {
   const { days, hours, minutes, seconds, link } = props;
   let endDate;
-  console.log(days, hours, minutes, seconds);
   if (!props.isSet) {
     const now = new Date();
 

@@ -61,17 +61,8 @@ export const Button = styled.button`
       `;
     } else if (props.kakao) {
       return css`
-        background-color: ${({ theme }) => theme.Button.kakao.backgroundColor};
-        border-radius: ${({ theme }) => theme.Button.kakao.borderRadius};
-        border: ${({ theme }) => theme.Button.kakao.border};
-        font-size: ${({ theme }) => theme.Button.kakao.fontSize};
-        padding: ${({ theme }) => theme.paddings.lg};
-        height: ${({ theme }) => theme.Button.kakao.height};
-        margin-top: ${({ theme }) => theme.Button.kakao.marginTop};
-        font-weight: ${({ theme }) => theme.Button.kakao.fontWeight};
-        color: ${({ theme }) => theme.Button.kakao.color};
-        width: 100vw;
-        max-width: 360px;
+        width: 100%;
+        border: none;
 
         ${props => {
           if (props.common) {

@@ -16,11 +16,9 @@ export const useAuth = type => {
   const certificate = async () => {
     // 세션 스토리지에서 엑세스 토큰 정보 가져옴
     const accessToken = sessionStorage.getItem('accessToken');
-    console.log(`accessToken : ${accessToken}`);
     // 엑세스 토큰 유효성 검사
     setComplete(false);
     const isAuth = await accessTokenValidate(accessToken);
-    console.log(`isAuth : ${isAuth}`);
     if (isAuth) {
       const accessToken = sessionStorage.getItem('accessToken');
       const id = sessionStorage.getItem('userId');
@@ -34,15 +32,11 @@ export const useAuth = type => {
 
   // 엑세스 토큰 유효성 검사
   const accessTokenValidate = async token => {
-    console.log(token);
     //토큰 유효성 검사 로직 필요
     const res = await fetch(`https://rest.dealink.co.kr//user/1/sale`, {
       headers: { AUTH_TOKEN: token }
     });
     const effectiveness = await res.json();
-
-    console.log(`effectiveness ${effectiveness}`);
-    console.log(effectiveness);
 
     const validationResult =
       effectiveness.message == 'Invalid Access Token' ? false : true;
@@ -51,7 +45,6 @@ export const useAuth = type => {
   };
 
   useEffect(() => {
-    console.log('로그인 인증..');
     certificate();
   }, []);
 

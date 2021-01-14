@@ -13,6 +13,8 @@ const MainRouter = () => {
   return (
     <Switch>
       <Route exact path="/" component={ProductEnrollment}></Route>
+      <Route exact path="/Main" component={ProductEnrollment}></Route>
+      <Route exact path="/Survey" component={ProductEnrollment}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
       <Route
         path="/Product/:type/:userIndex/:url"
@@ -33,13 +35,14 @@ export const PrivateRoute = ({ children, ...rest }) => {
   return !complete ? (
     <Route
       {...rest}
-      render={() =>
+      render={location =>
         isAuth ? (
           children
         ) : (
           <Redirect
             to={{
-              pathname: '/SignIn'
+              pathname: '/SignIn',
+              state: { from: location }
             }}
           />
         )
