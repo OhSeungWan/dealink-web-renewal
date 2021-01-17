@@ -22,9 +22,7 @@ const ProductEnrollmentContainer = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState();
   const [loading, setLoading] = useState(true);
-
   const [loadingP, setPLoading] = useState(false);
-
   const [isTemp, setIsTemp] = useState(true);
   const [value, setValue, setData] = useInput({
     imageList: [],
@@ -34,21 +32,26 @@ const ProductEnrollmentContainer = () => {
     kakaoUrl: '',
     description: '',
     d: 0,
-    h: 0,
+    h: 1,
     m: 0,
     s: 0
   });
-  const valueValidate = () => {
+
+  const valueValidate = value => {
+    console.log(value);
     if (
       value.imageList.length == 0 ||
       value.productPrice == '' ||
       value.kakaoUrl == ''
     ) {
       setIsTemp(true);
+      return true;
     } else {
       setIsTemp(false);
+      return false;
     }
   };
+
   const closeModal = () => {
     setIsOpen(false);
     if (isTemp) {
@@ -115,7 +118,6 @@ const ProductEnrollmentContainer = () => {
 
   useEffect(() => {
     const process = async () => {
-      setPLoading(false);
       const res = await fetch(
         `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
       );
@@ -134,11 +136,16 @@ const ProductEnrollmentContainer = () => {
           s: data.seconds
         });
       }
-      setPLoading(true);
     };
-
-    process();
-  }, []);
+    if (templink) {
+      setPLoading(false);
+      process();
+    }
+    setPLoading(true);
+    valueValidate(value);
+    console.log(value);
+    console.log(isTemp);
+  }, [value]);
 
   return loadingP ? (
     <ProductEnrollmentPresenter
@@ -151,7 +158,6 @@ const ProductEnrollmentContainer = () => {
       value={value}
       loading={loading}
       isTemp={isTemp}
-      valueValidate={valueValidate}
       templink={templink}
       userInfo={userInfo}
       bannerType={location.pathname}

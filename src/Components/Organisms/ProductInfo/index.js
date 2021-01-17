@@ -24,6 +24,7 @@ const ProductInfo = props => {
     props.value ? props.value.productPrice : ''
   );
   const history = useHistory();
+
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -33,7 +34,6 @@ const ProductInfo = props => {
       const formattingPrice = price.replace(/[^0-9]/g, '');
       setProductPrice(`${comma(formattingPrice)}`);
     }
-    props.valueValidate();
   };
 
   const userInfo = useSelector(state => state.user);

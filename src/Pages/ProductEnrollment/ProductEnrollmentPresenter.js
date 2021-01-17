@@ -24,7 +24,6 @@ const ProductEnrollmentPresenter = ({
   data,
   loading,
   isTemp,
-  valueValidate,
   templink,
   tempdata,
   userInfo,
@@ -65,7 +64,6 @@ const ProductEnrollmentPresenter = ({
         <ProductInfo
           value={value}
           onChange={onChange}
-          valueValidate={valueValidate}
           tempdata={tempdata}
           templink={templink}
         />

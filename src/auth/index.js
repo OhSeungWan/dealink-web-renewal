@@ -44,7 +44,12 @@ export const Auth = ({ children }) => {
       return;
       // history.push('/SignIn');
     }
-    dispatch(fetchUser({ accessToken: userInfo, id: id }));
+    dispatch(
+      fetchUser({
+        accessToken: 'T1rAqql_ygkHR1kbDTDV7pjjisPtrg6t7gN3gAorDKYAAAF3DrjIMQA',
+        id: '1'
+      })
+    );
   };
 
   useEffect(() => {

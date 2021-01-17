@@ -80,20 +80,20 @@ const TimerItemWrapper = styled.div`
 
 const TimerItem = ({
   isSet,
-  day = 100,
-  hour = 23,
-  minute = 59,
-  second = 59,
+  day = 0,
+  hour = 1,
+  minute = 0,
+  second = 0,
   link,
   onChange,
   fetchData,
   auctionStatus
 }) => {
   const [time, setTime] = useState({
-    d: isSet ? day : '',
-    h: isSet ? hour : '',
-    m: isSet ? minute : '',
-    s: isSet ? second : ''
+    d: day,
+    h: hour,
+    m: minute,
+    s: second
   });
 
   const timeChangeHandler = useCallback(
