@@ -40,7 +40,7 @@ const ProductEnrollmentPresenter = ({
       <Header />
       <Container>
         {!userInfo.isLogin && <ImageBox url={banner} />}
-        {bannerType == '/Main' && (
+        {bannerType != '/Survey' && (
           <>
             <div
               style={{

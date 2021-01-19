@@ -27,6 +27,7 @@ const TransactionMethodItem = styled.div`
 const DetailText = styled.div`
   width: 100%;
   font-size: 20px;
+  word-break: break-all;
 `;
 
 const ProductDetail = props => {
@@ -34,7 +35,7 @@ const ProductDetail = props => {
     <Wrapper>
       <TransactionMethod method={props.tradingMethod} />
       <div style={{ padding: 15 }}>
-        <DetailText style={{ whiteSpace: 'pre' }}>
+        <DetailText style={{ whiteSpace: 'pre-line' }}>
           {props.description}
         </DetailText>
       </div>

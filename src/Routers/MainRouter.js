@@ -6,7 +6,7 @@ import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
 import SignIn from 'Pages/SignIn';
-import Splash from 'Pages/Splash';
+// import Splash from 'Pages/Splash';
 import { useAuth } from 'Hooks/useAuth';
 
 const MainRouter = () => {

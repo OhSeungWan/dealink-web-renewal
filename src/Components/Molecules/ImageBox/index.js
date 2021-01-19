@@ -6,6 +6,7 @@ import { Slider } from 'Components/Molecules';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+const Compress = require('compress.js');
 const Img = styled.img`
   width: 100%;
 `;
@@ -62,16 +63,31 @@ const ImageBox = ({ url, type, onChange }) => {
     if (!userInfo.accessToken) return;
     form.current.click();
   };
-
+  const compress = new Compress();
   //파일 선택시 썸네일 생성
   const fileChangeHandler = e => {
     e.preventDefault();
-    const { name, files } = e.target;
-    var fileList = [];
-    [...files].map(item => {
-      fileList.push(item);
-    });
-    onChange(name, fileList);
+    const { name } = e.target;
+    const files = [...e.target.files];
+    compress
+      .compress(files, {
+        size: 4, // the max size in MB, defaults to 2MB
+        quality: 0.75, // the quality of the image, max is 1,
+        maxWidth: 400, // the max width of the output image, defaults to 1920px
+        maxHeight: 400, // the max height of the output image, defaults to 1920px
+        resize: true // defaults to true, set false if you do not want to resize the image width and height
+      })
+      .then(data => {
+        // returns an array of compressed images
+        console.log(data);
+        // onChange(name, data);
+      });
+    // var fileList = [];
+    // [...files].map(item => {
+    //   fileList.push(item);
+    // });
+    console.log([...files]);
+    onChange(name, [...files]);
     setThumbnail(e);
   };
 

@@ -5,14 +5,13 @@ import Date from 'Utils/date-utils';
 import { Loading } from 'Components/Organisms/Modal';
 import ProductEnrollmentPresenter from 'Pages/ProductEnrollment/ProductEnrollmentPresenter';
 import { auctionApi } from 'Apis/auctionApi';
-import { useInput } from 'Hooks/useInput';
+import { useProduct } from 'Hooks/useProduct';
 import { useSelector } from 'react-redux';
 
 const ProductEnrollmentContainer = () => {
   // TODO: refectorying
   const userInfo = useSelector(state => state.user);
 
-  const userId = userInfo.id || '0';
   const location = useLocation();
   const [templink, setTempLink] = useState(location.state?.templink);
 
@@ -21,24 +20,9 @@ const ProductEnrollmentContainer = () => {
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState();
-  const [loading, setLoading] = useState(true);
-  const [loadingP, setPLoading] = useState(false);
+  const [value, setValue, loading, setLoading] = useProduct(templink);
   const [isTemp, setIsTemp] = useState(true);
-  const [value, setValue, setData] = useInput({
-    imageList: [],
-    productTitle: '',
-    productDetail: '',
-    productPrice: '',
-    kakaoUrl: '',
-    description: '',
-    d: 0,
-    h: 1,
-    m: 0,
-    s: 0
-  });
-
   const valueValidate = value => {
-    console.log(value);
     if (
       value.imageList.length == 0 ||
       value.productPrice == '' ||
@@ -80,12 +64,6 @@ const ProductEnrollmentContainer = () => {
     now.setMinutes(now.getMinutes() + parseInt(value.m));
     now.setSeconds(now.getSeconds() + parseInt(value.s));
 
-    // if (
-    //   now.getMonth() == today.getMonth() &&
-    //   now.getDate() == today.getDate() &&
-    //   now.getHours() == today.getHours() &&
-    //   now.getMinutes() - today.getMinutes() < 30
-    // ){alert('최소 경매 진행시간은 ')}
     value.imageList.map(item => {
       form.append('productImages', item);
     });
@@ -117,37 +95,12 @@ const ProductEnrollmentContainer = () => {
   };
 
   useEffect(() => {
-    const process = async () => {
-      const res = await fetch(
-        `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
-      );
-      const data = await res.json();
-      if (!data.message) {
-        setData({
-          imageList: [],
-          productTitle: data.name,
-          productDetail: data.description,
-          productPrice: data.startingPrice,
-          kakaoUrl: data.chatUrl,
-          description: data.description,
-          d: data.days,
-          h: data.hours,
-          m: data.minutes,
-          s: data.seconds
-        });
-      }
-    };
-    if (templink) {
-      setPLoading(false);
-      process();
-    }
-    setPLoading(true);
     valueValidate(value);
     console.log(value);
     console.log(isTemp);
   }, [value]);
 
-  return loadingP ? (
+  return loading ? (
     <ProductEnrollmentPresenter
       onSubmit={onSubmit}
       closeModal={closeModal}

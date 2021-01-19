@@ -247,7 +247,7 @@ const ProductInfoForBuyer = props => {
       <ProductWrapper>
         <ProductText current>현재가</ProductText>
         <ProductPrice current>{comma(props.currentPrice)} 원</ProductPrice>
-        {true && props.auctionStatus != 'AUCTION_COMPLETED' && (
+        {userInfo.isLogin && props.auctionStatus != 'AUCTION_COMPLETED' && (
           <button
             onClick={openModal}
             style={{

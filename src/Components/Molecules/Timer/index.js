@@ -100,7 +100,12 @@ const TimerItem = ({
     e => {
       e.preventDefault();
       const { name, value } = e.target;
-      const Value = value.replace(/[^0-9]/g, '');
+      let Value = value.replace(/[^0-9]/g, '');
+
+      if (!Value || Value == '' || Value == null || Value == undefined) {
+        Value = '0';
+      }
+
       if (name == 'd') {
         if (parseInt(Value) > 50) {
           alert('50일이 최대입니다.');

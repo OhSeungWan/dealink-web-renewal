@@ -3,9 +3,9 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { userApi } from 'Apis/userApi';
 
 const initialState = {
-  id: '1',
-  accessToken: 'T1rAqql_ygkHR1kbDTDV7pjjisPtrg6t7gN3gAorDKYAAAF3DrjIMQA',
-  isLogin: true
+  id: null,
+  accessToken: null,
+  isLogin: false
 };
 
 export const fetchUserByCode = createAsyncThunk(

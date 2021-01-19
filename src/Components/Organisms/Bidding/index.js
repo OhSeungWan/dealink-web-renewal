@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { List } from 'Components/Molecules';
 import { auctionApi } from 'Apis/auctionApi';
+import bidComplete from 'assets/img/bidComplete.png';
 import { comma } from 'Utils/comma-utils';
 import styled from 'styled-components';
 import { useInput } from 'Hooks/useInput';
@@ -129,7 +130,7 @@ const Bidding = ({ data, userInfo, isOpen }) => {
         height: '100%'
       }}
     >
-      <div
+      {/* <div
         style={{
           width: '100%',
           display: 'flex',
@@ -140,12 +141,15 @@ const Bidding = ({ data, userInfo, isOpen }) => {
         }}
       >
         ₊·*◟(˶╹̆ꇴ╹̆˵)◜‧*･
-      </div>
+      </div> */}
+      <img src={bidComplete} style={{ width: '40%' }}></img>
       <div
         style={{
           width: '100%',
           display: 'flex',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          marginTop: 10,
+          fontSize: 20
         }}
       >
         입찰 되었습니다.
