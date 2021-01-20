@@ -17,6 +17,7 @@ import { List, Share, Slider, Timer } from 'Components/Molecules';
 import Header from 'Components/Molecules/Header';
 import { PrivateContents } from 'Routers/MainRouter';
 import React from 'react';
+import Terms from 'Components/Organisms/Terms';
 
 const ProductDetailPresenter = props => {
   const auctionStatus =
@@ -29,6 +30,7 @@ const ProductDetailPresenter = props => {
           ImageList={props.data.imageUrls}
           big
           auctionStatus={auctionStatus}
+          type="detail"
         />
         <ProductInfo type={'buyer'} {...props.data} />
         <Share
@@ -55,9 +57,10 @@ const ProductDetailPresenter = props => {
         <Border height="8px" />
 
         <ProductDetail {...props.data} />
-
+        <Terms />
         {!auctionStatus ? (
           <Button
+            className={props.userInfo.isLogin ? 'login-dobid-btn' : 'dobid-btn'}
             style={{ position: 'fixed', bottom: 10 }}
             onClick={props.openModal}
             primary

@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 
-import Cookies from 'js-cookie';
 import ProductDetailPresenter from 'Pages/ProductDetail/ProductDetailPresenter';
 import { useFetch } from 'Hooks/useFetch';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const ProductDetailContainer = () => {

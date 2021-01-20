@@ -18,7 +18,21 @@ export const useProduct = templink => {
     s: 0
   });
   const onChange = (name, value) => {
-    setData(data => ({ ...data, [name]: value }));
+    if (name == 'imageList') {
+      console.log('img');
+      setData(data => {
+        return { ...data, [name]: data.imageList.concat(value) };
+      });
+    } else if (name == 'removeImg') {
+      setData(data => {
+        return {
+          ...data,
+          imageList: data.imageList.filter(img => img.name != value)
+        };
+      });
+    } else {
+      setData(data => ({ ...data, [name]: value }));
+    }
   };
   const [loading, setLoading] = useState(false);
 

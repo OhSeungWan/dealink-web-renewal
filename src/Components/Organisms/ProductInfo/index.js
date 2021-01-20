@@ -54,7 +54,7 @@ const ProductInfo = props => {
         name="productTitle"
         placeholder={'상품명을 입력해주세요'}
         onChange={onChange}
-        // onClick={confirmLogin}
+        onClick={confirmLogin}
       />
       <Text>상품설명</Text>
       <TextArea
@@ -62,7 +62,7 @@ const ProductInfo = props => {
         name="description"
         placeholder={'상품설명을 입력해주세요'}
         onChange={onChange}
-        // onClick={confirmLogin}
+        onClick={confirmLogin}
       />
       <Text>상품가격</Text>
       <div

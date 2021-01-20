@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const SliderWrapper = styled.div`
   position: relative;
   overflow: auto;
+
   width: 100%;
 `;
 const SliderContainer = styled.div`
@@ -13,13 +14,32 @@ const SliderContainer = styled.div`
 `;
 
 const SliderImage = styled.img`
-  margin: 0px 10px 0px 10px;
   width: 100%;
   height: 100%;
   max-width: ${props => (props.big ? '400px' : '100px')};
   max-height: ${props => (props.big ? '400px' : '100px')};
 `;
 
+const ImgWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: ${props => (props.big ? '400px' : '100px')};
+  min-width: 100px;
+  max-height: ${props => (props.big ? '400px' : '100px')};
+`;
+
+const Btn = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+const RemoveBtn = ({ onRemove, name }) => {
+  const onClick = () => {
+    console.log(name);
+    onRemove(name);
+  };
+  return <Btn onClick={onClick}>x</Btn>;
+};
 const Complete = styled.div`
   display: flex;
   justify-content: center;
@@ -31,12 +51,22 @@ const Complete = styled.div`
   top: 0;
 `;
 
-const Slider = ({ ImageList, big, auctionStatus }) => {
+const Slider = ({ ImageList, big, auctionStatus, onRemove, type }) => {
+  console.log(ImageList);
+
   return ImageList ? (
     <SliderWrapper>
       <SliderContainer>
         {ImageList.map((img, index) => {
-          return <SliderImage src={img} big={big ? true : false} key={index} />;
+          console.log(img);
+          return type != 'detail' ? (
+            <ImgWrapper>
+              <RemoveBtn onRemove={onRemove} name={img.name} />
+              <SliderImage src={img.src} big={big ? true : false} key={index} />
+            </ImgWrapper>
+          ) : (
+            <SliderImage src={img} big={big ? true : false} key={index} />
+          );
         })}
       </SliderContainer>
       {auctionStatus && (

@@ -21,6 +21,7 @@ const ImgContainer = styled.div`
         width: 40vw;
         height: 40vh;
         max-width: 100px;
+        min-width: 100px;
         max-height: 100px;
         border: 1px solid #eaeaea;
         &:hover {
@@ -50,7 +51,11 @@ const ImageBox = ({ url, type, onChange }) => {
       var reader = new FileReader();
 
       reader.onload = function (event) {
-        setImageList(imageList => [...imageList, event.target.result]);
+        console.log(file);
+        setImageList(imageList => [
+          ...imageList,
+          { src: event.target.result, name: file.name }
+        ]);
         setUrl(event.target.result);
       };
       reader.readAsDataURL(file);
@@ -59,8 +64,8 @@ const ImageBox = ({ url, type, onChange }) => {
 
   //파일 브라우저 열기
   const open_filebrowser = form => {
-    confirmLogin();
-    if (!userInfo.accessToken) return;
+    // confirmLogin();
+    // if (!userInfo.accessToken) return;
     form.current.click();
   };
   const compress = new Compress();
@@ -69,28 +74,33 @@ const ImageBox = ({ url, type, onChange }) => {
     e.preventDefault();
     const { name } = e.target;
     const files = [...e.target.files];
-    compress
-      .compress(files, {
-        size: 4, // the max size in MB, defaults to 2MB
-        quality: 0.75, // the quality of the image, max is 1,
-        maxWidth: 400, // the max width of the output image, defaults to 1920px
-        maxHeight: 400, // the max height of the output image, defaults to 1920px
-        resize: true // defaults to true, set false if you do not want to resize the image width and height
-      })
-      .then(data => {
-        // returns an array of compressed images
-        console.log(data);
-        // onChange(name, data);
-      });
+    // compress
+    //   .compress(files, {
+    //     size: 4, // the max size in MB, defaults to 2MB
+    //     quality: 0.75, // the quality of the image, max is 1,
+    //     maxWidth: 400, // the max width of the output image, defaults to 1920px
+    //     maxHeight: 400, // the max height of the output image, defaults to 1920px
+    //     resize: true // defaults to true, set false if you do not want to resize the image width and height
+    //   })
+    //   .then(data => {
+    //     // returns an array of compressed images
+    //     console.log(data);
+    //     // onChange(name, data);
+    //   });
     // var fileList = [];
     // [...files].map(item => {
     //   fileList.push(item);
     // });
-    console.log([...files]);
-    onChange(name, [...files]);
+    console.log(files);
+    onChange(name, [...e.target.files]);
     setThumbnail(e);
   };
 
+  const remove = name => {
+    console.log(name);
+    onChange('removeImg', name);
+    setImageList(imageList => imageList.filter(img => img.name != name));
+  };
   return type == 'upload' ? (
     <div style={{ display: 'flex', flex: 1, width: '90%' }}>
       <ImgContainer upload onClick={() => open_filebrowser(fileInput)}>
@@ -107,7 +117,7 @@ const ImageBox = ({ url, type, onChange }) => {
           />
         </form>
       </ImgContainer>
-      <Slider ImageList={imageList}></Slider>
+      <Slider ImageList={imageList} onRemove={remove}></Slider>
     </div>
   ) : (
     <ImgContainer>

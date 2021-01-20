@@ -1,8 +1,9 @@
-import { Border, CheckButton, Text } from 'Components/Atoms';
+import { Border, CheckButton } from 'Components/Atoms';
 import React, { useState } from 'react';
 
 import { List } from 'Components/Molecules';
-import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const AuctionOptions = props => {
   // const onChange = e => {
@@ -10,11 +11,16 @@ const AuctionOptions = props => {
   //   const { name, value } = e.target;
   //   props.onChange(name, value);
   // };
-
+  const history = useHistory();
   const [tradeMethod, setTradeMethod] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
-
+  const userInfo = useSelector(state => state.user);
   const CheckTradeHandler = e => {
+    if (!userInfo.accessToken) {
+      alert('로그인 후 상품 등록이 가능합니다.');
+      history.push('/SignIn');
+      return;
+    }
     e.preventDefault();
     const name = e.target.getAttribute('name');
     setTradeMethod(name);

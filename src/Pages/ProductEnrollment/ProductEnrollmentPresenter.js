@@ -12,6 +12,7 @@ import Header from 'Components/Molecules/Header';
 import { ImageBox } from 'Components/Molecules';
 import { Loading } from 'Components/Organisms/Modal';
 import React from 'react';
+import Terms from 'Components/Organisms/Terms';
 import panmeza from 'assets/img/panmeza.png';
 
 // TODO: 리펙토링 꼮꼬꼬꼬꼬꼮!!!
@@ -84,6 +85,7 @@ const ProductEnrollmentPresenter = ({
           <Timer isSet={false} value={value} onChange={onChange} />
         </List>
         <AuctionOptions value={value} onChange={onChange} />
+        <Terms />
         {/* <AccountInfo value={value} onChange={onChange} /> */}
         {userInfo.isLogin && (
           <Button

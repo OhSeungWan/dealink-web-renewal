@@ -6,6 +6,7 @@ import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
 import SignIn from 'Pages/SignIn';
+import Terms from 'Pages/Terms';
 // import Splash from 'Pages/Splash';
 import { useAuth } from 'Hooks/useAuth';
 
@@ -20,6 +21,7 @@ const MainRouter = () => {
         path="/Product/:type/:userIndex/:url"
         component={ProductDetail}
       ></Route>
+      <Route path="/Terms" component={Terms}></Route>
       <Route path="/ProductEnrollment">
         <ProductEnrollment />
       </Route>
