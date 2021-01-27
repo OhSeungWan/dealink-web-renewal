@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 
 import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
+import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
+import { Button } from 'Components/Atoms';
 import Date from 'Utils/date-utils';
 import { auctionApi } from 'Apis/auctionApi';
+import { useHistory } from 'react-router-dom';
 import { useProduct } from 'Hooks/useProduct';
 import { useSelector } from 'react-redux';
 
 const AuctionRegister = () => {
   const userInfo = useSelector(state => state.user);
+  const history = useHistory();
 
   const [value, setValue, loading, setLoading, validate] = useProduct();
   const [modalData, setModalData] = useState();
+  const [isOpen, setIsOpen] = useState(false);
+  const closeModal = () => {
+    setIsOpen(false);
 
+    history.push(`/Product/seller/${userInfo.id}/${modalData.url}`, {
+      before: true
+    });
+  };
+  const openModal = () => {
+    setIsOpen(true);
+  };
   const calcClosingDate = () => {
     let now = new Date();
 
@@ -61,13 +75,32 @@ const AuctionRegister = () => {
       },
       body: fromData
     });
+    setModalData(data);
     setLoading(true);
+    openModal();
   };
 
   return (
-    <>
-      <AuctionRegisterInputForm onChange={setValue} value={value} />
-    </>
+    loading && (
+      <>
+        <AuctionRegisterInputForm onChange={setValue} value={value} />
+        {userInfo.isLogin && (
+          <Button
+            onClick={onRegisterAuction}
+            primary
+            common
+            style={{ position: 'fixed', bottom: 5 }}
+          >
+            상품등록
+          </Button>
+        )}
+        <AuctionRegisterModal
+          modalData={modalData}
+          closeModal={closeModal}
+          isOpen={isOpen}
+        />
+      </>
+    )
   );
 };
 
