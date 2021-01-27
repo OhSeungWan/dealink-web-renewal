@@ -27,23 +27,37 @@ const ImgContainer = styled.div`
         &:hover {
           cursor: pointer;
         }
+        &:focus {
+          background-color: Aqua;
+        }
       `;
     }
   }};
 `;
 
-const ImageBox = ({ url, type, onChange }) => {
+const ImageBox = ({ url, type, onChange, imglist, id }) => {
   const history = useHistory();
   const fileInput = useRef();
   const [Url, setUrl] = useState(url);
   const [imageList, setImageList] = useState([]);
   const userInfo = useSelector(state => state.user);
   const confirmLogin = () => {
-    if (!userInfo.accessToken) {
+    if (!userInfo.isLogin) {
       alert('로그인 후 상품 등록이 가능합니다.');
       history.push('/SignIn');
     }
   };
+
+  // useEffect(()=>{
+  //   if(imglist){
+  //     const List =[];
+  //     imglist.map((img)=>{
+  //       List.push({
+  //         src:img, name:
+  //       })
+  //     })
+  //   }
+  // },[])
   //TODO: Think about refect , 이미지 업로드 개수 제한 적용해야함
   //이미지 슬라이드에 들어갈 썸네일 생성
   const setThumbnail = event => {
@@ -64,8 +78,8 @@ const ImageBox = ({ url, type, onChange }) => {
 
   //파일 브라우저 열기
   const open_filebrowser = form => {
-    // confirmLogin();
-    // if (!userInfo.accessToken) return;
+    confirmLogin();
+    if (!userInfo.isLogin) return;
     form.current.click();
   };
   const compress = new Compress();
@@ -103,7 +117,12 @@ const ImageBox = ({ url, type, onChange }) => {
   };
   return type == 'upload' ? (
     <div style={{ display: 'flex', flex: 1, width: '90%' }}>
-      <ImgContainer upload onClick={() => open_filebrowser(fileInput)}>
+      <ImgContainer
+        upload
+        onClick={() => open_filebrowser(fileInput)}
+        tabindex="-1"
+        id="imageList"
+      >
         <BiPlusMedical size={25} />
         <form name="file_up_test">
           <input

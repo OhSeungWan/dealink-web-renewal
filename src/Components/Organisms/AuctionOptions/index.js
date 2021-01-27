@@ -16,7 +16,7 @@ const AuctionOptions = props => {
   const [paymentMethod, setPaymentMethod] = useState('');
   const userInfo = useSelector(state => state.user);
   const CheckTradeHandler = e => {
-    if (!userInfo.accessToken) {
+    if (!userInfo.isLogin) {
       alert('로그인 후 상품 등록이 가능합니다.');
       history.push('/SignIn');
       return;
@@ -42,23 +42,23 @@ const AuctionOptions = props => {
           alignItems: 'center'
         }}
       >
-        <div>거래 방식</div>
+        <div style={{ fontSize: 18 }}>거래 방식</div>
         <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
-          다중 선택 가능
+          복수 선택 가능
         </div>
       </div>
 
       <List spaceAround direction="row">
         <CheckButton
           name="delivery"
-          text="택배거래"
+          text="✓택배거래"
           onClick={CheckTradeHandler}
           checked={tradeMethod}
           overlapping={true}
         />
         <CheckButton
           name="direct"
-          text="직거래"
+          text="✓직거래"
           onClick={CheckTradeHandler}
           checked={tradeMethod}
           overlapping={true}

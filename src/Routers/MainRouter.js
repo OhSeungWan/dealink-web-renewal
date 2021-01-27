@@ -1,5 +1,6 @@
-import { Button, Container, ScreenWrapper, Text } from 'Components/Atoms';
+import { Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from 'Components/Organisms/Modal';
 import MyLink from 'Pages/MyLink';
@@ -7,10 +8,30 @@ import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
 import SignIn from 'Pages/SignIn';
 import Terms from 'Pages/Terms';
-// import Splash from 'Pages/Splash';
-import { useAuth } from 'Hooks/useAuth';
+import { fetchUser } from 'Store/Slice/userSlice';
+import { useEffect } from 'react';
 
+const getCookie = cookie_name => {
+  var x, y;
+  var val = document.cookie.split(`;`);
+
+  for (var i = 0; i < val.length; i++) {
+    x = val[i].substr(0, val[i].indexOf(`=`));
+    y = val[i].substr(val[i].indexOf(`=`) + 1);
+    x = x.replace(/^\s+|\s+$/g, '');
+
+    if (x == cookie_name) {
+      return unescape(y);
+    }
+  }
+};
 const MainRouter = () => {
+  const dispatch = useDispatch();
+  const isLogin = useSelector(state => state.user.isLogin);
+  const status = useSelector(state => state.user.status);
+  useEffect(() => {
+    dispatch(fetchUser(getCookie('accessToken')));
+  }, []);
   return (
     <Switch>
       <Route exact path="/" component={ProductEnrollment}></Route>
@@ -21,24 +42,29 @@ const MainRouter = () => {
         path="/Product/:type/:userIndex/:url"
         component={ProductDetail}
       ></Route>
+      <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
       <Route path="/ProductEnrollment">
         <ProductEnrollment />
       </Route>
-      <PrivateRoute path="/MyLink">
+      <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />
       </PrivateRoute>
     </Switch>
   );
 };
 
-export const PrivateRoute = ({ children, ...rest }) => {
-  const [isAuth, { complete }] = useAuth();
-  return !complete ? (
+export const PrivateRoute = ({ children, isLogin, status, ...rest }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUser(getCookie('accessToken')));
+  }, []);
+  return status === 'idle' ? (
     <Route
       {...rest}
-      render={location =>
-        isAuth ? (
+      render={({ location }) =>
+        isLogin ? (
           children
         ) : (
           <Redirect
@@ -59,13 +85,15 @@ export const PrivateRoute = ({ children, ...rest }) => {
   );
 };
 
-export const PrivateContents = ({ children, ...rest }) => {
-  const [isAuth, { complete }] = useAuth();
-  return !complete ? (
+export const PrivateContents = ({ children, location, ...rest }) => {
+  const isLogin = useSelector(state => state.user.isLogin);
+  const status = useSelector(state => state.user.status);
+  console.log(location);
+  return status === 'idle' ? (
     <Route
       {...rest}
       render={({ location }) =>
-        isAuth ? (
+        isLogin ? (
           children
         ) : (
           <Redirect

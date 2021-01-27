@@ -7,7 +7,7 @@ import { ScreenWrapper } from 'Components/Atoms';
 import kakaoLogin from 'assets/img/kakaoLogin.png';
 import kakaoSignIn from 'assets/img/kakaoSignIn.png';
 
-const SignInPresenter = ({ SignUp, userInfo }) => {
+const SignInPresenter = ({ SignUp }) => {
   return (
     <ScreenWrapper>
       <Container>

@@ -15,41 +15,41 @@ const generateNumberArray = (begin, end) => {
   return array;
 };
 
-const TimePicker = () => {
-  const [valueGroups, setValueGroups] = useState({
-    d: 0,
-    h: 0,
-    m: 0,
-    s: 0
-  });
+// const TimePicker = () => {
+//   const [valueGroups, setValueGroups] = useState({
+//     d: 0,
+//     h: 0,
+//     m: 0,
+//     s: 0
+//   });
 
-  const [optionGroups, setOptionGroups] = useState({
-    d: generateNumberArray(0, 50),
-    h: generateNumberArray(0, 50),
-    m: generateNumberArray(0, 50),
-    s: generateNumberArray(0, 50)
-  });
+//   const [optionGroups, setOptionGroups] = useState({
+//     d: generateNumberArray(0, 50),
+//     h: generateNumberArray(0, 50),
+//     m: generateNumberArray(0, 50),
+//     s: generateNumberArray(0, 50)
+//   });
 
-  return (
-    <Picker
-      optionGroups={optionGroups}
-      valueGroups={valueGroups}
-      onChange={() => {
-        return;
-      }}
-    />
-  );
-};
+//   return (
+//     <Picker
+//       optionGroups={optionGroups}
+//       valueGroups={valueGroups}
+//       onChange={() => {
+//         return;
+//       }}
+//     />
+//   );
+// };
 
 const TimerInput = styled.input.attrs(props => {
   if (props.type == 'd') {
-    return { type: 'tel', max: '100', min: '0' };
+    return { type: 'tel', max: '100', min: '0', id: 'timer' };
   } else if (props.type == 'h') {
-    return { type: 'tel', max: '24', min: '0' };
+    return { type: 'tel', max: '24', min: '0', id: 'timer' };
   } else if (props.type == 'm') {
-    return { type: 'tel', max: '60', min: '0' };
+    return { type: 'tel', max: '60', min: '0', id: 'timer' };
   } else if (props.type == 's') {
-    return { type: 'tel', max: '60', min: '0' };
+    return { type: 'tel', max: '60', min: '0', id: 'timer' };
   }
 })`
   text-align: center;
@@ -80,10 +80,10 @@ const TimerItemWrapper = styled.div`
 
 const TimerItem = ({
   isSet,
-  day = 0,
-  hour = 1,
-  minute = 0,
-  second = 0,
+  day = '',
+  hour = '',
+  minute = '',
+  second = '',
   link,
   onChange,
   fetchData,
@@ -258,7 +258,7 @@ const Colon = ({ text }) => {
 };
 
 const Bold = styled.div`
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   padding: 5px;
 `;
@@ -330,7 +330,10 @@ const Timer = props => {
             width: '100%'
           }}
         >
-          <Bold>{endDate}</Bold>
+          {/* <Bold>판매 종료일</Bold> */}
+          <Bold>
+            {endDate.replace('.', '년').replace('.', '월').replace('.', '일')}
+          </Bold>
         </div>
       )}
     </div>

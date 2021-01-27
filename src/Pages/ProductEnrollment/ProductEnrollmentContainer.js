@@ -13,40 +13,21 @@ const ProductEnrollmentContainer = () => {
   const userInfo = useSelector(state => state.user);
 
   const location = useLocation();
-  const [templink, setTempLink] = useState(location.state?.templink);
+  const templink = location.state?.templink;
 
   //TODO: 리펙토링
 
   const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState();
-  const [value, setValue, loading, setLoading] = useProduct(templink);
-  const [isTemp, setIsTemp] = useState(true);
-  const valueValidate = value => {
-    if (
-      value.imageList.length == 0 ||
-      value.productPrice == '' ||
-      value.kakaoUrl == ''
-    ) {
-      setIsTemp(true);
-      return true;
-    } else {
-      setIsTemp(false);
-      return false;
-    }
-  };
+  const [value, setValue, loading, setLoading, validate] = useProduct(templink);
 
   const closeModal = () => {
     setIsOpen(false);
-    if (isTemp) {
-      history.push(`/MyLink`, {
-        before: true
-      });
-    } else {
-      history.push(`/Product/seller/${userInfo.id}/${modalData.url}`, {
-        before: true
-      });
-    }
+
+    history.push(`/Product/seller/${userInfo.id}/${modalData.url}`, {
+      before: true
+    });
   };
 
   const openModal = () => {
@@ -54,11 +35,14 @@ const ProductEnrollmentContainer = () => {
   };
 
   const onSubmit = async () => {
+    if (validate()) {
+      return;
+    }
     let form = new FormData();
     let now = new Date();
-    if (isTemp) {
-      alert('임시저장 됩니다.');
-    }
+    // if (isTemp) {
+    //   alert('임시저장 됩니다.');
+    // }
     now.setDate(now.getDate() + parseInt(value.d));
     now.setHours(now.getHours() + parseInt(value.h));
     now.setMinutes(now.getMinutes() + parseInt(value.m));
@@ -77,8 +61,10 @@ const ProductEnrollmentContainer = () => {
         chatUrl: value.kakaoUrl, // 오픈채팅 주소
         name: value.productTitle,
         description: value.description,
-        status: isTemp ? '6' : '0',
-        url: templink ? templink.replace('/', '') : null
+        // status: isTemp ? '6' : '0',
+        status: '0',
+        // url: templink ? templink.replace('/', '') : null
+        url: `https://open.kakao.com/o/gDbtKmTc`
       })
     );
     setLoading(false);
@@ -89,16 +75,13 @@ const ProductEnrollmentContainer = () => {
       },
       body: form
     });
+    console.log(data);
     setModalData(data);
     setLoading(true);
     openModal();
   };
 
-  useEffect(() => {
-    valueValidate(value);
-    console.log(value);
-    console.log(isTemp);
-  }, [value]);
+  useEffect(() => {}, [value]);
 
   return loading ? (
     <ProductEnrollmentPresenter
@@ -110,7 +93,6 @@ const ProductEnrollmentContainer = () => {
       onChange={setValue}
       value={value}
       loading={loading}
-      isTemp={isTemp}
       templink={templink}
       userInfo={userInfo}
       bannerType={location.pathname}

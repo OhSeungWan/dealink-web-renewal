@@ -8,7 +8,8 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 100%;
   background-color: #f5f6f7;
-  margin-top: 20;
+  margin-top: 20px;
+  margin-bottom: 80px;
 `;
 
 const HeaderWrapper = styled.div`

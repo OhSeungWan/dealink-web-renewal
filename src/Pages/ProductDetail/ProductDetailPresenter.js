@@ -13,13 +13,16 @@ import {
   Text
 } from 'Components/Atoms';
 import { List, Share, Slider, Timer } from 'Components/Molecules';
+import { Redirect, useLocation } from 'react-router-dom';
 
 import Header from 'Components/Molecules/Header';
 import { PrivateContents } from 'Routers/MainRouter';
 import React from 'react';
 import Terms from 'Components/Organisms/Terms';
+import beforeBid from 'assets/img/beforeBid.png';
 
 const ProductDetailPresenter = props => {
+  const location = useLocation();
   const auctionStatus =
     props.data.auctionStatus == 'AUCTION_COMPLETED' ? true : false;
   return (
@@ -34,7 +37,7 @@ const ProductDetailPresenter = props => {
         />
         <ProductInfo type={'buyer'} {...props.data} />
         <Share
-          url={`http://www.dealink.co.kr/Product/seller/0/${props.data.url}`}
+          url={`https://www.dealink.co.kr/Product/seller/0/${props.data.url}`}
           data={props.data} //클립보드 복사 url
         />
 
@@ -59,15 +62,28 @@ const ProductDetailPresenter = props => {
         <ProductDetail {...props.data} />
         <Terms />
         {!auctionStatus ? (
-          <Button
-            className={props.userInfo.isLogin ? 'login-dobid-btn' : 'dobid-btn'}
-            style={{ position: 'fixed', bottom: 10 }}
-            onClick={props.openModal}
-            primary
-            common
-          >
-            입찰하기
-          </Button>
+          <>
+            <Button
+              className={
+                props.userInfo.isLogin ? 'login-dobid-btn' : 'dobid-btn'
+              }
+              style={{ position: 'fixed', bottom: 10 }}
+              onClick={props.openModal}
+              primary
+              common
+            >
+              입찰 GO!
+            </Button>{' '}
+            <img
+              src={beforeBid}
+              style={{
+                position: 'fixed',
+                bottom: 53,
+                width: '100%',
+                maxWidth: 200
+              }}
+            />
+          </>
         ) : props.data.userType == 'SELLER' ? (
           <Button
             style={{ position: 'fixed', bottom: 10, zIndex: 2 }}
@@ -86,14 +102,21 @@ const ProductDetailPresenter = props => {
           closeModal={props.closeModal}
         >
           {!auctionStatus ? (
-            <PrivateContents>
+            props.userInfo.isLogin ? (
               <Biddging
                 data={props.data}
                 userInfo={props.userInfo}
                 closeModal={props.closeModal}
                 isOpen={props.isOpen}
               />
-            </PrivateContents>
+            ) : (
+              <Redirect
+                to={{
+                  pathname: '/SignIn',
+                  state: { from: location.pathname }
+                }}
+              ></Redirect>
+            )
           ) : props.data.userType == 'SELLER' ? (
             <Nextrankchange
               link={props.data.url}

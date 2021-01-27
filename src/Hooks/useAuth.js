@@ -10,43 +10,25 @@ export const useAuth = type => {
   const dispatch = useDispatch();
 
   const [auth, setAuth] = useState(isLogin);
-  const [complete, setComplete] = useState(false);
 
   // 로그인 유무 검사
   const certificate = async () => {
     // 세션 스토리지에서 엑세스 토큰 정보 가져옴
-    const accessToken = sessionStorage.getItem('accessToken');
-    // 엑세스 토큰 유효성 검사
-    setComplete(false);
-    const isAuth = await accessTokenValidate(accessToken);
-    if (isAuth) {
-      const accessToken = sessionStorage.getItem('accessToken');
-      const id = sessionStorage.getItem('userId');
-      dispatch(fetchUser({ id: id, accessToken: accessToken }));
-    }
-    setAuth(isAuth);
-    setComplete(true);
-
-    return isAuth;
-  };
-
-  // 엑세스 토큰 유효성 검사
-  const accessTokenValidate = async token => {
-    //토큰 유효성 검사 로직 필요
-    const res = await fetch(`https://rest.dealink.co.kr//user/1/sale`, {
-      headers: { AUTH_TOKEN: token }
-    });
-    const effectiveness = await res.json();
-
-    const validationResult =
-      effectiveness.message == 'Invalid Access Token' ? false : true;
-
-    return validationResult;
+    // const accessToken = sessionStorage.getItem('accessToken');
+    // // 엑세스 토큰 유효성 검사
+    // const isAuth = await accessTokenValidate(accessToken);
+    // if (isAuth) {
+    //   const accessToken = sessionStorage.getItem('accessToken');
+    //   const id = sessionStorage.getItem('userId');
+    //   dispatch(fetchUser(accessToken));
+    // }
+    // setAuth(isAuth);
+    // return isAuth;
   };
 
   useEffect(() => {
     certificate();
   }, []);
 
-  return [auth, certificate, complete];
+  return [auth];
 };

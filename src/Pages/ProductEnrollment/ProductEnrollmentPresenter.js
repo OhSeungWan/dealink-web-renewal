@@ -24,7 +24,6 @@ const ProductEnrollmentPresenter = ({
   isOpen,
   data,
   loading,
-  isTemp,
   templink,
   tempdata,
   userInfo,
@@ -60,7 +59,7 @@ const ProductEnrollmentPresenter = ({
           </>
         )}
         <Border height={'8px'} />
-        <div style={{ fontSize: 20, fontWeight: 600 }}>딜링크에 상품등록</div>
+        <div style={{ fontSize: 20, fontWeight: 400 }}>딜링크에 상품등록</div>
         <Border height={'1px'} />
         <ProductInfo
           value={value}
@@ -77,7 +76,7 @@ const ProductEnrollmentPresenter = ({
               marginBottom: 10
             }}
           >
-            <div>경매 마감일</div>
+            <div style={{ fontSize: 18 }}>경매 진행기간</div>
             <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
               경매 진행 시간을 설정해 주세요.
             </div>
@@ -94,7 +93,7 @@ const ProductEnrollmentPresenter = ({
             common
             style={{ position: 'fixed', bottom: 5 }}
           >
-            {isTemp ? '임시저장' : '상품등록'}
+            상품등록
           </Button>
         )}
         <Modal isOpen={isOpen} closeModal={closeModal}>

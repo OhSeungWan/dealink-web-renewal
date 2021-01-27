@@ -15,30 +15,26 @@ const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
   border-radius: 5px;
   margin: 15px 0px 15px 0px;
   width: 80%;
-  text-align: center;
+  text-align: left;
   font-size: 16px;
 `;
 
 const ProductInfo = props => {
-  const [productPrice, setProductPrice] = useState(
-    props.value ? props.value.productPrice : ''
-  );
   const history = useHistory();
 
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
-    props.onChange(name, value);
     if (name == 'productPrice') {
-      const price = value;
-      const formattingPrice = price.replace(/[^0-9]/g, '');
-      setProductPrice(`${comma(formattingPrice)}`);
+      props.onChange(name, value.replace(/[^0-9]/g, ''));
+    } else {
+      props.onChange(name, value);
     }
   };
 
   const userInfo = useSelector(state => state.user);
   const confirmLogin = () => {
-    if (!userInfo.accessToken) {
+    if (!userInfo.isLogin) {
       alert('로그인 후 상품 등록이 가능합니다.');
       history.push('/SignIn');
     }
@@ -46,46 +42,67 @@ const ProductInfo = props => {
 
   return !props.type ? (
     <List alignCenter={true}>
-      <Text>상품사진</Text>
-      <ImageBox type="upload" onChange={props.onChange} />
-      <Text>상품명</Text>
+      <Text
+        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
+      >
+        상품사진
+      </Text>
+      <ImageBox
+        type="upload"
+        onChange={props.onChange}
+        imglist={props.value.imageList}
+      />
+      <Text
+        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
+      >
+        상품명
+      </Text>
       <Input
+        style={{ textAlign: 'left' }}
         value={props.value.productTitle}
         name="productTitle"
-        placeholder={'상품명을 입력해주세요'}
+        id="productTitle"
+        placeholder={'상품명을 입력해주세요.'}
         onChange={onChange}
         onClick={confirmLogin}
       />
-      <Text>상품설명</Text>
+      <Text
+        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
+      >
+        상품설명
+      </Text>
       <TextArea
         value={props.value.description}
         name="description"
-        placeholder={'상품설명을 입력해주세요'}
+        id="description"
+        placeholder={'상품내용 및 거래 희망지역 (시, 구) 등 을 적어주세요.'}
         onChange={onChange}
         onClick={confirmLogin}
       />
-      <Text>상품가격</Text>
+      <Text
+        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
+      >
+        상품가격
+      </Text>
       <div
         style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          width: '90%',
-          borderRadius: 5,
-          border: `1px solid #eaeaea`
+          width: '90%'
         }}
       >
         <Input
           type="tel"
           style={{
-            textAlign: 'center',
+            textAlign: 'left',
             flex: 6,
-            border: 'none',
-            margin: 0,
-            paddingLeft: 50
+            borderRadius: 5,
+            border: `1px solid #eaeaea`
           }}
-          value={comma(productPrice)}
+          value={comma(props.value.productPrice)}
           name="productPrice"
+          id="productPrice"
           placeholder={'시작가를 입력해주세요.'}
           onChange={onChange}
           onClick={confirmLogin}
@@ -93,54 +110,11 @@ const ProductInfo = props => {
         <div
           style={{
             flex: 1,
-            textAlign: 'center'
+            textAlign: 'center',
+            fontSize: 28
           }}
         >
           원
-        </div>
-      </div>
-
-      <Text>카카오 오픈채팅 URL</Text>
-      <Input
-        value={props.value.kakaoUrl}
-        name="kakaoUrl"
-        placeholder={'추후 낙찰자와 대화하기 위한 채팅방 입니다.'}
-        onChange={onChange}
-        onClick={confirmLogin}
-      />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '90%',
-          justifyContent: 'center'
-        }}
-      >
-        <div style={{ color: '#6E44FF', paddingTop: 10, fontSize: 12 }}>
-          • 채팅방 명은 상품명으로 변경해주세요.
-        </div>
-        <div style={{ color: '#6E44FF', paddingTop: 10, fontSize: 12 }}>
-          • 검색 허용은 꺼주세요.
-        </div>
-        <div style={{ paddingTop: 20, fontSize: 12 }}>
-          <MakeKaKao
-            target="_blank"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between'
-            }}
-            href="https://cs.kakao.com/helps?articleId=1073184402&service=8&category=105&device=1&locale=ko"
-          >
-            <div>판매자용 카카오 오픈채팅방 만드는 방법</div>
-            <div>▶</div>
-          </MakeKaKao>
-          <hr
-            style={{
-              marginTop: 15,
-              border: 'solid 1px #EAEAEA'
-            }}
-          />
         </div>
       </div>
       <Border height="8px" />

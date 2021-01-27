@@ -33,9 +33,6 @@ export const Auth = ({ children }) => {
     );
     // TODO: 테스트를 위한 코드 반드시 수정해야함
     const isAuth = (await auth.json()) == 'Invalid Access Token' ? false : true;
-    const id = sessionStorage.getItem('userId');
-    // console.log(`userInfo : ${userInfo} ,isAuth: ${isAuth}`);
-    // console.log(`userInfo : ${userInfo}`);
 
     // 인증정보가 없다면 리턴 >> 인증정보 없다면 로그인 창으로,,? 리다이렉트,,?
     //TODO: 여기 부분 인증 로직 추가해야함

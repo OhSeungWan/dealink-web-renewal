@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 
 import { List } from 'Components/Molecules';
 import { auctionApi } from 'Apis/auctionApi';
+import beforeBid from 'assets/img/beforeBid.png';
 import bidComplete from 'assets/img/bidComplete.png';
 import { comma } from 'Utils/comma-utils';
 import styled from 'styled-components';
@@ -120,8 +121,43 @@ const Bidding = ({ data, userInfo, isOpen }) => {
         </div>
       </div>
 
-      <Button onClick={biddingHandler} primary common>
-        입찰하기
+      <div
+        style={{
+          width: '100%',
+          backgroundColor: '#F5F5F7',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '10px 10px',
+          marginBottom: '40px',
+          flexDirection: 'column'
+        }}
+      >
+        <div style={{ width: '90%', fontSize: 14 }}>
+          {`- 입찰 및 낙찰 시 카카오톡 알림을 발송해 드립니다. \n`}
+        </div>
+        <div style={{ width: '90%', fontSize: 14 }}>
+          {`- 낙찰 후 판매자의 오픈채팅방 링크를 발송해 드립니다 \n`}
+        </div>
+      </div>
+
+      <Button
+        onClick={biddingHandler}
+        primary
+        common
+        style={{ position: 'relative' }}
+      >
+        <img
+          src={beforeBid}
+          style={{
+            position: 'absolute',
+            top: -37,
+            left: '25%',
+            width: '100%',
+            maxWidth: 200
+          }}
+        />
+        입찰 GO!
       </Button>
     </List>
   ) : (

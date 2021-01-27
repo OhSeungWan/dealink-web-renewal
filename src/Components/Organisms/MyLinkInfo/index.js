@@ -162,7 +162,7 @@ const Container = styled.div`
 
 const MyLinkInfo = () => {
   const userInfo = useSelector(state => state.user);
-
+  console.log(userInfo);
   const selectList = [
     { name: '입찰', status: 'purchase' },
     { name: '판매', status: 'sale' },
