@@ -58,15 +58,16 @@ const ProductEnrollmentContainer = () => {
         currentPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 현재가
         closingTime: now.format('yyyy-MM-dd HH:mm:ss'), // 경매 마감시간
         tradingMethod: '직거래', //
-        chatUrl: value.kakaoUrl, // 오픈채팅 주소
+        chatUrl: 'https://open.kakao.com/o/gDbtKmTc', // 오픈채팅 주소
         name: value.productTitle,
         description: value.description,
         // status: isTemp ? '6' : '0',
         status: '0',
         // url: templink ? templink.replace('/', '') : null
-        url: `https://open.kakao.com/o/gDbtKmTc`
+        url: null
       })
     );
+
     setLoading(false);
     const data = await auctionApi.registerAuction(userInfo.id, {
       method: 'POST',
