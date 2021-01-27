@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Loading } from 'Components/Organisms/Modal';
+import Main from 'Pages/Main';
 import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
 import ProductEnrollment from 'Pages/ProductEnrollment';
@@ -35,7 +36,9 @@ const MainRouter = () => {
   return (
     <Switch>
       <Route exact path="/" component={ProductEnrollment}></Route>
-      <Route exact path="/Main" component={ProductEnrollment}></Route>
+      {/* <Route exact path="/Main" component={ProductEnrollment}></Route> */}
+      <Route exact path="/Main" component={Main}></Route>
+
       <Route exact path="/Survey" component={ProductEnrollment}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
       <Route
