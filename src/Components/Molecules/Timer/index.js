@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import Picker from 'react-scrollable-picker';
+import moment from 'moment';
+// import Picker from 'react-scrollable-picker';
 import styled from 'styled-components';
 
 const generateNumberArray = (begin, end) => {
@@ -266,6 +267,7 @@ const Bold = styled.div`
 const Timer = props => {
   const { days, hours, minutes, seconds, link } = props;
   let endDate;
+  let endTime;
   if (!props.isSet) {
     const now = new Date();
 
@@ -278,7 +280,9 @@ const Timer = props => {
     if (endDate == 'Invalid Date') {
       endDate = '시간을 설정해 주세요.';
     } else {
-      endDate = endDate.substring(0, endDate.lastIndexOf('분')) + ' 마감';
+      // endDate = endDate.substring(0, endDate.lastIndexOf('분'));
+      endDate = moment().format('MM [월] DD [일] ');
+      endTime = moment().format('hh [시] mm [분]');
     }
   }
 
@@ -319,25 +323,22 @@ const Timer = props => {
         <TimePicker />
       </div> */}
       {!props.isSet && (
-        <div
-          style={{
-            marginTop: 10,
-            fontSize: 16,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#F5F5F7',
-            width: '100%'
-          }}
-        >
-          {/* <Bold>판매 종료일</Bold> */}
-          <Bold>
-            {endDate.replace('.', '년').replace('.', '월').replace('.', '일')}
-          </Bold>
-        </div>
+        <TimerDateTextWrapper>
+          <Bold>판매 종료일</Bold> <Bold>{endDate}</Bold> <Bold>{endTime}</Bold>
+        </TimerDateTextWrapper>
       )}
     </div>
   );
 };
 
+const TimerDateTextWrapper = styled.div`
+  margin-top: 10px;
+  padding: 15px 40px 15px 40px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #f5f5f7;
+  width: 100%;
+`;
 export default Timer;
