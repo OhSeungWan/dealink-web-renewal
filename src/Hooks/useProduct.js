@@ -51,25 +51,21 @@ export const useProduct = templink => {
         if (data.d == 0 && data.h == 0 && data.m == 0 && data.s == 0) {
           alert(validateMessage.time);
           document.getElementById('timer').focus();
-          document
-            .getElementById('timer')
-            .scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-              inline: 'nearest'
-            });
+          document.getElementById('timer').scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'nearest'
+          });
           return true;
         }
       } else if (value == '' || value == null || !value) {
         alert(validateMessage[key]);
         document.getElementById(key).focus();
-        document
-          .getElementById(key)
-          .scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'nearest'
-          });
+        document.getElementById(key).scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'nearest'
+        });
         return true;
       }
     }
@@ -81,6 +77,7 @@ export const useProduct = templink => {
       setLoading(false);
       const res = await fetch(
         `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
+        // `http://192.168.0.102:8080/user/${userId}/auction/${templink}`
       );
       const data = await res.json();
       console.log(data);

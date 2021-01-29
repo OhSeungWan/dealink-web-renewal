@@ -59,11 +59,6 @@ const Bidding = ({ data, userInfo, isOpen }) => {
 
   return !complete ? (
     <List alignCenter={true}>
-      <Text>경매 마감일</Text>
-      <Input readOnly name="closingTime" value={data.closingTime} />
-
-      <Border height="8px" />
-
       <Text>현재가</Text>
       <div
         style={{

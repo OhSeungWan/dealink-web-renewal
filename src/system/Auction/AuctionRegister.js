@@ -1,9 +1,11 @@
+import { Container, ScreenWrapper } from 'Components/Atoms';
 import React, { useState } from 'react';
 
 import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
 import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
 import { Button } from 'Components/Atoms';
 import Date from 'Utils/date-utils';
+import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';
 import { useHistory } from 'react-router-dom';
 import { useProduct } from 'Hooks/useProduct';
@@ -80,27 +82,31 @@ const AuctionRegister = () => {
     openModal();
   };
 
-  return (
-    loading && (
-      <>
-        <AuctionRegisterInputForm onChange={setValue} value={value} />
-        {userInfo.isLogin && (
-          <Button
-            onClick={onRegisterAuction}
-            primary
-            common
-            style={{ position: 'fixed', bottom: 5 }}
-          >
-            상품등록
-          </Button>
-        )}
-        <AuctionRegisterModal
-          modalData={modalData}
-          closeModal={closeModal}
-          isOpen={isOpen}
-        />
-      </>
-    )
+  return loading ? (
+    <>
+      <AuctionRegisterInputForm onChange={setValue} value={value} />
+      {userInfo.isLogin && (
+        <Button
+          onClick={onRegisterAuction}
+          primary
+          common
+          style={{ position: 'fixed', bottom: 5 }}
+        >
+          상품등록
+        </Button>
+      )}
+      <AuctionRegisterModal
+        modalData={modalData}
+        closeModal={closeModal}
+        isOpen={isOpen}
+      />
+    </>
+  ) : (
+    <ScreenWrapper>
+      <Container>
+        <Loading isOpen={true}></Loading>
+      </Container>
+    </ScreenWrapper>
   );
 };
 

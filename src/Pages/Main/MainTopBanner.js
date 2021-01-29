@@ -17,7 +17,7 @@ const MainTopBanner = () => {
       ? eventBanner
       : pathname == '/Survey'
       ? Banner2
-      : Banner1;
+      : eventBanner;
   return (
     <>
       {!userInfo.isLogin && <ImageBox url={bannerImg} />}

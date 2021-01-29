@@ -24,6 +24,9 @@ const AuctionOptions = props => {
     e.preventDefault();
     const name = e.target.getAttribute('name');
     setTradeMethod(name);
+    if (name == 'direct') {
+    } else {
+    }
   };
 
   const CheckPaymentHandler = e => {

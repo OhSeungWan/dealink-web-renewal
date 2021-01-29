@@ -1,8 +1,8 @@
 import { Modal } from 'Components/Organisms';
 import React from 'react';
 import { Share } from 'Components/Molecules';
+import shareAuction from 'assets/img/shareAuction.png';
 import styled from 'styled-components';
-
 const ModalContentWrapper = styled.div`
   padding: 20px;
   display: flex;
@@ -17,32 +17,41 @@ const ModalContentText = styled.div`
 `;
 const ModalLinkDescriptionWrapper = styled.div`
   display: flex;
-  width: 100%auto;
+  width: 100%;
   padding: 20px;
 `;
 
 const ModalShareWrapper = styled.div`
   display: flex;
   width: 100%;
-  padding: 20px;
 `;
+
 const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
+  console.log(modalData);
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
       {modalData && (
         <ModalContentWrapper>
           <ModalContentText style={{ margin: 20 }}>(ஐ╹◡╹)ノ</ModalContentText>
-          <ModalContentText>임시저장 완료</ModalContentText>
+          <ModalContentText>상품등록 완료</ModalContentText>
           <ModalLinkDescriptionWrapper>
             <ModalContentText
-              style={{ fontWeight: 700, flex: 1, minWidth: 50 }}
+              style={{ fontWeight: 700, flex: 1, minWidth: 50, fontSize: 14 }}
             >
               상품명
             </ModalContentText>
-            <ModalContentText style={{ flex: 7, textAlign: 'center' }}>
-              {modalData.productTitle}
+            <ModalContentText
+              style={{
+                flex: 7,
+                textAlign: 'center',
+                fontSize: 14,
+                color: '#605F65'
+              }}
+            >
+              {modalData.name}
             </ModalContentText>
           </ModalLinkDescriptionWrapper>
+          <img src={shareAuction} width={'100%'} />
           <ModalShareWrapper>
             <Share
               url={`http://www.dealink.co.kr/Product/seller/0/${modalData.url}`}
@@ -50,7 +59,7 @@ const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
               data={modalData}
             />
           </ModalShareWrapper>
-          <ModalContentText style={{ color: '#6E44FF' }}>
+          <ModalContentText style={{ color: '#6E44FF', fontSize: 14 }}>
             생성된 링크 들은 '내링크 관리'에서 확인할 수 있습니다.
           </ModalContentText>
         </ModalContentWrapper>

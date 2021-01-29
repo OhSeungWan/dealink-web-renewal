@@ -15,6 +15,7 @@ import {
 import { List, Share, Slider, Timer } from 'Components/Molecules';
 import { Redirect, useLocation } from 'react-router-dom';
 
+import { FadeBox } from 'Components/Organisms/Modal';
 import Header from 'Components/Molecules/Header';
 import { PrivateContents } from 'Routers/MainRouter';
 import React from 'react';
@@ -29,6 +30,11 @@ const ProductDetailPresenter = props => {
     <ScreenWrapper>
       <Header banner />
       <Container style={{ marginTop: 150 }}>
+        <FadeBox
+          isOpen={props.firstTime && !props.isSee}
+          closeModal={props.closeFirstModal}
+          doNotSeeToday={props.doNotSeeToday}
+        />
         <Slider
           ImageList={props.data.imageUrls}
           big
