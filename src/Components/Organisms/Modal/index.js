@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import styled, { css, keyframes } from 'styled-components';
 
 import { AiOutlineClose } from 'react-icons/ai';
+import AuctionDetailModal from 'assets/img/AuctionDetailModal.png';
 import { Container } from 'Components/Atoms';
+import { flexDirection_type } from 'Components/Molecules/InfoList/InfoListH.stories';
 
 const boxFade = (h = 80) => keyframes`
  0%{
@@ -153,9 +155,41 @@ export const FadeBox = ({ ...props }) => {
   return props.isOpen ? (
     <Container>
       <ModalWrapper style={{ backgroundColor: 'rgba(157, 157, 157, 0.7)' }}>
-        <ModalTop isOpen={props.isOpen}>
-          <Circle>경매 종료</Circle>
-        </ModalTop>
+        <div
+          style={{
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column'
+          }}
+        >
+          <img src={AuctionDetailModal} width={'90%'} />
+          {/* <div style={{ position: 'absolute', bottom: 10, display: 'flex' }}> */}
+          <div
+            style={{
+              position: 'absolute',
+              left: 35,
+              bottom: 10,
+              color: 'white'
+            }}
+            onClick={props.doNotSeeToday}
+          >
+            오늘하루 그만보기
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              right: 35,
+              bottom: 10,
+              color: 'white'
+            }}
+            onClick={props.closeModal}
+          >
+            닫기
+          </div>
+          {/* </div> */}
+        </div>
       </ModalWrapper>
     </Container>
   ) : null;

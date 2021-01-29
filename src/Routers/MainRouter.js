@@ -35,11 +35,9 @@ const MainRouter = () => {
   }, []);
   return (
     <Switch>
-      <Route exact path="/" component={ProductEnrollment}></Route>
-      {/* <Route exact path="/Main" component={ProductEnrollment}></Route> */}
+      <Route exact path="/" component={Main}></Route>
       <Route exact path="/Main" component={Main}></Route>
-
-      <Route exact path="/Survey" component={ProductEnrollment}></Route>
+      <Route exact path="/Survey" component={Main}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
       <Route
         path="/Product/:type/:userIndex/:url"
@@ -48,7 +46,7 @@ const MainRouter = () => {
       <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
       <Route path="/ProductEnrollment">
-        <ProductEnrollment />
+        <Main />
       </Route>
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />

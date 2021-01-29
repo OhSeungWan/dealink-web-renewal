@@ -86,7 +86,7 @@ const SignInLink = () => {
   return (
     <MyLinkWrapper>
       <Button onClick={goMyLink} secondary>
-        <BiLogIn /> 로그인
+        <BiLogIn /> 간편 로그인
       </Button>
     </MyLinkWrapper>
   );

@@ -6,7 +6,6 @@ import {
 import React, { useState } from 'react';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import HelmetMetaData from 'Utils/helmet-utils';
 import btnCopy from 'assets/img/btnCopy.png';
 import btnFaceBook from 'assets/img/btnFaceBook.png';
 import btnKakao from 'assets/img/btnKakao.png';
@@ -37,12 +36,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-`;
-
-const Text = styled.div`
-  font-size: 25px;
-  font-weight: 700;
-  padding: 0px 30px 0px 30px;
+  background-color: #f5f5f7;
 `;
 
 const Share = ({ url, data }) => {

@@ -1,6 +1,6 @@
 import { BidHistory, ImageBox, List } from 'Components/Molecules';
 import { Border, Button, Input, ScreenWrapper, Text } from 'Components/Atoms';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Loading } from 'Components/Organisms/Modal';
 import { Modal } from 'Components/Organisms';
@@ -75,7 +75,7 @@ const ProductInfo = props => {
         value={props.value.description}
         name="description"
         id="description"
-        placeholder={'상품내용 및 거래 희망지역 (시, 구) 등 을 적어주세요.'}
+        placeholder={'상품 내용 및 거래 희망지역(시/구)을 적어주세요.'}
         onChange={onChange}
         onClick={confirmLogin}
       />

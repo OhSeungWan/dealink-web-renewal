@@ -49,9 +49,13 @@ export const fetchUserByCode = createAsyncThunk(
 export const fetchUser = createAsyncThunk(
   'users/fetchByCode',
   async accessToken => {
-    const res = await fetch(`https://rest.dealink.co.kr/user/refresh`, {
-      headers: { AUTH_TOKEN: accessToken }
-    });
+    const res = await fetch(
+      `https://rest.dealink.co.kr/user/refresh`,
+      // `http://192.168.0.102:8080/user/refresh`,
+      {
+        headers: { AUTH_TOKEN: accessToken }
+      }
+    );
     const data = await res.json();
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
