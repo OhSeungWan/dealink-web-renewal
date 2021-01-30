@@ -45,7 +45,7 @@ const TitleText = styled.div`
 export const BannerTop = ({ type }) => {
   const history = useHistory();
   const onClick = () => {
-    history.push('/ProductEnrollment');
+    history.push('/main');
   };
   return (
     <Container onClick={onClick}>
