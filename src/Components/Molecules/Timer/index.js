@@ -265,24 +265,18 @@ const Bold = styled.div`
 `;
 
 const Timer = props => {
-  const { days, hours, minutes, seconds, link } = props;
+  const { d, h, m, s, link } = props.value;
   let endDate;
   let endTime;
   if (!props.isSet) {
-    const now = new Date();
-
-    now.setDate(now.getDate() + parseInt(props.value.d));
-    now.setHours(now.getHours() + parseInt(props.value.h));
-    now.setMinutes(now.getMinutes() + parseInt(props.value.m));
-    now.setSeconds(now.getSeconds() + parseInt(props.value.s));
-    let nowString = now.toLocaleString();
-    endDate = nowString.replace(':', '시').replace(':', '분분');
     if (endDate == 'Invalid Date') {
       endDate = '시간을 설정해 주세요.';
     } else {
-      // endDate = endDate.substring(0, endDate.lastIndexOf('분'));
-      endDate = moment().format('MM [월] DD [일] ');
-      endTime = moment().format('hh [시] mm [분]');
+      endDate = moment().add(parseInt(d), 'days').format('MM [월] DD [일] ');
+      endTime = moment()
+        .add(parseInt(h), 'hours')
+        .add(parseInt(m), 'minutes')
+        .format('hh [시] mm [분]');
     }
   }
 
@@ -303,10 +297,10 @@ const Timer = props => {
         value={props.value}
         onChange={props.onChange}
         date={30}
-        day={days <= 0 ? 0 : days}
-        hour={hours <= 0 ? 0 : hours}
-        minute={minutes <= 0 ? 0 : minutes}
-        second={seconds <= 0 ? 0 : seconds}
+        day={d <= 0 ? 0 : d}
+        hour={h <= 0 ? 0 : h}
+        minute={m <= 0 ? 0 : m}
+        second={s <= 0 ? 0 : s}
         link={link}
       />
       {/* <div

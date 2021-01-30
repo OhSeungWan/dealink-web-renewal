@@ -1,5 +1,5 @@
 import { AuctionOptions, ProductInfo } from 'Components/Organisms';
-import { List, Share, Timer } from 'Components/Molecules';
+import { List, Timer } from 'Components/Molecules';
 
 import React from 'react';
 import styled from 'styled-components';
