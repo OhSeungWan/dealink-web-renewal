@@ -57,7 +57,7 @@ const MyLink = ({ type }) => {
 
   const goMyLink = () => {
     if (type == 'mylink') {
-      history.push('/ProductEnrollment');
+      history.push('/main');
     } else {
       history.push('/MyLink');
     }

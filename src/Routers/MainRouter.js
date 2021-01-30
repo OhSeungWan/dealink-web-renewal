@@ -45,9 +45,7 @@ const MainRouter = () => {
       ></Route>
       <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
-      <Route path="/ProductEnrollment">
-        <Main />
-      </Route>
+
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />
       </PrivateRoute>
