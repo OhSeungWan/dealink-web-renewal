@@ -14,6 +14,7 @@ const SignInContainer = () => {
   const code = new URLSearchParams(window.location.search).get('code');
 
   const initUserInfo = before => {
+    console.log(`befor : ${before}`);
     if (!code) return; // 인가 코드 없다면 리턴.
 
     dispatch(fetchUserByCode(code));
