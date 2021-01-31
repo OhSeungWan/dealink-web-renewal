@@ -90,11 +90,14 @@ const MyLink = ({ data, selected }) => {
     }
   };
 
+  const auctionStatusEnum = {
+    AUCTION_COMPLETED: '경매 종료',
+    PROCEEDING: '경매 진행중'
+  };
+
   return (
     <MyLinkWrapper>
-      <Status
-        status={data.auctionStatus ? data.auctionStatus : data.bidStatus}
-      />
+      <Status status={auctionStatusEnum[data.auctionStatus]} />
       <Name>{data.productName}</Name>
       <ConfirmBtn onClick={onClick}>링크확인</ConfirmBtn>
       <Border height="8px" />
