@@ -116,43 +116,30 @@ const TimerItem = ({
   const T = [
     { t: time.d, type: 'd', suffix: '일' },
     { t: time.h, type: 'h', suffix: '시' },
-    { t: time.m, type: 'm', suffix: '분' }
+    { t: time.m, type: 'm', suffix: '분' },
+    { t: time.s, type: 's', suffix: '초' }
   ];
 
   return (
     <TimeWrapper>
-      {T.map(t => {
-        return (
-          <>
-            <TimerInputWrapper>
-              <TimerInput
-                readOnly={isSet ? true : false}
-                placeholder="0"
-                onChange={!isSet ? timeChangeHandler : null}
-                value={t.t}
-                type={t.type}
-                name={t.type}
-              />
-            </TimerInputWrapper>
-            <Colon text={t.suffix} />
-          </>
-        );
-      })}
-      {isSet && (
-        <>
-          <TimerInputWrapper>
-            <TimerInput
-              readOnly={isSet ? true : false}
-              placeholder="0"
-              onChange={!isSet ? timeChangeHandler : null}
-              value={time.s}
-              type="s"
-              name="s"
-            />
-          </TimerInputWrapper>
-          <Colon text={'초'} />
-        </>
-      )}
+      <TimeDisplay time={time}></TimeDisplay>
+      {!isSet &&
+        T.map(t => {
+          return (
+            <>
+              <TimerInputWrapper>
+                <TimerInput
+                  placeholder="0"
+                  onChange={timeChangeHandler}
+                  value={t.t}
+                  type={t.type}
+                  name={t.type}
+                />
+              </TimerInputWrapper>
+              <Colon text={t.suffix} />
+            </>
+          );
+        })}
     </TimeWrapper>
   );
 };
@@ -258,5 +245,22 @@ const TimerInputWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const TimeDisplayWrapper = styled.div`
+  background-color: purple;
+  display: flex;
+  padding: 5px;
+  border-radius: 30px;
+  color: white;
+`;
+const TimeDisplay = ({ time }) => {
+  return (
+    <TimeDisplayWrapper>
+      <div>{time.d * 24 + time.h} :</div>
+      <div>{time.m} :</div>
+      <div>{time.s}</div>
+    </TimeDisplayWrapper>
+  );
+};
 
 export default Timer;

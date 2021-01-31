@@ -17,7 +17,6 @@ import { Redirect, useLocation } from 'react-router-dom';
 
 import { FadeBox } from 'Components/Organisms/Modal';
 import Header from 'Components/Molecules/Header';
-import { PrivateContents } from 'Routers/MainRouter';
 import React from 'react';
 import Terms from 'Components/Organisms/Terms';
 import beforeBid from 'assets/img/beforeBid.png';
@@ -54,10 +53,12 @@ const ProductDetailPresenter = props => {
           <Timer
             auctionStatus={auctionStatus}
             isSet={true}
-            days={props.days}
-            hours={props.hours}
-            minutes={props.minutes}
-            seconds={props.seconds}
+            value={{
+              d: props.days,
+              h: props.hours,
+              m: props.minutes,
+              s: props.seconds
+            }}
             link={props.data.url}
             fetchData={props.fetchData}
           />
