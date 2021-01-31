@@ -51,14 +51,18 @@ const Complete = styled.div`
   top: 0;
 `;
 
-const Slider = ({ ImageList, big, auctionStatus, onRemove, type }) => {
-  console.log(ImageList);
-
+const Slider = ({
+  ImageList,
+  big,
+  auctionStatus,
+  onRemove,
+  type,
+  children
+}) => {
   return ImageList ? (
     <SliderWrapper>
       <SliderContainer>
         {ImageList.map((img, index) => {
-          console.log(img);
           return type != 'detail' ? (
             <ImgWrapper>
               <RemoveBtn onRemove={onRemove} name={img.name} />
@@ -74,6 +78,7 @@ const Slider = ({ ImageList, big, auctionStatus, onRemove, type }) => {
           <img style={{ width: '20%' }} src={auctionComplete}></img>
         </Complete>
       )}
+      {children}
     </SliderWrapper>
   ) : null;
 };

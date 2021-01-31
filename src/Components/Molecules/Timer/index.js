@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
+import { GiAlarmClock } from 'react-icons/gi';
 import moment from 'moment';
 // import Picker from 'react-scrollable-picker';
 import styled from 'styled-components';
@@ -247,17 +247,23 @@ const TimerInputWrapper = styled.div`
 `;
 
 const TimeDisplayWrapper = styled.div`
-  background-color: purple;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(109, 68, 255, 0.5);
   display: flex;
-  padding: 5px;
+  padding: 5px 10px 5px 10px;
   border-radius: 30px;
   color: white;
+  justify-content: center;
+  align-items: center;
 `;
 const TimeDisplay = ({ time }) => {
   return (
     <TimeDisplayWrapper>
-      <div>{time.d * 24 + time.h} :</div>
-      <div>{time.m} :</div>
+      <GiAlarmClock size={25} style={{ padding: 5 }} color="black" />
+      <div>{time.d * 24 + time.h}:</div>
+      <div>{time.m}:</div>
       <div>{time.s}</div>
     </TimeDisplayWrapper>
   );
