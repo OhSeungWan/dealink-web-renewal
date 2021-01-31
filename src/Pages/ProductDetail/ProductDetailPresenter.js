@@ -20,6 +20,7 @@ import Header from 'Components/Molecules/Header';
 import React from 'react';
 import Terms from 'Components/Organisms/Terms';
 import beforeBid from 'assets/img/beforeBid.png';
+import styled from 'styled-components';
 
 const ProductDetailPresenter = props => {
   const location = useLocation();
@@ -39,17 +40,7 @@ const ProductDetailPresenter = props => {
           big
           auctionStatus={auctionStatus}
           type="detail"
-        />
-        <ProductInfo type={'buyer'} {...props.data} />
-        <Share
-          url={`https://www.dealink.co.kr/Product/seller/0/${props.data.url}`}
-          data={props.data} //클립보드 복사 url
-        />
-
-        <Border height="8px" />
-
-        <List alignCenter>
-          <Text style={{ textAlign: 'center' }}>Count Down</Text>
+        >
           <Timer
             auctionStatus={auctionStatus}
             isSet={true}
@@ -62,11 +53,16 @@ const ProductDetailPresenter = props => {
             link={props.data.url}
             fetchData={props.fetchData}
           />
-        </List>
-
-        <Border height="8px" />
+        </Slider>
+        <ProductInfo type={'buyer'} {...props.data} />
+        <Share
+          url={`https://www.dealink.co.kr/Product/seller/0/${props.data.url}`}
+          data={props.data} //클립보드 복사 url
+        />
 
         <ProductDetail {...props.data} />
+        <Border height="8px" />
+
         <Terms />
         {!auctionStatus ? (
           <>
