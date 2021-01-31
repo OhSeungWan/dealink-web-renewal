@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { BiFemaleSign } from 'react-icons/bi';
 import ProductDetailPresenter from 'Pages/ProductDetail/ProductDetailPresenter';
 import { useFetch } from 'Hooks/useFetch';
 import { useSelector } from 'react-redux';

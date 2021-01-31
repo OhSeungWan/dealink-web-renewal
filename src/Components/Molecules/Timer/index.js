@@ -4,81 +4,6 @@ import moment from 'moment';
 // import Picker from 'react-scrollable-picker';
 import styled from 'styled-components';
 
-const generateNumberArray = (begin, end) => {
-  let array = [];
-  for (let i = begin; i <= end; i++) {
-    const value = (i < 10 ? '0' : '') + i;
-    array.push({
-      value: (i < 10 ? '0' : '') + i,
-      label: (i < 10 ? '0' : '') + i
-    });
-  }
-  return array;
-};
-
-// const TimePicker = () => {
-//   const [valueGroups, setValueGroups] = useState({
-//     d: 0,
-//     h: 0,
-//     m: 0,
-//     s: 0
-//   });
-
-//   const [optionGroups, setOptionGroups] = useState({
-//     d: generateNumberArray(0, 50),
-//     h: generateNumberArray(0, 50),
-//     m: generateNumberArray(0, 50),
-//     s: generateNumberArray(0, 50)
-//   });
-
-//   return (
-//     <Picker
-//       optionGroups={optionGroups}
-//       valueGroups={valueGroups}
-//       onChange={() => {
-//         return;
-//       }}
-//     />
-//   );
-// };
-
-const TimerInput = styled.input.attrs(props => {
-  if (props.type == 'd') {
-    return { type: 'tel', max: '100', min: '0', id: 'timer' };
-  } else if (props.type == 'h') {
-    return { type: 'tel', max: '24', min: '0', id: 'timer' };
-  } else if (props.type == 'm') {
-    return { type: 'tel', max: '60', min: '0', id: 'timer' };
-  } else if (props.type == 's') {
-    return { type: 'tel', max: '60', min: '0', id: 'timer' };
-  }
-})`
-  text-align: center;
-  font-size: 20px;
-  font-weight: 900;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  width: 100%;
-  padding: 5px;
-  max-width: 40px;
-`;
-
-const TimeWrapper = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  flex: 1;
-`;
-
-const TimerItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const TimerItem = ({
   isSet,
   day = '',
@@ -188,66 +113,77 @@ const TimerItem = ({
     }
   }, [time]);
 
-  //TODO: use useCallback()
-  //TODO: refectoring
+  const T = [
+    { t: time.d, type: 'd', suffix: '일' },
+    { t: time.h, type: 'h', suffix: '시' },
+    { t: time.m, type: 'm', suffix: '분' },
+    { t: time.s, type: 's', suffix: '초' }
+  ];
 
   return (
     <TimeWrapper>
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.d}
-          type="d"
-          name="d"
-        />
-      </TimerItemWrapper>
-      <Colon text={'일'} />
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.h}
-          type="h"
-          name="h"
-        />
-      </TimerItemWrapper>
-
-      <Colon text={'시간'} />
-
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.m}
-          type="m"
-          name="m"
-        />
-      </TimerItemWrapper>
-      <Colon text={'분'} />
-
-      {isSet && (
-        <>
-          <TimerItemWrapper>
-            <TimerInput
-              readOnly={isSet ? true : false}
-              placeholder="0"
-              onChange={!isSet ? timeChangeHandler : null}
-              value={time.s}
-              type="s"
-              name="s"
-            />
-          </TimerItemWrapper>
-          <Colon text={'초'} />
-        </>
-      )}
+      <TimeDisplay time={time}></TimeDisplay>
+      {!isSet &&
+        T.map(t => {
+          return (
+            <>
+              <TimerInputWrapper>
+                <TimerInput
+                  placeholder="0"
+                  onChange={timeChangeHandler}
+                  value={t.t}
+                  type={t.type}
+                  name={t.type}
+                />
+              </TimerInputWrapper>
+              <Colon text={t.suffix} />
+            </>
+          );
+        })}
     </TimeWrapper>
   );
 };
 
+const Timer = props => {
+  const { d, h, m, s, link } = props.value;
+  let endDate;
+  let endTime;
+
+  if (!props.isSet) {
+    if (endDate == 'Invalid Date') {
+      endDate = '시간을 설정해 주세요.';
+    } else {
+      endDate = moment().add(parseInt(d), 'days').format('MM [월] DD [일] ');
+      endTime = moment()
+        .add(parseInt(h), 'hours')
+        .add(parseInt(m), 'minutes')
+        .format('hh [시] mm [분]');
+    }
+  }
+
+  return (
+    <TimerItemWrppaer>
+      <TimerItem
+        auctionStatus={props.auctionStatus}
+        fetchData={props.fetchData}
+        isSet={props.isSet ? true : false}
+        value={props.value}
+        onChange={props.onChange}
+        date={30}
+        day={d <= 0 ? 0 : d}
+        hour={h <= 0 ? 0 : h}
+        minute={m <= 0 ? 0 : m}
+        second={s <= 0 ? 0 : s}
+        link={link}
+      />
+      {!props.isSet && (
+        <TimerDateTextWrapper>
+          <Bold>판매 종료일</Bold> <Bold>{endDate}</Bold> <Bold>{endTime}</Bold>
+        </TimerDateTextWrapper>
+      )}
+    </TimerItemWrppaer>
+  );
+};
 const ColonText = styled.div`
   margin: 10px;
   text-align: center;
@@ -257,80 +193,18 @@ const ColonText = styled.div`
 const Colon = ({ text }) => {
   return <ColonText>{text}</ColonText>;
 };
-
 const Bold = styled.div`
   font-size: 14px;
   font-weight: 600;
   padding: 5px;
 `;
-
-const Timer = props => {
-  const { days, hours, minutes, seconds, link } = props;
-  let endDate;
-  let endTime;
-  if (!props.isSet) {
-    const now = new Date();
-
-    now.setDate(now.getDate() + parseInt(props.value.d));
-    now.setHours(now.getHours() + parseInt(props.value.h));
-    now.setMinutes(now.getMinutes() + parseInt(props.value.m));
-    now.setSeconds(now.getSeconds() + parseInt(props.value.s));
-    let nowString = now.toLocaleString();
-    endDate = nowString.replace(':', '시').replace(':', '분분');
-    if (endDate == 'Invalid Date') {
-      endDate = '시간을 설정해 주세요.';
-    } else {
-      // endDate = endDate.substring(0, endDate.lastIndexOf('분'));
-      endDate = moment().format('MM [월] DD [일] ');
-      endTime = moment().format('hh [시] mm [분]');
-    }
-  }
-
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%'
-      }}
-    >
-      <TimerItem
-        auctionStatus={props.auctionStatus}
-        fetchData={props.fetchData}
-        isSet={props.isSet ? true : false}
-        value={props.value}
-        onChange={props.onChange}
-        date={30}
-        day={days <= 0 ? 0 : days}
-        hour={hours <= 0 ? 0 : hours}
-        minute={minutes <= 0 ? 0 : minutes}
-        second={seconds <= 0 ? 0 : seconds}
-        link={link}
-      />
-      {/* <div
-        style={{ position: 'sticky', top: 0 }}
-        onTouchStart={() => {
-          document.body.style.cssText = `overflow: hidden; height:100%; touch-action: none; `;
-        }}
-        onTouchEnd={() => {
-          setTimeout(() => {
-            document.body.style.cssText = `overflow: auto; height:''; touch-action: ''; `;
-          }, 1000);
-        }}
-      >
-        <TimePicker />
-      </div> */}
-      {!props.isSet && (
-        <TimerDateTextWrapper>
-          <Bold>판매 종료일</Bold> <Bold>{endDate}</Bold> <Bold>{endTime}</Bold>
-        </TimerDateTextWrapper>
-      )}
-    </div>
-  );
-};
-
+const TimerItemWrppaer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 const TimerDateTextWrapper = styled.div`
   margin-top: 10px;
   padding: 15px 40px 15px 40px;
@@ -341,4 +215,52 @@ const TimerDateTextWrapper = styled.div`
   background-color: #f5f5f7;
   width: 100%;
 `;
+
+const TimerInput = styled.input.attrs({
+  type: 'tel',
+  id: 'timer'
+})`
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: 100%;
+  padding: 5px;
+  max-width: 40px;
+`;
+
+const TimeWrapper = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex: 1;
+`;
+
+const TimerInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const TimeDisplayWrapper = styled.div`
+  background-color: purple;
+  display: flex;
+  padding: 5px;
+  border-radius: 30px;
+  color: white;
+`;
+const TimeDisplay = ({ time }) => {
+  return (
+    <TimeDisplayWrapper>
+      <div>{time.d * 24 + time.h} :</div>
+      <div>{time.m} :</div>
+      <div>{time.s}</div>
+    </TimeDisplayWrapper>
+  );
+};
+
 export default Timer;
