@@ -4,81 +4,6 @@ import moment from 'moment';
 // import Picker from 'react-scrollable-picker';
 import styled from 'styled-components';
 
-const generateNumberArray = (begin, end) => {
-  let array = [];
-  for (let i = begin; i <= end; i++) {
-    const value = (i < 10 ? '0' : '') + i;
-    array.push({
-      value: (i < 10 ? '0' : '') + i,
-      label: (i < 10 ? '0' : '') + i
-    });
-  }
-  return array;
-};
-
-// const TimePicker = () => {
-//   const [valueGroups, setValueGroups] = useState({
-//     d: 0,
-//     h: 0,
-//     m: 0,
-//     s: 0
-//   });
-
-//   const [optionGroups, setOptionGroups] = useState({
-//     d: generateNumberArray(0, 50),
-//     h: generateNumberArray(0, 50),
-//     m: generateNumberArray(0, 50),
-//     s: generateNumberArray(0, 50)
-//   });
-
-//   return (
-//     <Picker
-//       optionGroups={optionGroups}
-//       valueGroups={valueGroups}
-//       onChange={() => {
-//         return;
-//       }}
-//     />
-//   );
-// };
-
-const TimerInput = styled.input.attrs(props => {
-  if (props.type == 'd') {
-    return { type: 'tel', max: '100', min: '0', id: 'timer' };
-  } else if (props.type == 'h') {
-    return { type: 'tel', max: '24', min: '0', id: 'timer' };
-  } else if (props.type == 'm') {
-    return { type: 'tel', max: '60', min: '0', id: 'timer' };
-  } else if (props.type == 's') {
-    return { type: 'tel', max: '60', min: '0', id: 'timer' };
-  }
-})`
-  text-align: center;
-  font-size: 20px;
-  font-weight: 900;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  width: 100%;
-  padding: 5px;
-  max-width: 40px;
-`;
-
-const TimeWrapper = styled.div`
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  width: 100%;
-  flex-direction: row;
-  flex: 1;
-`;
-
-const TimerItemWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
 const TimerItem = ({
   isSet,
   day = '',
@@ -188,50 +113,34 @@ const TimerItem = ({
     }
   }, [time]);
 
-  //TODO: use useCallback()
-  //TODO: refectoring
+  const T = [
+    { t: time.d, type: 'd', suffix: '일' },
+    { t: time.h, type: 'h', suffix: '시' },
+    { t: time.m, type: 'm', suffix: '분' }
+  ];
 
   return (
     <TimeWrapper>
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.d}
-          type="d"
-          name="d"
-        />
-      </TimerItemWrapper>
-      <Colon text={'일'} />
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.h}
-          type="h"
-          name="h"
-        />
-      </TimerItemWrapper>
-
-      <Colon text={'시간'} />
-
-      <TimerItemWrapper>
-        <TimerInput
-          readOnly={isSet ? true : false}
-          placeholder="0"
-          onChange={!isSet ? timeChangeHandler : null}
-          value={time.m}
-          type="m"
-          name="m"
-        />
-      </TimerItemWrapper>
-      <Colon text={'분'} />
-
+      {T.map(t => {
+        return (
+          <>
+            <TimerInputWrapper>
+              <TimerInput
+                readOnly={isSet ? true : false}
+                placeholder="0"
+                onChange={!isSet ? timeChangeHandler : null}
+                value={t.t}
+                type={t.type}
+                name={t.type}
+              />
+            </TimerInputWrapper>
+            <Colon text={t.suffix} />
+          </>
+        );
+      })}
       {isSet && (
         <>
-          <TimerItemWrapper>
+          <TimerInputWrapper>
             <TimerInput
               readOnly={isSet ? true : false}
               placeholder="0"
@@ -240,7 +149,7 @@ const TimerItem = ({
               type="s"
               name="s"
             />
-          </TimerItemWrapper>
+          </TimerInputWrapper>
           <Colon text={'초'} />
         </>
       )}
@@ -248,26 +157,11 @@ const TimerItem = ({
   );
 };
 
-const ColonText = styled.div`
-  margin: 10px;
-  text-align: center;
-  font-size: 18px;
-`;
-
-const Colon = ({ text }) => {
-  return <ColonText>{text}</ColonText>;
-};
-
-const Bold = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  padding: 5px;
-`;
-
 const Timer = props => {
   const { d, h, m, s, link } = props.value;
   let endDate;
   let endTime;
+
   if (!props.isSet) {
     if (endDate == 'Invalid Date') {
       endDate = '시간을 설정해 주세요.';
@@ -281,15 +175,7 @@ const Timer = props => {
   }
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%'
-      }}
-    >
+    <TimerItemWrppaer>
       <TimerItem
         auctionStatus={props.auctionStatus}
         fetchData={props.fetchData}
@@ -303,28 +189,35 @@ const Timer = props => {
         second={s <= 0 ? 0 : s}
         link={link}
       />
-      {/* <div
-        style={{ position: 'sticky', top: 0 }}
-        onTouchStart={() => {
-          document.body.style.cssText = `overflow: hidden; height:100%; touch-action: none; `;
-        }}
-        onTouchEnd={() => {
-          setTimeout(() => {
-            document.body.style.cssText = `overflow: auto; height:''; touch-action: ''; `;
-          }, 1000);
-        }}
-      >
-        <TimePicker />
-      </div> */}
       {!props.isSet && (
         <TimerDateTextWrapper>
           <Bold>판매 종료일</Bold> <Bold>{endDate}</Bold> <Bold>{endTime}</Bold>
         </TimerDateTextWrapper>
       )}
-    </div>
+    </TimerItemWrppaer>
   );
 };
+const ColonText = styled.div`
+  margin: 10px;
+  text-align: center;
+  font-size: 18px;
+`;
 
+const Colon = ({ text }) => {
+  return <ColonText>{text}</ColonText>;
+};
+const Bold = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  padding: 5px;
+`;
+const TimerItemWrppaer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 const TimerDateTextWrapper = styled.div`
   margin-top: 10px;
   padding: 15px 40px 15px 40px;
@@ -335,4 +228,35 @@ const TimerDateTextWrapper = styled.div`
   background-color: #f5f5f7;
   width: 100%;
 `;
+
+const TimerInput = styled.input.attrs({
+  type: 'tel',
+  id: 'timer'
+})`
+  text-align: center;
+  font-size: 20px;
+  font-weight: 900;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  width: 100%;
+  padding: 5px;
+  max-width: 40px;
+`;
+
+const TimeWrapper = styled.div`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex: 1;
+`;
+
+const TimerInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 export default Timer;
