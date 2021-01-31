@@ -28,10 +28,6 @@ const TimerItem = ({
       const { name, value } = e.target;
       let Value = value.replace(/[^0-9]/g, '');
 
-      if (!Value || Value == '' || Value == null || Value == undefined) {
-        Value = '0';
-      }
-
       if (name == 'd') {
         if (parseInt(Value) > 50) {
           alert('50일이 최대입니다.');
@@ -122,7 +118,7 @@ const TimerItem = ({
 
   return (
     <TimeWrapper>
-      <TimeDisplay time={time}></TimeDisplay>
+      {isSet && <TimeDisplay time={time}></TimeDisplay>}
       {!isSet &&
         T.map(t => {
           return (
@@ -170,10 +166,10 @@ const Timer = props => {
         value={props.value}
         onChange={props.onChange}
         date={30}
-        day={d <= 0 ? 0 : d}
-        hour={h <= 0 ? 0 : h}
-        minute={m <= 0 ? 0 : m}
-        second={s <= 0 ? 0 : s}
+        day={d <= 0 ? '' : d}
+        hour={h <= 0 ? '' : h}
+        minute={m <= 0 ? '' : m}
+        second={s <= 0 ? '' : s}
         link={link}
       />
       {!props.isSet && (
@@ -258,13 +254,24 @@ const TimeDisplayWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const TimeDisplayText = styled.div`
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+`;
 const TimeDisplay = ({ time }) => {
+  const hours =
+    String(time.d * 24 + time.h).length < 2
+      ? '0' + (time.d * 24 + time.h)
+      : time.d * 24 + time.h;
+  const minutes = String(time.m).length < 2 ? '0' + time.m : time.m;
+  const seconds = String(time.s).length < 2 ? '0' + time.s : time.s;
   return (
     <TimeDisplayWrapper>
       <GiAlarmClock size={25} style={{ padding: 5 }} color="black" />
-      <div>{time.d * 24 + time.h}:</div>
-      <div>{time.m}:</div>
-      <div>{time.s}</div>
+      <TimeDisplayText>{hours}:</TimeDisplayText>
+      <TimeDisplayText>{minutes}:</TimeDisplayText>
+      <TimeDisplayText>{seconds}</TimeDisplayText>
     </TimeDisplayWrapper>
   );
 };
