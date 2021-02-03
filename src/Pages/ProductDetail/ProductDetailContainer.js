@@ -30,7 +30,6 @@ const setCookie = (name, value, days) => {
 };
 
 const ProductDetailContainer = () => {
-  console.log(getCookie('isSee'));
   const [firstTime, setFirstTime] = useState(true);
   const [isSee, setIsSee] = useState(getCookie('isSee'));
   const closeFirstModal = () => {
@@ -38,7 +37,6 @@ const ProductDetailContainer = () => {
   };
 
   const doNotSeeToday = () => {
-    console.log('sdf');
     setIsSee(true);
     setCookie('isSee', 'true', 1);
   };
@@ -65,13 +63,11 @@ const ProductDetailContainer = () => {
   };
 
   const openModal = () => {
-    console.log(location.pathname);
     sessionStorage.setItem('before', location.pathname);
     localStorage.setItem('before', location.pathname);
     setCookie('before', location.pathname, 1);
     setIsOpen(true);
   };
-
   return (
     isLoading && (
       <ProductDetailPresenter

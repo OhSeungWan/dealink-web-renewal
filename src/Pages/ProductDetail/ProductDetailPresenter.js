@@ -48,7 +48,8 @@ const ProductDetailPresenter = props => {
               d: props.days,
               h: props.hours,
               m: props.minutes,
-              s: props.seconds
+              s: props.seconds,
+              link: props.data.url
             }}
             link={props.data.url}
             fetchData={props.fetchData}

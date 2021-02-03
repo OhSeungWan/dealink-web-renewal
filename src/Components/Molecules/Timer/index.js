@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+
 import { GiAlarmClock } from 'react-icons/gi';
 import moment from 'moment';
 // import Picker from 'react-scrollable-picker';
@@ -6,10 +7,10 @@ import styled from 'styled-components';
 
 const TimerItem = ({
   isSet,
-  day = '',
-  hour = '',
-  minute = '',
-  second = '',
+  day,
+  hour,
+  minute,
+  second,
   link,
   onChange,
   fetchData,
@@ -21,7 +22,6 @@ const TimerItem = ({
     m: minute,
     s: second
   });
-
   const timeChangeHandler = useCallback(
     e => {
       e.preventDefault();
@@ -72,10 +72,11 @@ const TimerItem = ({
     if (isSet) {
       const countdown = setInterval(async () => {
         if (
-          parseInt(time.d) <= 0 &&
-          parseInt(time.h) <= 0 &&
-          parseInt(time.m) <= 0 &&
-          parseInt(time.s) <= 0
+          parseInt(time.d) <= 0 ||
+          (time.d === '' && parseInt(time.h) <= 0) ||
+          (time.h === '' && parseInt(time.m) <= 0) ||
+          (time.m === '' && parseInt(time.s) <= 0) ||
+          time.s === ''
         ) {
           clearInterval(countdown);
           await fetch(
@@ -260,15 +261,14 @@ const TimeDisplayText = styled.div`
   font-weight: 500;
 `;
 const TimeDisplay = ({ time }) => {
-  const hours =
-    String(time.d * 24 + time.h).length < 2
-      ? '0' + (time.d * 24 + time.h)
-      : time.d * 24 + time.h;
+  const days = String(time.d).length < 2 ? '0' + time.d : time.d;
+  const hours = String(time.h).length < 2 ? '0' + time.h : time.h;
   const minutes = String(time.m).length < 2 ? '0' + time.m : time.m;
   const seconds = String(time.s).length < 2 ? '0' + time.s : time.s;
   return (
     <TimeDisplayWrapper>
       <GiAlarmClock size={25} style={{ padding: 5 }} color="black" />
+      <TimeDisplayText>{days}일 </TimeDisplayText>
       <TimeDisplayText>{hours}:</TimeDisplayText>
       <TimeDisplayText>{minutes}:</TimeDisplayText>
       <TimeDisplayText>{seconds}</TimeDisplayText>

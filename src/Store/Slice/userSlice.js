@@ -25,6 +25,7 @@ const setCookie = (name, value, days) => {
 //     }
 //   }
 // };
+
 const initialState = {
   status: null,
   id: null,
@@ -40,7 +41,6 @@ export const fetchUserByCode = createAsyncThunk(
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
     sessionStorage.setItem('userId', data.id);
-    console.log(`adsfasdf : ${data.accessToken}`);
     setCookie('accessToken', data.accessToken, 1);
     return data;
   }
@@ -57,6 +57,7 @@ export const fetchUser = createAsyncThunk(
       }
     );
     const data = await res.json();
+
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
     sessionStorage.setItem('userId', data.id);
@@ -82,7 +83,6 @@ const userSlice = createSlice({
     // [fetchUserByCode.rejected]: (state, action) => {},
     [fetchUserByCode.fulfilled]: (state, action) => {
       const { id, accessToken } = action.payload;
-      console.log(action.payload);
       sessionStorage.setItem('userInfo', action.payload.accessToken);
       sessionStorage.setItem('accessToken', action.payload.accessToken);
       sessionStorage.setItem('userId', action.payload.id);
