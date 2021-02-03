@@ -2,6 +2,7 @@ import { Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Home from 'Pages/Home';
 import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
 import MyLink from 'Pages/MyLink';
@@ -34,7 +35,7 @@ const MainRouter = () => {
   }, []);
   return (
     <Switch>
-      <Route exact path="/" component={Main}></Route>
+      <Route exact path="/" component={Home}></Route>
       <Route exact path="/Main" component={Main}></Route>
       <Route exact path="/Survey" component={Main}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
