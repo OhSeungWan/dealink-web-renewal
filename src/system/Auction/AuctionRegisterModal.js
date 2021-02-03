@@ -53,7 +53,7 @@ const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
           <img src={shareAuction} width={'100%'} />
           <ModalShareWrapper>
             <Share
-              url={`http://www.dealink.co.kr/Product/seller/0/${modalData.url}`}
+              url={`https://www.dealink.co.kr/Product/seller/0/${modalData.url}`}
               // url={`http://192.168.0.102:8080/Product/seller/0/${data.url}`}
               data={modalData}
             />
