@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 import { AiOutlineClose } from 'react-icons/ai';
 import { BsTriangleFill } from 'react-icons/bs';
-import Date from 'Utils/date-utils';
+import Date from 'lib/Utils/date-utils';
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import { Modal } from 'Components/Organisms';
-import { comma } from 'Utils/comma-utils';
+import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
 //TODO: 토큰없이 접근 가능하도록 고쳐야함

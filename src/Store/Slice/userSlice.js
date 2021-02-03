@@ -57,7 +57,7 @@ export const fetchUser = createAsyncThunk(
       }
     );
     const data = await res.json();
-
+    console.log(data);
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
     sessionStorage.setItem('userId', data.id);
@@ -100,6 +100,7 @@ const userSlice = createSlice({
         action.payload.message == 'Invalid Access Token' ? false : true;
       state.id = sessionStorage.getItem('userId');
       state.accessToken = sessionStorage.getItem('accessToken');
+      console.log(result);
       state.isLogin = result;
       state.status = 'idle';
     }
