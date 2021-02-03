@@ -1,5 +1,6 @@
 import { Container, ScreenWrapper } from 'Components/Atoms';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
 import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
@@ -7,13 +8,28 @@ import { Button } from 'Components/Atoms';
 import Date from 'Utils/date-utils';
 import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';
+import { fetchUser } from 'Store/Slice/userSlice';
 import { useHistory } from 'react-router-dom';
 import { useProduct } from 'Hooks/useProduct';
-import { useSelector } from 'react-redux';
 
+const getCookie = cookie_name => {
+  var x, y;
+  var val = document.cookie.split(`;`);
+
+  for (var i = 0; i < val.length; i++) {
+    x = val[i].substr(0, val[i].indexOf(`=`));
+    y = val[i].substr(val[i].indexOf(`=`) + 1);
+    x = x.replace(/^\s+|\s+$/g, '');
+
+    if (x == cookie_name) {
+      return unescape(y);
+    }
+  }
+};
 const AuctionRegister = () => {
   const userInfo = useSelector(state => state.user);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [value, setValue, loading, setLoading, validate] = useProduct();
   const [modalData, setModalData] = useState();
@@ -81,6 +97,10 @@ const AuctionRegister = () => {
     setLoading(true);
     openModal();
   };
+
+  useEffect(() => {
+    dispatch(fetchUser(getCookie('accessToken')));
+  }, []);
 
   return loading ? (
     <>

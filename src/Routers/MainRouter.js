@@ -6,7 +6,6 @@ import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
 import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
-import ProductEnrollment from 'Pages/ProductEnrollment';
 import SignIn from 'Pages/SignIn';
 import Terms from 'Pages/Terms';
 import { fetchUser } from 'Store/Slice/userSlice';
@@ -87,7 +86,6 @@ export const PrivateRoute = ({ children, isLogin, status, ...rest }) => {
 export const PrivateContents = ({ children, location, ...rest }) => {
   const isLogin = useSelector(state => state.user.isLogin);
   const status = useSelector(state => state.user.status);
-  console.log(location);
   return status === 'idle' ? (
     <Route
       {...rest}

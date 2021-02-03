@@ -65,7 +65,6 @@ const ImageBox = ({ url, type, onChange, imglist, id }) => {
       var reader = new FileReader();
 
       reader.onload = function (event) {
-        console.log(file);
         setImageList(imageList => [
           ...imageList,
           { src: event.target.result, name: file.name }
@@ -105,13 +104,11 @@ const ImageBox = ({ url, type, onChange, imglist, id }) => {
     // [...files].map(item => {
     //   fileList.push(item);
     // });
-    console.log(files);
     onChange(name, [...e.target.files]);
     setThumbnail(e);
   };
 
   const remove = name => {
-    console.log(name);
     onChange('removeImg', name);
     setImageList(imageList => imageList.filter(img => img.name != name));
   };

@@ -20,7 +20,6 @@ export const useTest = data => {
       const Data = data;
       setData(Data);
     } catch (err) {
-      console.log(err);
       setError(err);
     }
   };

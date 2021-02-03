@@ -27,7 +27,6 @@ const ModalShareWrapper = styled.div`
 `;
 
 const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
-  console.log(modalData);
   return (
     <Modal isOpen={isOpen} closeModal={closeModal}>
       {modalData && (

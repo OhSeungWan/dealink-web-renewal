@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`<ProductEnrollment /> matches snapshot 1`] = `ReactWrapper {}`;
-
-exports[`<Profile /> matches snapshot 1`] = `ReactWrapper {}`;

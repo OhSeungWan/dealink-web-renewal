@@ -21,7 +21,6 @@ export const useProduct = templink => {
 
   const onChange = (name, value) => {
     if (name == 'imageList') {
-      console.log('img');
       setData(data => {
         return { ...data, [name]: data.imageList.concat(value) };
       });
@@ -80,7 +79,6 @@ export const useProduct = templink => {
         // `http://192.168.0.102:8080/user/${userId}/auction/${templink}`
       );
       const data = await res.json();
-      console.log(data);
       setData({
         imageList: data.imageUrls,
         productTitle: data.name,
@@ -100,8 +98,6 @@ export const useProduct = templink => {
       getData();
     }
     setLoading(true);
-    console.log('use');
-    console.log(data);
   }, []);
 
   return [data, onChange, loading, setLoading, validate];
