@@ -11,7 +11,7 @@ import btnFaceBook from 'assets/img/btnFaceBook.png';
 import btnKakao from 'assets/img/btnKakao.png';
 import btnLine from 'assets/img/btnLine.png';
 import btnTwiter from 'assets/img/btnTwiter.png';
-import { comma } from 'Utils/comma-utils';
+import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 
 const ShareImageContainer = styled.div`

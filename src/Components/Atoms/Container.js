@@ -11,8 +11,7 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: ${props => (props.row ? 'row' : 'column')};
-  margin-top: 70px;
-  margin-bottom: 50px;
+  margin-top: 50px;
   border: 5px solid #f5f5f7;
   border-top: none;
   border-bottom: none;

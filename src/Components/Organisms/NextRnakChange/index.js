@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Button } from 'Components/Atoms';
-import { comma } from 'Utils/comma-utils';
+import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
 import { useSelector } from 'react-redux';

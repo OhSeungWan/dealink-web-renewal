@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { Loading } from 'Components/Organisms/Modal';
 import { Modal } from 'Components/Organisms';
-import { comma } from 'Utils/comma-utils';
+import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';

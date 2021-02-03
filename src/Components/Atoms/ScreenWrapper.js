@@ -10,5 +10,4 @@ export const ScreenWrapper = styled.div`
   height: 100%;
   overflow: hidden;
   max-width: 100%;
-  overflow-x: hidden;
 `;
