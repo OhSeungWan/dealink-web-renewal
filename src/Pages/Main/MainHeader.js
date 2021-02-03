@@ -1,4 +1,4 @@
-import Header from 'Components/Molecules/Header';
+import Header from 'system/Header/Header';
 import React from 'react';
 
 const MainHeader = () => {

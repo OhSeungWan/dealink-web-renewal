@@ -16,7 +16,7 @@ import { List, Share, Slider, Timer } from 'Components/Molecules';
 import { Redirect, useLocation } from 'react-router-dom';
 
 import { FadeBox } from 'Components/Organisms/Modal';
-import Header from 'Components/Molecules/Header';
+import Header from 'system/Header/Header';
 import React from 'react';
 import Terms from 'Components/Organisms/Terms';
 import beforeBid from 'assets/img/beforeBid.png';

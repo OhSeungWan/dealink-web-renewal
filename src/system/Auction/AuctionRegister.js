@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
 import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
 import { Button } from 'Components/Atoms';
-import Date from 'Utils/date-utils';
+import Date from 'lib/Utils/date-utils';
 import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';
 import { fetchUser } from 'Store/Slice/userSlice';

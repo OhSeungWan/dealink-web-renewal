@@ -1,5 +1,5 @@
 import { REQUEST_URL } from 'Constants/server';
-import { responselog } from 'Utils/log-utils';
+import { responselog } from 'lib/Utils/log-utils';
 
 export const request = async (url, option) => {
   let isLoading = false;

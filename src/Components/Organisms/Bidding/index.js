@@ -5,7 +5,7 @@ import { List } from 'Components/Molecules';
 import { auctionApi } from 'Apis/auctionApi';
 import beforeBid from 'assets/img/beforeBid.png';
 import bidComplete from 'assets/img/bidComplete.png';
-import { comma } from 'Utils/comma-utils';
+import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useInput } from 'Hooks/useInput';
 

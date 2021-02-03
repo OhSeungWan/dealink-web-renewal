@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from 'Utils/test-utils';
+import { fireEvent, render, screen, waitFor } from 'lib/Utils/test-utils';
 
 import React from 'react';
 import SignIn from 'Pages/SignIn';

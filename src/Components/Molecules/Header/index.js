@@ -8,50 +8,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-const HeaderText = styled.div`
-  font-weight: 700;
-  font-size: 25px;
-  text-align: left;
-  padding: 15px;
-  flex: 1;
-  color: black;
-`;
-const HeaderWrapper = styled.div`
-  z-index: ${props => (props.front ? '9999' : '1')};
-  position: fixed;
-  flex: 1;
-  top: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  text-align: left;
-  height: 5vw;
-  max-height: 40px;
-  background-color: white;
-  padding: 15px 0px 15px 0px;
-  justify-content: center;
-  align-items: center;
-  max-width: 400px;
-`;
-
-const HeaderToTalContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const MyLinkWrapper = styled.div``;
-
 const MyLink = ({ type }) => {
   const history = useHistory();
 
@@ -77,7 +33,7 @@ const MyLink = ({ type }) => {
   );
 };
 
-const SignInLink = () => {
+const SignInBtn = () => {
   const history = useHistory();
 
   const goMyLink = () => {
@@ -102,11 +58,53 @@ const Header = ({ banner, front, type }) => {
         <HeaderContainer>
           <HeaderText> DeaLink</HeaderText>
           {isLogin && <MyLink type={type}></MyLink>}
-          {!isLogin && location.pathname != '/SignIn' && <SignInLink />}
+          {!isLogin && location.pathname != '/SignIn' && <SignInBtn />}
         </HeaderContainer>
       </HeaderToTalContainer>
     </HeaderWrapper>
   );
 };
 
+const HeaderText = styled.div`
+  font-weight: 700;
+  font-size: 25px;
+  text-align: left;
+  padding: 15px;
+  flex: 1;
+  color: black;
+`;
+const HeaderWrapper = styled.div`
+  z-index: ${props => (props.front ? '9999' : '1')};
+  position: fixed;
+  flex: 1;
+  top: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  max-height: 40px;
+  background-color: white;
+  padding: 15px 0px 15px 0px;
+  justify-content: center;
+  align-items: center;
+  max-width: 400px;
+`;
+
+const HeaderToTalContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MyLinkWrapper = styled.div``;
 export default Header;
