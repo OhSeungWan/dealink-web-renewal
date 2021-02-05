@@ -63,7 +63,7 @@ const Slider = ({
     <SliderWrapper>
       <SliderContainer>
         {ImageList.map((img, index) => {
-          return type != 'detail' ? (
+          return type !== 'detail' ? (
             <ImgWrapper>
               <RemoveBtn onRemove={onRemove} name={img.name} />
               <SliderImage src={img.src} big={big ? true : false} key={index} />
@@ -75,7 +75,7 @@ const Slider = ({
       </SliderContainer>
       {auctionStatus && (
         <Complete>
-          <img style={{ width: '20%' }} src={auctionComplete}></img>
+          <img style={{ width: '20%' }} src={auctionComplete} alt="no" />
         </Complete>
       )}
       {children}

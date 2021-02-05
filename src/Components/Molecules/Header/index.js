@@ -12,7 +12,7 @@ const MyLink = ({ type }) => {
   const history = useHistory();
 
   const goMyLink = () => {
-    if (type == 'mylink') {
+    if (type === 'mylink') {
       history.push('/main');
     } else {
       history.push('/MyLink');
@@ -21,7 +21,7 @@ const MyLink = ({ type }) => {
   return (
     <MyLinkWrapper>
       <Button onClick={goMyLink} secondary>
-        {type == 'mylink' ? (
+        {type === 'mylink' ? (
           <>👉 상품 등록하기</>
         ) : (
           <>
@@ -58,7 +58,7 @@ const Header = ({ banner, front, type }) => {
         <HeaderContainer>
           <HeaderText> DeaLink</HeaderText>
           {isLogin && <MyLink type={type}></MyLink>}
-          {!isLogin && location.pathname != '/SignIn' && <SignInBtn />}
+          {!isLogin && location.pathname !== '/SignIn' && <SignInBtn />}
         </HeaderContainer>
       </HeaderToTalContainer>
     </HeaderWrapper>

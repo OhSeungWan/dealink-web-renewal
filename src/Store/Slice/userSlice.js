@@ -7,35 +7,36 @@ const setCookie = (name, value, days) => {
   exdate.setDate(exdate.getDate() + days);
 
   let cookie_value =
-    escape(value) + (days == null ? '' : `; expires =` + exdate.toUTCString());
+    escape(value) + (days === null ? '' : `; expires =` + exdate.toUTCString());
   document.cookie = name + `=` + cookie_value;
 };
-
-// const getCookie = cookie_name => {
-//   var x, y;
-//   var val = document.cookie.split(`;`);
-
-//   for (var i = 0; i < val.length; i++) {
-//     x = val[i].substr(0, val[i].indexOf(`=`));
-//     y = val[i].substr(val[i].indexOf(`=`) + 1);
-//     x = x.replace(/^\s+|\s+$/g, '');
-
-//     if (x == cookie_name) {
-//       return unescape(y);
-//     }
-//   }
-// };
 
 const initialState = {
   status: null,
   id: null,
   accessToken: null,
-  isLogin: false
+  isLogin: false,
+  type: null
 };
+
+export const guest = createAsyncThunk('users/guest', async phoneNumber => {
+  console.log(phoneNumber);
+  const res = await fetch('https://rest.dealink.co.kr/guest', {
+    method: 'POST',
+    headers: {
+      GUEST: 'true',
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ phoneNumber: phoneNumber })
+  });
+  const data = await res.json();
+  return data;
+});
 
 export const fetchUserByCode = createAsyncThunk(
   'users/fetchByCode',
-  async (code, thunkApi) => {
+  async code => {
     const res = await userApi.fetchByCode(code);
     const data = await res.json();
     sessionStorage.setItem('userInfo', data.accessToken);
@@ -97,12 +98,19 @@ const userSlice = createSlice({
     },
     [fetchUser.fulfilled]: (state, action) => {
       const result =
-        action.payload.message == 'Invalid Access Token' ? false : true;
+        action.payload.message === 'Invalid Access Token' ? false : true;
       state.id = sessionStorage.getItem('userId');
       state.accessToken = sessionStorage.getItem('accessToken');
-      console.log(result);
       state.isLogin = result;
       state.status = 'idle';
+    },
+    [guest.fulfilled]: (state, action) => {
+      sessionStorage.setItem('userInfo', action.payload.accessToken);
+      sessionStorage.setItem('accessToken', action.payload.accessToken);
+      sessionStorage.setItem('userId', action.payload.userIndex);
+      state.id = action.payload.userIndex;
+      state.type = action.payload.type;
+      state.isLogin = true;
     }
   }
 });

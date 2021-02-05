@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const ListWrapper = styled.div`
   display: flex;
   width: 100%;
-  flex-direction: ${props => (props.direction == 'row' ? 'row' : 'column')};
+  flex-direction: ${props => (props.direction === 'row' ? 'row' : 'column')};
   justify-content: ${props =>
     props.spaceBetween
       ? 'space-between'

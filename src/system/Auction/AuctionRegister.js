@@ -5,10 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
 import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
 import { Button } from 'Components/Atoms';
-import Date from 'lib/Utils/date-utils';
 import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';
 import { fetchUser } from 'Store/Slice/userSlice';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useProduct } from 'Hooks/useProduct';
 
@@ -21,7 +21,7 @@ const getCookie = cookie_name => {
     y = val[i].substr(val[i].indexOf(`=`) + 1);
     x = x.replace(/^\s+|\s+$/g, '');
 
-    if (x == cookie_name) {
+    if (x === cookie_name) {
       return unescape(y);
     }
   }
@@ -45,21 +45,21 @@ const AuctionRegister = () => {
     setIsOpen(true);
   };
   const calcClosingDate = () => {
-    let now = new Date();
+    const closingDate = moment()
+      .add(value.d, 'days')
+      .add(value.h, 'hours')
+      .add(value.m, 'minutes')
+      .add(value.s, 'seconds')
+      .format('yyyy-MM-DD HH:mm:ss');
 
-    now.setDate(now.getDate() + parseInt(value.d));
-    now.setHours(now.getHours() + parseInt(value.h));
-    now.setMinutes(now.getMinutes() + parseInt(value.m));
-    now.setSeconds(now.getSeconds() + parseInt(value.s));
-
-    return now.format('yyyy-MM-dd HH:mm:ss');
+    return closingDate;
   };
 
   const makeAuctionFormData = () => {
     let form = new FormData();
 
     value.imageList.map(item => {
-      form.append('productImages', item);
+      return form.append('productImages', item);
     });
     form.append(
       'auctionInfoRequest',
@@ -99,7 +99,8 @@ const AuctionRegister = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchUser(getCookie('accessToken')));
+    if (userInfo.type !== 'GUEST')
+      dispatch(fetchUser(getCookie('accessToken')));
   }, []);
 
   return loading ? (

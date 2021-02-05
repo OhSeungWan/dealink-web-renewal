@@ -50,7 +50,7 @@ const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
               {modalData.name}
             </ModalContentText>
           </ModalLinkDescriptionWrapper>
-          <img src={shareAuction} width={'100%'} />
+          <img src={shareAuction} width={'100%'} alt="no" />
           <ModalShareWrapper>
             <Share
               url={`https://www.dealink.co.kr/Product/seller/0/${modalData.url}`}

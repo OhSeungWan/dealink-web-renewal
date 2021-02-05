@@ -15,5 +15,6 @@ export {
   ProductDetail,
   Biddging,
   MyLinkInfo,
-  Nextrankchange
+  Nextrankchange,
+  CancelBid
 };
