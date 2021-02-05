@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
 
 import React from 'react';
-import { Text } from 'Components/Atoms';
 
 const InfoListWrapper = styled.div`
   width: 100%;
@@ -20,7 +19,6 @@ const InfoWrapper = styled.div`
   text-align: ${props => (props.title ? 'left' : 'center')};
   flex: 1;
 `;
-const InfoListText = styled(Text);
 
 const InfoList = ({ title, content, horizon, border, children }) => {
   return (

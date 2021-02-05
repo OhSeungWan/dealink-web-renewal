@@ -5,42 +5,21 @@ import {
 } from 'react-icons/ai';
 import React, { useState } from 'react';
 
-import { AiOutlineLink } from 'react-icons/ai';
 import { BannerTop } from 'Components/Molecules';
 import { BiLogIn } from 'react-icons/bi';
 import { Button } from 'Components/Atoms';
-import { CgProfile } from 'react-icons/cg';
 import { GrClose } from 'react-icons/gr';
 import { HiMenu } from 'react-icons/hi';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const MyLinkWrapper = styled.div``;
-
-const MyLink = ({ type }) => {
-  const history = useHistory();
-
-  const goMyLink = () => {
-    if (type == 'mylink') {
-      history.push('/main');
-    } else {
-      history.push('/MyLink');
-    }
-  };
-  return (
-    <MyLinkWrapper>
-      <Button onClick={goMyLink} secondary>
-        {type == 'mylink' ? (
-          <>👉 상품 등록하기</>
-        ) : (
-          <>
-            <AiOutlineLink /> 내 링크 보기
-          </>
-        )}
-      </Button>
-    </MyLinkWrapper>
-  );
-};
+const MyLinkWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const SignInLink = () => {
   const history = useHistory();
@@ -58,12 +37,17 @@ const SignInLink = () => {
 };
 
 const Header = ({ banner, front }) => {
+  const history = useHistory();
+  const handleClickHeader = () => {
+    history.push('/');
+  };
   return (
     <HeaderWrapper front={front}>
       <HeaderColumnWrapper>
         {banner && <BannerTop></BannerTop>}
         <HeaderContainer>
-          DeaLink <HeaderHambugerMenuBtn />
+          <div onClick={handleClickHeader}>DeaLink</div>
+          <HeaderHambugerMenuBtn />
         </HeaderContainer>
       </HeaderColumnWrapper>
     </HeaderWrapper>
@@ -87,11 +71,10 @@ const HeaderHambugerMenuBtn = () => {
   );
 };
 
-const HambugerWrapper = styled.div`
-  position: relative;
-`;
+const HambugerWrapper = styled.div``;
 
 const MenuList = ({ closeMenu }) => {
+  const isLogin = useSelector(state => state.user.isLogin);
   const menuList = [
     { name: 'Home', link: '/', icon: <AiOutlineHome /> },
     { name: 'MY내역', link: '/MyLink', icon: <AiOutlineUser /> },
@@ -100,7 +83,7 @@ const MenuList = ({ closeMenu }) => {
   return (
     <MenuListWrapper>
       <GrClose onClick={closeMenu} />
-      <SignInLink />
+      {!isLogin && <SignInLink />}
       {menuList.map(menu => {
         return <MenuItem name={menu.name} link={menu.link} icon={menu.icon} />;
       })}
@@ -111,6 +94,7 @@ const MenuList = ({ closeMenu }) => {
 const MenuListWrapper = styled.div`
   position: fixed;
   padding: 10px;
+  width: 45vw;
   top: 0px;
   right: 0;
   height: 100%;
@@ -133,8 +117,8 @@ const MenuItem = ({ link, name, icon }) => {
 
   return (
     <MenuItemWrapper onClick={onClick}>
-      {icon}
-      {name}
+      <div className="icon">{icon}</div>
+      <div className="name">{name}</div>
     </MenuItemWrapper>
   );
 };
@@ -146,6 +130,15 @@ const MenuItemWrapper = styled.div`
   border-top: 1px solid white;
   padding: 10px 10px;
   font-weight: 400;
+
+  div {
+    &.icon {
+      flex: 1;
+    }
+    &.name {
+      flex: 3;
+    }
+  }
 `;
 
 const HeaderContainer = styled.div`
@@ -170,6 +163,7 @@ const HeaderWrapper = styled.div`
   justify-content: center;
   align-items: center;
   max-width: 400px;
+  z-index: 999;
 `;
 
 export default Header;

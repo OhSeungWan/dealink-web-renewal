@@ -25,7 +25,7 @@ const ProductInfo = props => {
   const onChange = e => {
     e.preventDefault();
     const { name, value } = e.target;
-    if (name == 'productPrice') {
+    if (name === 'productPrice') {
       props.onChange(name, value.replace(/[^0-9]/g, ''));
     } else {
       props.onChange(name, value);
@@ -124,21 +124,6 @@ const ProductInfo = props => {
   );
 };
 
-const MakeKaKao = styled.a`
-  :link {
-    color: black;
-    text-decoration: none;
-  }
-  :visited {
-    color: black;
-    text-decoration: none;
-  }
-  :hover {
-    color: black;
-    text-decoration: underline;
-  }
-`;
-
 const ProductTitle = styled.div`
   padding: 10px;
   font-weight: 700;
@@ -221,7 +206,7 @@ const ProductInfoForBuyer = props => {
       <ProductWrapper>
         <ProductText current>현재가</ProductText>
         <ProductPrice current>{comma(props.currentPrice)} 원</ProductPrice>
-        {userInfo.isLogin && props.auctionStatus != 'AUCTION_COMPLETED' && (
+        {userInfo.isLogin && props.auctionStatus !== 'AUCTION_COMPLETED' && (
           <button
             onClick={openModal}
             style={{
@@ -259,7 +244,7 @@ const ProductInfoForBuyer = props => {
               </Container>
             ) : (
               <Container>
-                {bidData.message != 'Bid history not exists' && (
+                {bidData.message !== 'Bid history not exists' && (
                   <>
                     <div style={{ fontSize: 20, width: '90%', marginTop: 16 }}>
                       경매마감일
@@ -341,7 +326,7 @@ const ProductInfoForBuyer = props => {
                     </Button>
                   </>
                 )}
-                {bidData.message == 'Bid history not exists' && (
+                {bidData.message === 'Bid history not exists' && (
                   <div>회원님의 입찰 기록이 존재하지 않습니다.</div>
                 )}
               </Container>

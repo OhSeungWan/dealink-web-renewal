@@ -39,8 +39,21 @@ const Container = styled.div`
   background-color: #f5f5f7;
 `;
 
+const iOS = () => {
+  return [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod'
+  ].includes(navigator.platform);
+  // ||
+  // // iPad on iOS 13 detection
+  // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+};
 const Share = ({ url, data }) => {
-  const [value, setValue] = useState(url);
+  const value = useState(url);
   const [copied, setCopied] = useState(false);
   const { Kakao } = window;
   //TODO: 카카오 로그인 리펙토링
@@ -74,11 +87,13 @@ const Share = ({ url, data }) => {
   return (
     <Container>
       <Wrapper>
-        <ShareImageContainer>
-          <div id="kakao-link-btn" onClick={sendLink}>
-            <ShareImage src={btnKakao} />
-          </div>
-        </ShareImageContainer>
+        {!iOS() && (
+          <ShareImageContainer>
+            <div id="kakao-link-btn" onClick={sendLink}>
+              <ShareImage src={btnKakao} />
+            </div>
+          </ShareImageContainer>
+        )}
         <ShareImageContainer>
           <FacebookShareButton url={value}>
             <ShareImage src={btnFaceBook} />

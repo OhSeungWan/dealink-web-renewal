@@ -6,7 +6,9 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import store from 'Store';
 import theme from 'Styles/Theme';
+
 function App() {
+  console.log(navigator.platform);
   return (
     <Provider store={store}>
       <CookiesProvider>

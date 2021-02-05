@@ -1,11 +1,10 @@
-import { Border, Button, Container, ScreenWrapper } from 'Components/Atoms';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { AiOutlineClose } from 'react-icons/ai';
 import { BsTriangleFill } from 'react-icons/bs';
 import Date from 'lib/Utils/date-utils';
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import { Modal } from 'Components/Organisms';
+import { ScreenWrapper } from 'Components/Atoms';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
@@ -71,7 +70,7 @@ const BidHistory = ({ link }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const userInfo = useSelector(state => state.user);
-  const [data, isLoading, error, refetch] = useFetch(
+  const [data, isLoading] = useFetch(
     `https://rest.dealink.co.kr/auction/${link}/history`,
     // `http://192.168.0.102:8080/auction/${link}/history`,
     {
@@ -80,7 +79,7 @@ const BidHistory = ({ link }) => {
   );
 
   const modalOpen = () => {
-    if (data.length == 0) {
+    if (data.length === 0) {
       alert('현재 입찰건이 존재하지 않습니다.');
       return;
     }

@@ -29,8 +29,7 @@ const Nextrankchange = ({ link, closeModal }) => {
   const [Highest, setHighest] = useState('');
   const [seconds, setSeconds] = useState('');
   const [isChange, setIsChange] = useState(false);
-  const [process, setProcess] = useState(false);
-  const [data, isLoading, error, refetch] = useFetch(
+  const [data, isLoading] = useFetch(
     `https://rest.dealink.co.kr/auction/${link}/history`,
     // `http://192.168.0.102:8080/auction/${link}/history`,
     {
@@ -40,15 +39,15 @@ const Nextrankchange = ({ link, closeModal }) => {
 
   const changeRankHandler = async () => {
     setIsChange(false);
-    const res = await fetch(
-      `https://rest.dealink.co.kr/user/${userInfo.id}/auction/${link}/next`,
-      {
-        method: 'POST',
-        headers: {
-          AUTH_TOKEN: userInfo.accessToken
-        }
-      }
-    );
+    // const res = await fetch(
+    //   `https://rest.dealink.co.kr/user/${userInfo.id}/auction/${link}/next`,
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       AUTH_TOKEN: userInfo.accessToken
+    //     }
+    //   }
+    // );
     setIsChange(true);
   };
 
@@ -61,9 +60,11 @@ const Nextrankchange = ({ link, closeModal }) => {
   };
   useEffect(() => {
     if (isLoading) {
-      const highest = data.filter(bid => bid.bidStatus == 'HIGHEST');
+      const highest = data.filter(bid => bid.bidStatus === 'HIGHEST');
       const s = data
-        .filter(bid => bid.bidStatus != 'CANCEL' && bid.bidStatus != 'HIGHEST')
+        .filter(
+          bid => bid.bidStatus !== 'CANCEL' && bid.bidStatus !== 'HIGHEST'
+        )
         .sort(sortBidList);
 
       if (highest[0]) {
@@ -79,7 +80,7 @@ const Nextrankchange = ({ link, closeModal }) => {
         setSecondExist(false);
       }
     }
-  }, [isLoading, isChange]);
+  }, [isLoading, isChange, data]);
 
   return (
     isLoading &&

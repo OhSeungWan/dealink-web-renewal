@@ -5,9 +5,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const AuctionRegisterInputForm = props => {
+  const { value, onChange } = props;
   return (
     <>
-      <ProductInfo value={props.value} onChange={props.onChange} />
+      <ProductInfo value={value} onChange={onChange} />
       <List alignCenter={true}>
         <TimerTitleWrapper>
           <TimerText>경매 진행기간</TimerText>
@@ -15,9 +16,9 @@ const AuctionRegisterInputForm = props => {
             경매 진행 시간을 설정해 주세요.
           </TimerText>
         </TimerTitleWrapper>
-        <Timer isSet={false} value={props.value} onChange={props.onChange} />
+        <Timer isSet={false} auctionInput={value} onChange={onChange} />
       </List>
-      <AuctionOptions value={props.value} onChange={props.onChange} />
+      <AuctionOptions value={value} onChange={onChange} />
     </>
   );
 };

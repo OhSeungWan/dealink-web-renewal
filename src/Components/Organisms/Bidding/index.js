@@ -1,8 +1,8 @@
-import { Border, Button, Input, Text } from 'Components/Atoms';
+import { Button, Input, Text } from 'Components/Atoms';
 import React, { useState } from 'react';
 
 import { List } from 'Components/Molecules';
-import { auctionApi } from 'Apis/auctionApi';
+// import { auctionApi } from 'Apis/auctionApi';
 import beforeBid from 'assets/img/beforeBid.png';
 import bidComplete from 'assets/img/bidComplete.png';
 import { comma } from 'lib/Utils/comma-utils';
@@ -37,17 +37,17 @@ const Bidding = ({ data, userInfo, isOpen }) => {
       return;
     }
 
-    const res = await auctionApi.registerBid(userInfo.id, data.url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        AUTH_TOKEN: userInfo.accessToken
-      },
-      body: JSON.stringify({
-        bidPrice: value.bidPrice,
-        auctionId: data.id
-      })
-    });
+    // const res = await auctionApi.registerBid(userInfo.id, data.url, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     AUTH_TOKEN: userInfo.accessToken
+    //   },
+    //   body: JSON.stringify({
+    //     bidPrice: value.bidPrice,
+    //     auctionId: data.id
+    //   })
+    // });
 
     // const err = await res.json();
     // if (err.message == 'Continuous bidding is not possible.') {
@@ -151,6 +151,7 @@ const Bidding = ({ data, userInfo, isOpen }) => {
             width: '100%',
             maxWidth: 200
           }}
+          alt="no"
         />
         입찰 GO!
       </Button>
@@ -173,7 +174,7 @@ const Bidding = ({ data, userInfo, isOpen }) => {
       >
         ₊·*◟(˶╹̆ꇴ╹̆˵)◜‧*･
       </div> */}
-      <img src={bidComplete} style={{ width: '40%' }}></img>
+      <img src={bidComplete} style={{ width: '40%' }} alt="no"></img>
       <div
         style={{
           width: '100%',

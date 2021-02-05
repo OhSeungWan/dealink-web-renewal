@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
 import SignInPresenter from 'Pages/SignIn/SignInPresenter';
 import { fetchUserByCode } from 'Store/Slice/userSlice';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 const SignInContainer = () => {
@@ -34,11 +34,15 @@ const SignInContainer = () => {
     });
   };
 
+  const guestSignUp = async () => {
+    history.push('/guestSignIn');
+  };
+
   useEffect(() => {
     initUserInfo(localStorage.getItem('before'));
   }, []);
 
-  return <SignInPresenter SignUp={SignUp} />;
+  return <SignInPresenter SignUp={SignUp} guestSignUp={guestSignUp} />;
 };
 
 export default SignInContainer;
