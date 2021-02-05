@@ -37,7 +37,7 @@ export const useFetch = (payload, option) => {
     if (payload) {
       process(payload);
     }
-  }, [isrefetch, payload, option]);
+  }, [isrefetch]);
 
   return [data, isLoading, refetch];
 };
