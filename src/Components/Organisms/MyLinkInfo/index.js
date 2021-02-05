@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Border } from 'Components/Atoms';
 import { List } from 'Components/Molecules';
@@ -79,7 +79,7 @@ const MyLink = ({ data, selected }) => {
 
   const onClick = e => {
     e.preventDefault();
-    if (selected == 'temporary') {
+    if (selected === 'temporary') {
       history.push(`/ProductEnrollment`, {
         templink: link
       });
@@ -146,7 +146,7 @@ const MyLinkSelectBtn = ({ selectList, selected, onSelected }) => {
           <Btn
             name={item.status}
             onClick={onSelected}
-            isSelect={item.status == selected}
+            isSelect={item.status === selected}
             key={index}
           >
             {item.name}
@@ -167,11 +167,10 @@ const MyLinkInfo = () => {
   const userInfo = useSelector(state => state.user);
   const selectList = [
     { name: '입찰', status: 'purchase' },
-    { name: '판매', status: 'sale' },
-    { name: '임시저장', status: 'temporary' }
+    { name: '판매', status: 'sale' }
   ];
   const [selected, setSelected] = useState(selectList[0].status);
-  const [data, isLoading, error, refetch] = useFetch(
+  const [data, isLoading, { refetch }] = useFetch(
     `https://rest.dealink.co.kr/user/${userInfo.id}/${selected}`,
     // `http://192.168.0.102:8080/user/${userInfo.id}/${selected}`,
     {

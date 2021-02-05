@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { BiPlusMedical } from 'react-icons/bi';
@@ -6,7 +6,7 @@ import { Slider } from 'Components/Molecules';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const Compress = require('compress.js');
+// const Compress = require('compress.js');
 const Img = styled.img`
   width: 100%;
 `;
@@ -35,7 +35,7 @@ const ImgContainer = styled.div`
   }};
 `;
 
-const ImageBox = ({ url, type, onChange, imglist, id }) => {
+const ImageBox = ({ url, type, onChange }) => {
   const history = useHistory();
   const fileInput = useRef();
   const [Url, setUrl] = useState(url);
@@ -72,6 +72,7 @@ const ImageBox = ({ url, type, onChange, imglist, id }) => {
         setUrl(event.target.result);
       };
       reader.readAsDataURL(file);
+      return null;
     });
   };
 
@@ -81,12 +82,12 @@ const ImageBox = ({ url, type, onChange, imglist, id }) => {
     if (!userInfo.isLogin) return;
     form.current.click();
   };
-  const compress = new Compress();
+  // const compress = new Compress();
   //파일 선택시 썸네일 생성
   const fileChangeHandler = e => {
     e.preventDefault();
     const { name } = e.target;
-    const files = [...e.target.files];
+    // const files = [...e.target.files];
     // compress
     //   .compress(files, {
     //     size: 4, // the max size in MB, defaults to 2MB
@@ -110,9 +111,9 @@ const ImageBox = ({ url, type, onChange, imglist, id }) => {
 
   const remove = name => {
     onChange('removeImg', name);
-    setImageList(imageList => imageList.filter(img => img.name != name));
+    setImageList(imageList => imageList.filter(img => img.name !== name));
   };
-  return type == 'upload' ? (
+  return type === 'upload' ? (
     <div style={{ display: 'flex', flex: 1, width: '90%' }}>
       <ImgContainer
         upload

@@ -13,7 +13,7 @@ const AuctionOptions = props => {
   // };
   const history = useHistory();
   const [tradeMethod, setTradeMethod] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
+  // const [paymentMethod, setPaymentMethod] = useState('');
   const userInfo = useSelector(state => state.user);
   const CheckTradeHandler = e => {
     if (!userInfo.isLogin) {
@@ -24,16 +24,16 @@ const AuctionOptions = props => {
     e.preventDefault();
     const name = e.target.getAttribute('name');
     setTradeMethod(name);
-    if (name == 'direct') {
+    if (name === 'direct') {
     } else {
     }
   };
 
-  const CheckPaymentHandler = e => {
-    e.preventDefault();
-    const name = e.target.getAttribute('name');
-    setPaymentMethod(name);
-  };
+  // const CheckPaymentHandler = e => {
+  //   e.preventDefault();
+  //   const name = e.target.getAttribute('name');
+  //   // setPaymentMethod(name);
+  // };
 
   return (
     <List alignCenter>

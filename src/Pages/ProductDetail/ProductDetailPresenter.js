@@ -5,27 +5,21 @@ import {
   ProductDetail,
   ProductInfo
 } from 'Components/Organisms';
-import {
-  Border,
-  Button,
-  Container,
-  ScreenWrapper,
-  Text
-} from 'Components/Atoms';
-import { List, Share, Slider, Timer } from 'Components/Molecules';
+import { Border, Button, Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, useLocation } from 'react-router-dom';
+import { Share, Slider, Timer } from 'Components/Molecules';
 
 import { FadeBox } from 'Components/Organisms/Modal';
 import Header from 'system/Header/Header';
 import React from 'react';
 import Terms from 'Components/Organisms/Terms';
 import beforeBid from 'assets/img/beforeBid.png';
-import styled from 'styled-components';
 
 const ProductDetailPresenter = props => {
   const location = useLocation();
+  const { auctionItemdata } = props;
   const auctionStatus =
-    props.data.auctionStatus == 'AUCTION_COMPLETED' ? true : false;
+    auctionItemdata.auctionStatus === 'AUCTION_COMPLETED' ? true : false;
   return (
     <ScreenWrapper>
       <Header banner />
@@ -36,7 +30,7 @@ const ProductDetailPresenter = props => {
           doNotSeeToday={props.doNotSeeToday}
         />
         <Slider
-          ImageList={props.data.imageUrls}
+          ImageList={auctionItemdata.imageUrls}
           big
           auctionStatus={auctionStatus}
           type="detail"
@@ -44,24 +38,18 @@ const ProductDetailPresenter = props => {
           <Timer
             auctionStatus={auctionStatus}
             isSet={true}
-            value={{
-              d: props.days,
-              h: props.hours,
-              m: props.minutes,
-              s: props.seconds,
-              link: props.data.url
-            }}
-            link={props.data.url}
+            closingTime={auctionItemdata.closingTime}
+            link={auctionItemdata.url}
             fetchData={props.fetchData}
           />
         </Slider>
-        <ProductInfo type={'buyer'} {...props.data} />
+        <ProductInfo type={'buyer'} {...auctionItemdata} />
         <Share
-          url={`https://www.dealink.co.kr/Product/seller/0/${props.data.url}`}
-          data={props.data} //클립보드 복사 url
+          url={`https://www.dealink.co.kr/Product/seller/0/${auctionItemdata.url}`}
+          data={auctionItemdata} //클립보드 복사 url
         />
 
-        <ProductDetail {...props.data} />
+        <ProductDetail {...auctionItemdata} />
         <Border height="8px" />
 
         <Terms />
@@ -86,9 +74,10 @@ const ProductDetailPresenter = props => {
                 width: '100%',
                 maxWidth: 200
               }}
+              alt="no"
             />
           </>
-        ) : props.data.userType == 'SELLER' ? (
+        ) : auctionItemdata.userType === 'SELLER' ? (
           <Button
             style={{ position: 'fixed', bottom: 10, zIndex: 2 }}
             onClick={props.openModal}
@@ -108,7 +97,7 @@ const ProductDetailPresenter = props => {
           {!auctionStatus ? (
             props.userInfo.isLogin ? (
               <Biddging
-                data={props.data}
+                data={auctionItemdata}
                 userInfo={props.userInfo}
                 closeModal={props.closeModal}
                 isOpen={props.isOpen}
@@ -121,9 +110,9 @@ const ProductDetailPresenter = props => {
                 }}
               ></Redirect>
             )
-          ) : props.data.userType == 'SELLER' ? (
+          ) : auctionItemdata.userType === 'SELLER' ? (
             <Nextrankchange
-              link={props.data.url}
+              link={auctionItemdata.url}
               closeModal={props.closeModal}
             />
           ) : null}

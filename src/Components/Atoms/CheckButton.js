@@ -35,7 +35,7 @@ export const CheckButton = ({ text, checked, onClick, name, overlapping }) => {
     </CheckButtonWrapper>
   ) : (
     <CheckButtonWrapper>
-      <CheckButtonText name={name} checked={checked == name} onClick={onClick}>
+      <CheckButtonText name={name} checked={checked === name} onClick={onClick}>
         {text}
       </CheckButtonText>
     </CheckButtonWrapper>

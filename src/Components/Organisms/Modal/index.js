@@ -4,7 +4,6 @@ import styled, { css, keyframes } from 'styled-components';
 import { AiOutlineClose } from 'react-icons/ai';
 import AuctionDetailModal from 'assets/img/AuctionDetailModal.png';
 import { Container } from 'Components/Atoms';
-import { flexDirection_type } from 'Components/Molecules/InfoList/InfoListH.stories';
 
 const boxFade = (h = 80) => keyframes`
  0%{
@@ -125,20 +124,6 @@ const Modal = props => {
   ) : null;
 };
 
-const Circle = styled.div`
-  background-color: #0009;
-  border: 1px solid #ff0000;
-  width: 100px;
-  height: 100px;
-  border-radius: 75px;
-  text-align: center;
-  margin: 0 auto;
-  font-size: 20px;
-  color: #fff;
-  vertical-align: middle;
-  line-height: 100px;
-`;
-
 const LoadingCircle = styled.div`
   width: 50px;
   height: 50px;
@@ -164,7 +149,7 @@ export const FadeBox = ({ ...props }) => {
             flexDirection: 'column'
           }}
         >
-          <img src={AuctionDetailModal} width={'90%'} />
+          <img src={AuctionDetailModal} width={'90%'} alt="no" />
           {/* <div style={{ position: 'absolute', bottom: 10, display: 'flex' }}> */}
           <div
             style={{

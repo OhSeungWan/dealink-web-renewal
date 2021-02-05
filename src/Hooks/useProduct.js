@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import { useSelector } from 'react-redux';
-
 export const useProduct = templink => {
   //TODO: 고쳐야함
   // const userId = useSelector(state => state.user.id);
@@ -13,22 +11,22 @@ export const useProduct = templink => {
     productPrice: '',
     kakaoUrl: 'https://open.kakao.com/o/gDbtKmTc',
     description: '',
-    d: 0,
-    h: 0,
-    m: 0,
-    s: 0
+    d: '',
+    h: '',
+    m: '',
+    s: ''
   });
 
   const onChange = (name, value) => {
-    if (name == 'imageList') {
+    if (name === 'imageList') {
       setData(data => {
         return { ...data, [name]: data.imageList.concat(value) };
       });
-    } else if (name == 'removeImg') {
+    } else if (name === 'removeImg') {
       setData(data => {
         return {
           ...data,
-          imageList: data.imageList.filter(img => img.name != value)
+          imageList: data.imageList.filter(img => img.name !== value)
         };
       });
     } else {
@@ -47,7 +45,7 @@ export const useProduct = templink => {
   const validate = () => {
     for (const [key, value] of Object.entries(data)) {
       if (key === 'd' || key === 'h' || key === 'm' || key === 's') {
-        if (data.d == 0 && data.h == 0 && data.m == 0 && data.s == 0) {
+        if (data.d === 0 && data.h === 0 && data.m === 0 && data.s === 0) {
           alert(validateMessage.time);
           document.getElementById('timer').focus();
           document.getElementById('timer').scrollIntoView({
@@ -57,7 +55,7 @@ export const useProduct = templink => {
           });
           return true;
         }
-      } else if (value == '' || value == null || !value) {
+      } else if (value === '' || value === null || !value) {
         alert(validateMessage[key]);
         document.getElementById(key).focus();
         document.getElementById(key).scrollIntoView({
@@ -98,7 +96,7 @@ export const useProduct = templink => {
       getData();
     }
     setLoading(true);
-  }, []);
+  }, [templink]);
 
   return [data, onChange, loading, setLoading, validate];
 };

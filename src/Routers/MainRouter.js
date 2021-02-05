@@ -2,6 +2,7 @@ import { Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import GuestSignIn from 'system/User/GuestSignIn';
 import Home from 'Pages/Home';
 import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
@@ -21,7 +22,7 @@ const getCookie = cookie_name => {
     y = val[i].substr(val[i].indexOf(`=`) + 1);
     x = x.replace(/^\s+|\s+$/g, '');
 
-    if (x == cookie_name) {
+    if (x === cookie_name) {
       return unescape(y);
     }
   }
@@ -30,9 +31,14 @@ const MainRouter = () => {
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.user.isLogin);
   const status = useSelector(state => state.user.status);
+  const userType = useSelector(state => state.user.type);
+
   useEffect(() => {
-    dispatch(fetchUser(getCookie('accessToken')));
+    if (userType !== 'GUEST') {
+      dispatch(fetchUser(getCookie('accessToken')));
+    }
   }, []);
+
   return (
     <Switch>
       <Route exact path="/" component={Home}></Route>
@@ -45,6 +51,7 @@ const MainRouter = () => {
       ></Route>
       <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
+      <Route path="/guestSignIn" component={GuestSignIn}></Route>
 
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />

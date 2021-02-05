@@ -1,10 +1,8 @@
-import Banner1 from 'assets/img/Banner1.png';
 import Banner2 from 'assets/img/panmeza.png';
 import { Border } from 'Components/Atoms';
 import { ImageBox } from 'Components/Molecules';
 import React from 'react';
 import eventBanner from 'assets/img/eventBanner.png';
-import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -13,15 +11,15 @@ const MainTopBanner = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const bannerImg =
-    pathname == '/Main'
+    pathname === '/Main'
       ? eventBanner
-      : pathname == '/Survey'
+      : pathname === '/Survey'
       ? Banner2
       : eventBanner;
   return (
     <>
       {!userInfo.isLogin && <ImageBox url={bannerImg} />}
-      {pathname != '/Survey' && (
+      {pathname !== '/Survey' && (
         <>
           {/* <TextTitle>중고품 경매 커뮤니티</TextTitle>
           <Text>
