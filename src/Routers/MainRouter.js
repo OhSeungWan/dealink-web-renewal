@@ -53,9 +53,9 @@ const MainRouter = () => {
       <Route path="/Terms" component={Terms}></Route>
       <Route path="/guestSignIn" component={GuestSignIn}></Route>
 
-      <Route path="/MyLink" isLogin={isLogin} status={status}>
+      <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />
-      </Route>
+      </PrivateRoute>
     </Switch>
   );
 };
