@@ -170,7 +170,7 @@ const MyLinkInfo = () => {
     { name: '판매', status: 'sale' }
   ];
   const [selected, setSelected] = useState(selectList[0].status);
-  const [data, isLoading, { refetch }] = useFetch(
+  const [data, isLoading, refetch] = useFetch(
     `https://rest.dealink.co.kr/user/${userInfo.id}/${selected}`,
     // `http://192.168.0.102:8080/user/${userInfo.id}/${selected}`,
     {

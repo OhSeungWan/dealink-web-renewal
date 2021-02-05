@@ -28,7 +28,7 @@ const ProductDetailContainer = () => {
       ? userInfo.id
       : '0';
 
-  const [data, isLoading, { refetch }] = useFetch(
+  const [data, isLoading, refetch] = useFetch(
     `https://rest.dealink.co.kr/user/${userId}/auction/${url}`
     // `http://192.168.0.102:8080/user/${userId}/auction/${url}`
   );
