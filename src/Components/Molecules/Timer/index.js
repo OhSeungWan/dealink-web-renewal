@@ -1,200 +1,153 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 import { GiAlarmClock } from 'react-icons/gi';
 import moment from 'moment';
-// import Picker from 'react-scrollable-picker';
-import styled from 'styled-components';
+import { useInterval } from 'Hooks/useInterval';
 
-const TimerItem = ({
-  isSet,
-  day,
-  hour,
-  minute,
-  second,
-  link,
-  onChange,
-  fetchData,
-  auctionStatus
-}) => {
-  const [time, setTime] = useState({
-    d: day,
-    h: hour,
-    m: minute,
-    s: second
-  });
-  const timeChangeHandler = useCallback(
-    e => {
-      e.preventDefault();
-      const { name, value } = e.target;
-      let Value = value.replace(/[^0-9]/g, '');
-
-      if (name == 'd') {
-        if (parseInt(Value) > 50) {
-          alert('50일이 최대입니다.');
-          onChange(name, 50);
-          setTime(time => ({ ...time, [name]: 50 }));
-          return;
-        }
-      } else if (name == 'h') {
-        if (parseInt(Value) > 50) {
-          alert('24시간이 최대입니다.');
-          onChange(name, 24);
-          setTime(time => ({ ...time, [name]: 24 }));
-          return;
-        }
-      } else if (name == 'm') {
-        if (parseInt(Value) > 50) {
-          alert('60분이 최대입니다.');
-          onChange(name, 60);
-          setTime(time => ({ ...time, [name]: 60 }));
-          return;
-        }
-      } else if (name == 's') {
-        if (parseInt(Value) > 50) {
-          alert('60초가 최대입니다.');
-          onChange(name, 60);
-          setTime(time => ({ ...time, [name]: 60 }));
-          return;
-        }
-      }
-      onChange(name, Value);
-      setTime(time => ({ ...time, [name]: Value }));
-    },
-    [onChange]
+export const TimerItem = ({ small, closingTime, link }) => {
+  const [time, setTime] = useState(
+    moment.duration(moment(closingTime).diff(moment())).clone()
   );
 
-  const ChageTime = useCallback(payload => {
-    setTime(time => ({ ...time, [payload.key]: payload.value }));
-  });
+  const handleCompleteAuction = async () => {
+    await fetch(`https://rest.dealink.co.kr/auction/${link}`);
+  };
 
-  useEffect(() => {
-    if (auctionStatus) return;
-    if (isSet) {
-      const countdown = setInterval(async () => {
-        if (
-          parseInt(time.d) <= 0 ||
-          (time.d === '' && parseInt(time.h) <= 0) ||
-          (time.h === '' && parseInt(time.m) <= 0) ||
-          (time.m === '' && parseInt(time.s) <= 0) ||
-          time.s === ''
-        ) {
-          clearInterval(countdown);
-          await fetch(
-            `https://rest.dealink.co.kr/auction/${link}`,
-            // `http://192.168.0.102:8080/auction/${link}`,
-            {
-              method: 'GET'
-            }
-          );
-          fetchData();
-          return () => clearInterval(countdown);
-        }
-        if (parseInt(time.s) > 0) {
-          ChageTime({ key: 's', value: parseInt(time.s) - 1 });
-        } else {
-          if (parseInt(time.m) > 0) {
-            ChageTime({ key: 'm', value: parseInt(time.m) - 1 });
-          } else {
-            if (parseInt(time.h) > 0) {
-              ChageTime({ key: 'd', value: parseInt(time.d) - 1 });
-            } else {
-              ChageTime({ key: 'h', value: 24 });
-            }
-            ChageTime({ key: 'm', value: 59 });
-          }
-          ChageTime({ key: 's', value: 59 });
-        }
-      }, 1000);
+  const remainTime = moment
+    .duration(moment(closingTime).diff(moment()))
+    .as('ms');
 
-      return () => clearInterval(countdown);
-    }
-  }, [time]);
+  useInterval(
+    () => {
+      setTime(moment.duration(moment(closingTime).diff(moment())).clone());
+    },
+    remainTime > 0 ? 1000 : null
+  );
 
-  const T = [
-    { t: time.d, type: 'd', suffix: '일' },
-    { t: time.h, type: 'h', suffix: '시' },
-    { t: time.m, type: 'm', suffix: '분' },
-    { t: time.s, type: 's', suffix: '초' }
-  ];
+  if (remainTime <= 0) {
+    handleCompleteAuction();
+  }
 
   return (
     <TimeWrapper>
-      {isSet && <TimeDisplay time={time}></TimeDisplay>}
-      {!isSet &&
-        T.map(t => {
-          return (
-            <>
-              <TimerInputWrapper>
-                <TimerInput
-                  placeholder="0"
-                  onChange={timeChangeHandler}
-                  value={t.t}
-                  type={t.type}
-                  name={t.type}
-                />
-              </TimerInputWrapper>
-              <Colon text={t.suffix} />
-            </>
-          );
-        })}
+      <TimeDisplay
+        remainTime={remainTime}
+        small={small ? true : false}
+        time={time}
+      ></TimeDisplay>
     </TimeWrapper>
   );
 };
 
 const Timer = props => {
-  const { d, h, m, s, link } = props.value;
-  let endDate;
-  let endTime;
+  const {
+    link,
+    closingTime,
+    isSet,
+    fetchData,
+    auctionStatus,
+    onChange,
+    auctionInput
+  } = props;
 
-  if (!props.isSet) {
-    if (endDate == 'Invalid Date') {
-      endDate = '시간을 설정해 주세요.';
-    } else {
-      endDate = moment().add(parseInt(d), 'days').format('MM [월] DD [일] ');
-      endTime = moment()
-        .add(parseInt(h), 'hours')
-        .add(parseInt(m), 'minutes')
-        .format('hh [시] mm [분]');
-    }
-  }
-
-  return (
+  return isSet ? (
     <TimerItemWrppaer>
       <TimerItem
-        auctionStatus={props.auctionStatus}
-        fetchData={props.fetchData}
-        isSet={props.isSet ? true : false}
-        value={props.value}
-        onChange={props.onChange}
-        date={30}
-        day={d <= 0 ? '' : d}
-        hour={h <= 0 ? '' : h}
-        minute={m <= 0 ? '' : m}
-        second={s <= 0 ? '' : s}
+        closingTime={closingTime}
+        auctionStatus={auctionStatus}
+        fetchData={fetchData}
         link={link}
       />
-      {!props.isSet && (
-        <TimerDateTextWrapper>
-          <Bold>판매 종료일</Bold> <Bold>{endDate}</Bold> <Bold>{endTime}</Bold>
-        </TimerDateTextWrapper>
-      )}
     </TimerItemWrppaer>
+  ) : (
+    <TimeSetter>
+      <TimerInput auctionInput={auctionInput} onChange={onChange} />
+    </TimeSetter>
   );
 };
-const ColonText = styled.div`
-  margin: 10px;
-  text-align: center;
-  font-size: 18px;
+
+const TimerInput = ({ auctionInput, onChange }) => {
+  const { d, h, m, s } = auctionInput;
+
+  const times = [
+    { t: d, n: 'd', suffix: '일' },
+    { t: h, b: 'h', suffix: '시' },
+    { t: m, b: 'm', suffix: '분' }
+    // { t: s, b: 's',suffix:'초' }
+  ];
+
+  const handleChangeTime = e => {
+    const { name, value } = e.target;
+    onChange(name, value);
+  };
+
+  const endDate = moment()
+    .add(d, 'days')
+    .add(h, 'hours')
+    .add(m, 'minutes')
+    .add(s, 'seconds');
+  return (
+    <TimerInputWrapper>
+      <div className="input-wrapper">
+        {times.map(time => {
+          return (
+            <>
+              <input
+                type="tel"
+                name={time.n}
+                value={time.t}
+                placeholder="0"
+                onChange={handleChangeTime}
+              />
+              <div>{time.suffix}</div>
+            </>
+          );
+        })}
+      </div>
+      <div className="text-wrapper">
+        <div>경매 종료일:</div>
+        <div>{`${endDate.year()}년`} </div>
+        <div>{`${endDate.month() + 1}월`}</div>
+        <div>{`${endDate.date()}일`}</div>
+        <div>{`${endDate.hours()}시`}</div>
+        <div>{`${endDate.minutes()}분`}</div>
+        <div>마감</div>
+      </div>
+    </TimerInputWrapper>
+  );
+};
+
+export const TimeDisplay = ({ time, small, remainTime }) => {
+  const format = t => {
+    return String(t).length < 2 ? '0' + String(t) : String(t);
+  };
+
+  return (
+    <TimeDisplayWrapper small={small}>
+      <GiAlarmClock
+        size={small ? 17 : 25}
+        style={{ padding: small ? 1 : 5 }}
+        color="black"
+      />
+      {remainTime > 0 ? (
+        <>
+          <div className="text">{format(time.days())}일 </div>
+          <div className="text">{format(time.hours())}:</div>
+          <div className="text">{format(time.minutes())}:</div>
+          <div className="text">{format(time.seconds())}</div>
+        </>
+      ) : (
+        <div className="text">경매 종료</div>
+      )}
+    </TimeDisplayWrapper>
+  );
+};
+
+const TimeSetter = styled.div`
+  width: 100%;
 `;
 
-const Colon = ({ text }) => {
-  return <ColonText>{text}</ColonText>;
-};
-const Bold = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  padding: 5px;
-`;
 const TimerItemWrppaer = styled.div`
   display: flex;
   flex-direction: column;
@@ -202,29 +155,41 @@ const TimerItemWrppaer = styled.div`
   align-items: center;
   width: 100%;
 `;
-const TimerDateTextWrapper = styled.div`
-  margin-top: 10px;
-  padding: 15px 40px 15px 40px;
-  font-size: 14px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  background-color: #f5f5f7;
-  width: 100%;
-`;
 
-const TimerInput = styled.input.attrs({
-  type: 'tel',
-  id: 'timer'
-})`
-  text-align: center;
-  font-size: 20px;
-  font-weight: 900;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
+const TimerInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  padding: 5px;
-  max-width: 40px;
+
+  .input-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    div {
+      margin-left: 5px;
+    }
+  }
+
+  .text-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    background-color: #f5f5f7;
+    margin-top: 10px;
+    padding: 15px 0px;
+  }
+
+  input {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    width: 100%;
+    padding: 5px;
+    max-width: 40px;
+    margin-left: 1rem;
+  }
 `;
 
 const TimeWrapper = styled.div`
@@ -234,13 +199,6 @@ const TimeWrapper = styled.div`
   width: 100%;
   flex-direction: row;
   flex: 1;
-`;
-
-const TimerInputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const TimeDisplayWrapper = styled.div`
@@ -254,26 +212,66 @@ const TimeDisplayWrapper = styled.div`
   color: white;
   justify-content: center;
   align-items: center;
+  z-index: 1;
+  .text {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  ${props => {
+    if (props.small) {
+      return css`
+        div {
+          font-size: 12px;
+        }
+
+        padding: 3px;
+        background-color: rgba(77, 77, 77, 0.9);
+        border-radius: 5px;
+      `;
+    }
+  }}
 `;
-const TimeDisplayText = styled.div`
-  color: white;
-  font-size: 16px;
-  font-weight: 500;
-`;
-const TimeDisplay = ({ time }) => {
-  const days = String(time.d).length < 2 ? '0' + time.d : time.d;
-  const hours = String(time.h).length < 2 ? '0' + time.h : time.h;
-  const minutes = String(time.m).length < 2 ? '0' + time.m : time.m;
-  const seconds = String(time.s).length < 2 ? '0' + time.s : time.s;
-  return (
-    <TimeDisplayWrapper>
-      <GiAlarmClock size={25} style={{ padding: 5 }} color="black" />
-      <TimeDisplayText>{days}일 </TimeDisplayText>
-      <TimeDisplayText>{hours}:</TimeDisplayText>
-      <TimeDisplayText>{minutes}:</TimeDisplayText>
-      <TimeDisplayText>{seconds}</TimeDisplayText>
-    </TimeDisplayWrapper>
-  );
-};
 
 export default Timer;
+// const timeChangeHandler = useCallback(
+//   e => {
+//     e.preventDefault();
+//     const { name, value } = e.target;
+//     let Value = value.replace(/[^0-9]/g, '');
+
+//     if (name == 'd') {
+//       if (parseInt(Value) > 50) {
+//         alert('50일이 최대입니다.');
+//         onChange(name, 50);
+//         setTime(time => ({ ...time, [name]: 50 }));
+
+//         return;
+//       }
+//     } else if (name == 'h') {
+//       if (parseInt(Value) > 50) {
+//         alert('24시간이 최대입니다.');
+//         onChange(name, 24);
+//         setTime(time => ({ ...time, [name]: 24 }));
+//         return;
+//       }
+//     } else if (name == 'm') {
+//       if (parseInt(Value) > 50) {
+//         alert('60분이 최대입니다.');
+//         onChange(name, 60);
+//         setTime(time => ({ ...time, [name]: 60 }));
+//         return;
+//       }
+//     } else if (name == 's') {
+//       if (parseInt(Value) > 50) {
+//         alert('60초가 최대입니다.');
+//         onChange(name, 60);
+//         setTime(time => ({ ...time, [name]: 60 }));
+//         return;
+//       }
+//     }
+//     onChange(name, Value);
+//     setTime(time => ({ ...time, [name]: Value }));
+//   },
+//   [onChange]
+// );
