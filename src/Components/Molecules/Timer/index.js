@@ -72,8 +72,8 @@ const TimerInput = ({ auctionInput, onChange }) => {
 
   const times = [
     { t: d, n: 'd', suffix: '일' },
-    { t: h, b: 'h', suffix: '시' },
-    { t: m, b: 'm', suffix: '분' }
+    { t: h, n: 'h', suffix: '시' },
+    { t: m, n: 'm', suffix: '분' }
     // { t: s, b: 's',suffix:'초' }
   ];
 
