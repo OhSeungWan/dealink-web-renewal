@@ -83,7 +83,12 @@ const ProductInfo = props => {
     <ProductInfoForBuyer {...props} />
   );
 };
-const StyledList = styled(List)`
+const StyledList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
   .name {
     font-size: 18px;
     margin-bottom: 15px;
