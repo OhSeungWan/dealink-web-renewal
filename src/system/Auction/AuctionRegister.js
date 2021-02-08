@@ -64,7 +64,8 @@ const AuctionRegister = () => {
     form.append(
       'auctionInfoRequest',
       JSON.stringify({
-        startingPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 시작가
+        // startingPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 시작가
+        startingPrice: 100, // 경매 시작가 100원 고정
         currentPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 현재가
         closingTime: calcClosingDate(), // 경매 마감시간
         tradingMethod: '직거래', //

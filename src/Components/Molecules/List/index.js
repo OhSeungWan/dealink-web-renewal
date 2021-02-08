@@ -19,10 +19,12 @@ const List = ({
   direction,
   spaceBetween,
   spaceAround,
-  alignCenter
+  alignCenter,
+  className
 }) => {
   return (
     <ListWrapper
+      className={className}
       direction={direction}
       spaceBetween={spaceBetween ? true : false}
       spaceAround={spaceAround ? true : false}

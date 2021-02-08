@@ -1,6 +1,6 @@
-import { BsFillTriangleFill } from 'react-icons/bs';
 import React from 'react';
 import { TimerItem } from 'Components/Molecules/Timer';
+import arrow from 'assets/img/arrow.png';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -22,6 +22,10 @@ const AuctionItem = ({ auction }) => {
         />
 
         <img className="img" src={auction.imagePath} />
+        <div className="bidcount">
+          <img src={arrow} height={12} />
+          <div>{`${auction.count}건`}</div>
+        </div>
       </div>
       <AuctionItemContents auction={auction} />
     </AcutionItemWrapper>
@@ -31,11 +35,12 @@ const AuctionItem = ({ auction }) => {
 const AuctionItemContents = ({ auction }) => {
   return (
     <div className="contents">
-      <AuctionContentItem>{`${auction.productName}`}</AuctionContentItem>
-      <AuctionContentItem style={{ fontWeight: 700 }}>{`현재가 ${comma(
-        auction.currentPrice
-      )}원`}</AuctionContentItem>
-      <AuctionContentItem style={{ fontSize: 16, color: 'gray' }}>
+      <AuctionContentItem className="name">{`${auction.productName}`}</AuctionContentItem>
+      <AuctionContentItem
+        className="currentprice"
+        style={{ fontWeight: 700 }}
+      >{`현재가 ${comma(auction.currentPrice)}원`}</AuctionContentItem>
+      <AuctionContentItem className="startprice">
         {`시작가 ${comma(auction.startingPrice)}원`}
       </AuctionContentItem>
       <div
@@ -44,21 +49,7 @@ const AuctionItemContents = ({ auction }) => {
           justifyContent: 'space-between',
           alignItems: 'center'
         }}
-      >
-        <AuctionContentItem
-          style={{ fontSize: 14 }}
-        >{`입찰수 `}</AuctionContentItem>
-        <AuctionContentItem
-          style={{
-            fontSize: 14,
-            color: 'red',
-            display: 'flex',
-            alignItems: 'center'
-          }}
-        >
-          {auction.count} <BsFillTriangleFill />
-        </AuctionContentItem>
-      </div>
+      ></div>
     </div>
   );
 };
@@ -72,7 +63,7 @@ const AcutionItemWrapper = styled.div`
   .item-wrapper {
     position: relative;
     width: 100%;
-    height: 150px;
+    height: 170px;
     overflow: hidden;
     margin-top: 5px;
 
@@ -83,6 +74,20 @@ const AcutionItemWrapper = styled.div`
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+    .bidcount {
+      position: absolute;
+      bottom: 0;
+      right: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 3px solid #ff5800;
+      font-size: 12px;
+      font-weight: 900;
+      color: #ff5800;
+      background-color: rgba(250, 248, 247, 0.95);
+      padding: 2px 12px;
     }
   }
 
@@ -99,6 +104,17 @@ const AuctionContentItem = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  &.name {
+    padding: 7px 0px;
+    font-size: 16px;
+  }
+  &.currentprice {
+    font-size: 16px;
+  }
+  &.startprice {
+    font-size: 12px;
+    color: gray;
+  }
 `;
 
 export default AuctionItem;

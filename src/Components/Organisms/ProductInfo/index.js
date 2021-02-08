@@ -9,16 +9,6 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
-  padding: 20px;
-  border: 1px solid #eaeaea;
-  border-radius: 5px;
-  margin: 15px 0px 15px 0px;
-  width: 80%;
-  text-align: left;
-  font-size: 16px;
-`;
-
 const ProductInfo = props => {
   const history = useHistory();
 
@@ -41,24 +31,16 @@ const ProductInfo = props => {
   };
 
   return !props.type ? (
-    <List alignCenter={true}>
-      <Text
-        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
-      >
-        상품사진
-      </Text>
+    <StyledList className="productinfo" alignCenter={true}>
+      <Text className="name">상품사진</Text>
       <ImageBox
         type="upload"
         onChange={props.onChange}
         imglist={props.value.imageList}
       />
-      <Text
-        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
-      >
-        상품명
-      </Text>
+      <Text className="name">상품명</Text>
       <Input
-        style={{ textAlign: 'left' }}
+        className="input"
         value={props.value.productTitle}
         name="productTitle"
         id="productTitle"
@@ -66,11 +48,7 @@ const ProductInfo = props => {
         onChange={onChange}
         onClick={confirmLogin}
       />
-      <Text
-        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
-      >
-        상품설명
-      </Text>
+      <Text className="name">상품설명</Text>
       <TextArea
         value={props.value.description}
         name="description"
@@ -79,51 +57,69 @@ const ProductInfo = props => {
         onChange={onChange}
         onClick={confirmLogin}
       />
-      <Text
-        style={{ fontSize: 18, marginBottom: 15, marginTop: 30, padding: 0 }}
-      >
-        상품가격
-      </Text>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: '90%'
-        }}
-      >
+      <Text className="name">상품가격</Text>
+      <div className="explain">
+        딜링크는 무료나눔 플렛폼으로 최초등록 가격은 100원입니다.
+      </div>
+      <div className="explain">
+        추후 다른사람의 입찰을 통해 가격이 올라갈수 있습니다.
+      </div>
+      <div className="price">
         <Input
           type="tel"
-          style={{
-            textAlign: 'left',
-            flex: 6,
-            borderRadius: 5,
-            border: `1px solid #eaeaea`
-          }}
-          value={comma(props.value.productPrice)}
+          // value={comma(props.value.productPrice)}
+          value={comma(100)}
           name="productPrice"
           id="productPrice"
           placeholder={'시작가를 입력해주세요.'}
           onChange={onChange}
           onClick={confirmLogin}
         ></Input>
-        <div
-          style={{
-            flex: 1,
-            textAlign: 'center',
-            fontSize: 28
-          }}
-        >
-          원
-        </div>
+        <div className="suffix">원</div>
       </div>
       <Border height="8px" />
-    </List>
+    </StyledList>
   ) : (
     <ProductInfoForBuyer {...props} />
   );
 };
+const StyledList = styled(List)`
+  .name {
+    font-size: 18px;
+    margin-bottom: 15px;
+    margin-top: 30px;
+    padding: 0px;
+  }
+  .explain {
+    width: 90%;
+    font-size: 14px;
+    text-align: left;
+    color: #6e44ff;
+  }
+  .input {
+    text-align: left;
+  }
 
+  .price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+
+    input {
+      text-align: left;
+      flex: 6;
+      border-radius: 5px;
+      border: 1px solid #eaeaea;
+    }
+
+    .suffix {
+      flex: 1;
+      text-align: center;
+      font-size: 28px;
+    }
+  }
+`;
 const ProductTitle = styled.div`
   padding: 10px;
   font-weight: 700;
@@ -135,6 +131,15 @@ const ProductPrice = styled.div`
   color: ${props => (props.current ? 'black' : 'gray')};
   font-size: ${props => (props.current ? '25px' : '16px')};
   flex: 8;
+`;
+const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 5px;
+  margin: 15px 0px 15px 0px;
+  width: 80%;
+  text-align: left;
+  font-size: 16px;
 `;
 
 const ProductText = styled.div`

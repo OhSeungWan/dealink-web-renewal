@@ -125,17 +125,17 @@ export const TimeDisplay = ({ time, small, remainTime }) => {
 
   return (
     <TimeDisplayWrapper small={small}>
-      <GiAlarmClock
+      {/* <GiAlarmClock
         size={small ? 17 : 25}
         style={{ padding: small ? 1 : 5 }}
         color="black"
-      />
+      /> */}
       {remainTime > 0 ? (
         <>
           <div className="text">{format(time.days())}일 </div>
           <div className="text">{format(time.hours())}:</div>
           <div className="text">{format(time.minutes())}:</div>
-          <div className="text">{format(time.seconds())}</div>
+          <div className="text">{format(time.seconds())}남음</div>
         </>
       ) : (
         <div className="text">경매 종료</div>
@@ -205,7 +205,7 @@ const TimeDisplayWrapper = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: rgba(109, 68, 255, 0.5);
+  background-color: rgba(109, 68, 255, 0.9);
   display: flex;
   padding: 5px 10px 5px 10px;
   border-radius: 30px;
@@ -216,7 +216,6 @@ const TimeDisplayWrapper = styled.div`
   .text {
     color: white;
     font-size: 16px;
-    font-weight: 500;
   }
   ${props => {
     if (props.small) {
@@ -226,7 +225,7 @@ const TimeDisplayWrapper = styled.div`
         }
 
         padding: 3px;
-        background-color: rgba(77, 77, 77, 0.9);
+        background-color: rgba(0, 0, 0, 0.4);
         border-radius: 5px;
       `;
     }

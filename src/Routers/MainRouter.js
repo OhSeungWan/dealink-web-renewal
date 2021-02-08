@@ -62,9 +62,11 @@ const MainRouter = () => {
 
 export const PrivateRoute = ({ children, isLogin, status, ...rest }) => {
   const dispatch = useDispatch();
-
+  const userType = useSelector(state => state.user.type);
   useEffect(() => {
-    dispatch(fetchUser(getCookie('accessToken')));
+    if (userType !== 'GUEST') {
+      dispatch(fetchUser(getCookie('accessToken')));
+    }
   }, []);
   return status === 'idle' ? (
     <Route

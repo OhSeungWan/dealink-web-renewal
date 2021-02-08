@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import AuctionItem from 'system/Auction/AuctionItem';
+import mainbanner from 'assets/img/mainbanner.png';
 import styled from 'styled-components';
 
 const AuctionList = () => {
@@ -20,19 +21,21 @@ const AuctionList = () => {
       closing: 'closingTime',
       price: 'currentPrice'
     };
-    const { name } = e.target;
-    setSortKey(SortKey[name]);
+    const { value } = e.target;
+    setSortKey(SortKey[value]);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=0&size=1&sort=${SortKey[name]},ASC`
+      `https://rest.dealink.co.kr/auction/list?page=0&size=20&sort=${SortKey[value]},ASC`
     );
     const data = await res.json();
     setAuctionList(data.content);
+    setPageState(1);
+    console.log('reset');
   };
 
   const getAuctionList = async () => {
     console.log(pageStateRef.current);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=${pageStateRef.current}&size=1&sort=${sortKey},ASC`
+      `https://rest.dealink.co.kr/auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey},ASC`
     );
     const data = await res.json();
     setPageState(pageStateRef.current + 1);
@@ -64,16 +67,17 @@ const AuctionList = () => {
 
   return (
     <>
+      <img src={mainbanner} width="100%" />
       <FilterWrapper className="filter-wrapper">
-        <button name="new" onClick={handleChageSortKey}>
-          최신 순서
-        </button>
-        <button name="closing" onClick={handleChageSortKey}>
-          마감 순서
-        </button>
-        <button name="price" onClick={handleChageSortKey}>
-          가격 순서
-        </button>
+        <div className="title">
+          <div>나눔스토리를 </div>
+          <div>이웃과 공유하세요</div>
+        </div>
+        <select name="fruits" onChange={handleChageSortKey}>
+          <option value="new">신규 등록순</option>
+          <option value="closing">마감 순</option>
+          <option value="price">가격 순</option>
+        </select>
       </FilterWrapper>
       <AuctionListWrapper>
         {auctionList.map((auction, index) => {
@@ -87,11 +91,18 @@ const AuctionList = () => {
 export default AuctionList;
 
 const FilterWrapper = styled.div`
-  width: 100%;
+  width: 95%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: flex-end;
   margin-bottom: 10px;
-  button {
+  .title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 30px;
+  }
+  select {
+    max-height: 40px;
     border: none;
     padding: 10px 25px;
     border-radius: 5px;

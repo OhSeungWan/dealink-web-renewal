@@ -98,5 +98,5 @@ export const useProduct = templink => {
     setLoading(true);
   }, [templink]);
 
-  return [data];
+  return [data, onChange, loading, setLoading, validate];
 };
