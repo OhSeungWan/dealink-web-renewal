@@ -7,6 +7,7 @@ const AuctionList = () => {
   const [auctionList, setAuctionList] = useState([]);
   const [page, setPage] = useState(0);
   const [sortKey, setSortKey] = useState('createdDate');
+  const [loading, setLoading] = useState(false);
   const pageStateRef = useRef(page);
 
   const setPageState = data => {
@@ -22,7 +23,7 @@ const AuctionList = () => {
     const { name } = e.target;
     setSortKey(SortKey[name]);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=0&size=20&sort=${SortKey[name]},ASC`
+      `https://rest.dealink.co.kr/auction/list?page=0&size=1&sort=${SortKey[name]},ASC`
     );
     const data = await res.json();
     setAuctionList(data.content);
@@ -31,7 +32,7 @@ const AuctionList = () => {
   const getAuctionList = async () => {
     console.log(pageStateRef.current);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey},ASC`
+      `https://rest.dealink.co.kr/auction/list?page=${pageStateRef.current}&size=1&sort=${sortKey},ASC`
     );
     const data = await res.json();
     setPageState(pageStateRef.current + 1);
