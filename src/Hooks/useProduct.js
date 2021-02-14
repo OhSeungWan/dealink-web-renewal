@@ -8,7 +8,7 @@ export const useProduct = templink => {
   const [data, setData] = useState({
     imageList: [],
     productTitle: '',
-    productPrice: '',
+    productPrice: '100',
     kakaoUrl: 'https://open.kakao.com/o/gDbtKmTc',
     description: '',
     d: '',
