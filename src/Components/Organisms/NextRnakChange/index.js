@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Button } from 'Components/Atoms';
+import { REQUEST_URL } from 'Constants/server';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
@@ -29,13 +30,9 @@ const Nextrankchange = ({ link, closeModal }) => {
   const [Highest, setHighest] = useState('');
   const [seconds, setSeconds] = useState('');
   const [isChange, setIsChange] = useState(false);
-  const [data, isLoading] = useFetch(
-    `https://rest.dealink.co.kr/auction/${link}/history`,
-    // `http://192.168.0.102:8080/auction/${link}/history`,
-    {
-      headers: { AUTH_TOKEN: userInfo.accessToken }
-    }
-  );
+  const [data, isLoading] = useFetch(`${REQUEST_URL}auction/${link}/history`, {
+    headers: { AUTH_TOKEN: userInfo.accessToken }
+  });
 
   const changeRankHandler = async () => {
     setIsChange(false);

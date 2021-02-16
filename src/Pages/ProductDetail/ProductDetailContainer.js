@@ -3,6 +3,7 @@ import { getCookie, setCookie } from 'lib/Cookies';
 import { useLocation, useParams } from 'react-router-dom';
 
 import ProductDetailPresenter from 'Pages/ProductDetail/ProductDetailPresenter';
+import { REQUEST_URL } from 'Constants/server';
 import { useFetch } from 'Hooks/useFetch';
 import { useSelector } from 'react-redux';
 
@@ -28,9 +29,8 @@ const ProductDetailContainer = () => {
       ? userInfo.id
       : '0';
 
-  const [data, isLoading, refetch] = useFetch(
-    `https://rest.dealink.co.kr/user/${userId}/auction/${url}`
-    // `http://192.168.0.102:8080/user/${userId}/auction/${url}`
+  const [data, isLoading, { refetch }] = useFetch(
+    `${REQUEST_URL}user/${userId}/auction/${url}`
   );
 
   const fetchData = () => {

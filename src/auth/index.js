@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { REQUEST_URL } from 'Constants/server';
 import { fetchUser } from 'Store/Slice/userSlice';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
@@ -24,13 +25,9 @@ export const Auth = ({ children }) => {
   // const isAuth = useSelector(state => state.user.id);
   const userInfo = sessionStorage.getItem('userInfo');
   const initUserInfo = async () => {
-    const auth = await fetch(
-      `https://rest.dealink.co.kr/auction/test/history`,
-      // `http://192.168.0.102:8080/auction/test/history`,
-      {
-        headers: { AUTH_TOKEN: userInfo?.accessToken || '' }
-      }
-    );
+    const auth = await fetch(`${REQUEST_URL}auction/test/history`, {
+      headers: { AUTH_TOKEN: userInfo?.accessToken || '' }
+    });
     // TODO: 테스트를 위한 코드 반드시 수정해야함
     const isAuth = (await auth.json()) == 'Invalid Access Token' ? false : true;
 

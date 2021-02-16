@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { REQUEST_URL } from 'Constants/server';
+
 export const useProduct = templink => {
   //TODO: 고쳐야함
   // const userId = useSelector(state => state.user.id);
@@ -73,8 +75,7 @@ export const useProduct = templink => {
     const getData = async () => {
       setLoading(false);
       const res = await fetch(
-        `https://rest.dealink.co.kr/user/${userId}/auction/${templink}`
-        // `http://192.168.0.102:8080/user/${userId}/auction/${templink}`
+        `${REQUEST_URL}user/${userId}/auction/${templink}`
       );
       const data = await res.json();
       setData({
