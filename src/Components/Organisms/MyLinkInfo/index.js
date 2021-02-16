@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Border } from 'Components/Atoms';
 import { List } from 'Components/Molecules';
+import { REQUEST_URL } from 'Constants/server';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
 import { useHistory } from 'react-router-dom';
@@ -172,7 +173,7 @@ const MyLinkInfo = () => {
   const [selected, setSelected] = useState(selectList[0].status);
   const [data, isLoading, refetch] = useFetch(
     `https://rest.dealink.co.kr/user/${userInfo.id}/${selected}`,
-    // `http://192.168.0.102:8080/user/${userInfo.id}/${selected}`,
+
     {
       method: 'GET',
       headers: {

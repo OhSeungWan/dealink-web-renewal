@@ -1,8 +1,10 @@
 import { Modal } from 'Components/Organisms';
+import { REQUEST_URL } from 'Constants/server';
 import React from 'react';
 import { Share } from 'Components/Molecules';
 import shareAuction from 'assets/img/shareAuction.png';
 import styled from 'styled-components';
+
 const ModalContentWrapper = styled.div`
   padding: 20px;
   display: flex;
@@ -53,8 +55,7 @@ const AuctionRegisterModal = ({ modalData, isOpen, closeModal }) => {
           <img src={shareAuction} width={'100%'} alt="no" />
           <ModalShareWrapper>
             <Share
-              url={`https://www.dealink.co.kr/Product/seller/0/${modalData.url}`}
-              // url={`http://192.168.0.102:8080/Product/seller/0/${data.url}`}
+              url={`${REQUEST_URL}Product/seller/0/${modalData.url}`}
               data={modalData}
             />
           </ModalShareWrapper>

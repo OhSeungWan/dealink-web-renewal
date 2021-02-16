@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { REQUEST_URL } from 'Constants/server';
 import { userApi } from 'Apis/userApi';
 
 const setCookie = (name, value, days) => {
@@ -21,7 +22,7 @@ const initialState = {
 
 export const guest = createAsyncThunk('users/guest', async phoneNumber => {
   console.log(phoneNumber);
-  const res = await fetch('https://rest.dealink.co.kr/guest', {
+  const res = await fetch(`${REQUEST_URL}guest`, {
     method: 'POST',
     headers: {
       GUEST: 'true',
@@ -39,6 +40,7 @@ export const fetchUserByCode = createAsyncThunk(
   async code => {
     const res = await userApi.fetchByCode(code);
     const data = await res.json();
+    console.log(data);
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
     sessionStorage.setItem('userId', data.id);
@@ -50,13 +52,9 @@ export const fetchUserByCode = createAsyncThunk(
 export const fetchUser = createAsyncThunk(
   'users/fetchByCode',
   async accessToken => {
-    const res = await fetch(
-      `https://rest.dealink.co.kr/user/refresh`,
-      // `http://192.168.0.102:8080/user/refresh`,
-      {
-        headers: { AUTH_TOKEN: accessToken }
-      }
-    );
+    const res = await fetch(`${REQUEST_URL}user/refresh`, {
+      headers: { AUTH_TOKEN: accessToken }
+    });
     const data = await res.json();
     console.log(data);
     sessionStorage.setItem('userInfo', data.accessToken);
