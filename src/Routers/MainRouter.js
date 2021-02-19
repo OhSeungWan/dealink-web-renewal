@@ -2,12 +2,15 @@ import { Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ChatList from 'Pages/Chat/ChatList';
+import ChatOne from 'Pages/Chat/ChatOne';
 import GuestSignIn from 'system/User/GuestSignIn';
 import Home from 'Pages/Home';
 import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
 import MyLink from 'Pages/MyLink';
 import ProductDetail from 'Pages/ProductDetail';
+import Profile from 'Pages/Profile';
 import SignIn from 'Pages/SignIn';
 import Terms from 'Pages/Terms';
 import { fetchUser } from 'Store/Slice/userSlice';
@@ -52,10 +55,18 @@ const MainRouter = () => {
       <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
       <Route path="/guestSignIn" component={GuestSignIn}></Route>
-
+      <PrivateRoute path="/chatlist" isLogin={isLogin} status={status}>
+        <ChatList />
+      </PrivateRoute>
+      <PrivateRoute path="/chat/:roomId" isLogin={isLogin} status={status}>
+        <ChatOne />
+      </PrivateRoute>
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />
       </PrivateRoute>
+      <Route path="/profile/:userId">
+        <Profile></Profile>
+      </Route>
     </Switch>
   );
 };
@@ -96,6 +107,7 @@ export const PrivateRoute = ({ children, isLogin, status, ...rest }) => {
 export const PrivateContents = ({ children, location, ...rest }) => {
   const isLogin = useSelector(state => state.user.isLogin);
   const status = useSelector(state => state.user.status);
+  localStorage.setItem('location', location);
   return status === 'idle' ? (
     <Route
       {...rest}

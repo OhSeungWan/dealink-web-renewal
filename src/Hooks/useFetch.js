@@ -24,8 +24,8 @@ export const useFetch = (payload, option) => {
       try {
         const data = await fetch(payload, option).then(res => res.json());
         setData(data);
-        // console.log(`✓ response⬇️`);
-        // console.log(data);
+        console.log(`✓ response⬇️`);
+        console.log(data);
         data.status === 500 ? setIsLoading(false) : setIsLoading(true);
       } catch (error) {
         // console.log(`⚠︎ Error ⚠︎ : ${error}`);
