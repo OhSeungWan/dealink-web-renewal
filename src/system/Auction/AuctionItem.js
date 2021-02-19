@@ -82,7 +82,7 @@ const AcutionItemWrapper = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 3px solid #ff5800;
+      border: 1px solid #ff5800;
       font-size: 12px;
       font-weight: 900;
       color: #ff5800;

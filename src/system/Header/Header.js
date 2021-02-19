@@ -1,4 +1,5 @@
 import {
+  AiOutlineComment,
   AiOutlineHome,
   AiOutlineShoppingCart,
   AiOutlineUser
@@ -78,7 +79,8 @@ const MenuList = ({ closeMenu }) => {
   const menuList = [
     { name: 'Home', link: '/', icon: <AiOutlineHome /> },
     { name: 'MY내역', link: '/MyLink', icon: <AiOutlineUser /> },
-    { name: '상품등록', link: '/main', icon: <AiOutlineShoppingCart /> }
+    { name: '상품등록', link: '/main', icon: <AiOutlineShoppingCart /> },
+    { name: '채팅내역', link: '/chatlist', icon: <AiOutlineComment /> }
   ];
   return (
     <MenuListWrapper>

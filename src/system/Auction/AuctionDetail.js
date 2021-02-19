@@ -41,9 +41,7 @@ const AuctionDetail = () => {
 
   const getAuctionDetail = async () => {
     setData(state => ({ ...state, loading: false }));
-    const res = await fetch(
-      `https://rest.dealink.co.kr/user/${userId}/auction/${url}`
-    );
+    const res = await fetch(`${REQUEST_URL}${userId}/auction/${url}`);
     const data = await res.json();
     setData(state => ({ ...state, auctionDetail: data, loading: true }));
   };
