@@ -13,7 +13,7 @@ const iOS = () => {
     'iPhone Simulator',
     'iPod Simulator',
     'iPad',
-    'iPhone',
+    // 'iPhone',
     'iPod'
   ].includes(navigator.platform);
   // ||
@@ -22,14 +22,24 @@ const iOS = () => {
 };
 
 const SignInPresenter = ({ SignUp, guestSignUp }) => {
+  console.log(navigator.platform);
   return (
     <ScreenWrapper>
       <Container>
         <Header />
-        <ImageBox url={loginBanner} />
-        <img src={kakaoSignIn} onClick={SignUp} width={'100%'} alt="no"></img>
+        {!iOS() && <ImageBox url={loginBanner} />}
+        {!iOS() && (
+          <img src={kakaoSignIn} onClick={SignUp} width={'100%'} alt="no" />
+        )}
         {iOS() && (
-          <GuestSignInBtn onClick={guestSignUp}>
+          <GuestSignInBtn
+            onClick={guestSignUp}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              maxWidth: 310
+            }}
+          >
             휴대폰번호로 시작하기
           </GuestSignInBtn>
         )}

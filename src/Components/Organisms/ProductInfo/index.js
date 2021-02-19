@@ -1,9 +1,11 @@
 import { BidHistory, ImageBox, List } from 'Components/Molecules';
 import { Border, Button, Input, ScreenWrapper, Text } from 'Components/Atoms';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { HiUserCircle } from 'react-icons/hi';
 import { Loading } from 'Components/Organisms/Modal';
 import { Modal } from 'Components/Organisms';
+import { REQUEST_URL } from 'Constants/server';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -83,6 +85,7 @@ const ProductInfo = props => {
     <ProductInfoForBuyer {...props} />
   );
 };
+
 const StyledList = styled.div`
   display: flex;
   flex-direction: column;
@@ -125,18 +128,7 @@ const StyledList = styled.div`
     }
   }
 `;
-const ProductTitle = styled.div`
-  padding: 10px;
-  font-weight: 700;
-  font-size: 20px;
-`;
 
-const ProductPrice = styled.div`
-  font-weight: 700;
-  color: ${props => (props.current ? 'black' : 'gray')};
-  font-size: ${props => (props.current ? '25px' : '16px')};
-  flex: 8;
-`;
 const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
   padding: 20px;
   border: 1px solid #eaeaea;
@@ -145,19 +137,6 @@ const TextArea = styled.textarea.attrs(props => ({ rows: 5, cols: 33 }))`
   width: 80%;
   text-align: left;
   font-size: 16px;
-`;
-
-const ProductText = styled.div`
-  flex: 3;
-  color: ${props => (props.current ? 'black' : 'gray')};
-`;
-
-const ProductWrapper = styled.div`
-  padding: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Container = styled.div`
@@ -173,10 +152,40 @@ const ProductInfoForBuyer = props => {
   const [bidData, setBidData] = useState({});
   const [cancleComplete, setCancelComplete] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [bidList, setBidList] = useState([]);
+
+  async function closeAuction() {
+    const res = await fetch(`${REQUEST_URL}auction/${props.id}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    // // const res = await fetch(
+    // //   `${REQUEST_URL}chat-room/${userInfo.id}/${bidList[0].id}`,
+    // //   {
+    // //     method: 'POST',
+    // //     headers: {
+    // //       'Content-Type': 'application/json',
+    // //       AUTH_TOKEN: userInfo.accessToken
+    // //     }
+    // //   }
+    // // );
+    const data = await res.json();
+    alert('경매가 마감 되었습니다.');
+    console.log(data);
+  }
+
+  async function getBidList() {
+    const res = await fetch(`${REQUEST_URL}auction/${props.url}/history`, {
+      headers: { AUTH_TOKEN: userInfo.accessToken }
+    });
+    const data = await res.json();
+    console.log(data);
+    setBidList(data);
+  }
 
   const openModal = async () => {
     const res = await fetch(
-      `https://rest.dealink.co.kr/user/${userInfo.id}/auction/${props.url}/bid/cancel-request`,
+      `${REQUEST_URL}${userInfo.id}/auction/${props.url}/bid/cancel-request`,
       {
         headers: {
           AUTH_TOKEN: userInfo.accessToken
@@ -196,7 +205,7 @@ const ProductInfoForBuyer = props => {
     setLoading(true);
     setCancelComplete(false);
     await fetch(
-      `https://rest.dealink.co.kr/user/${userInfo.id}/auction/${props.url}/bid/cancel`,
+      `${REQUEST_URL}${userInfo.id}/auction/${props.url}/bid/cancel`,
       {
         method: 'GET',
         headers: {
@@ -207,38 +216,41 @@ const ProductInfoForBuyer = props => {
     setLoading(false);
     setCancelComplete(true);
   };
+
+  useEffect(() => {
+    getBidList();
+  }, []);
   return (
-    <List>
-      {/* <ImageBox url={props.imageUrls[0]} /> */}
+    <ProductInfoWrapper>
+      <div className="profile">
+        <HiUserCircle color="#6E44FF" size={50} />
+        <div>{props.userName}</div>
+      </div>
       <Border height="8px" />
-      <ProductTitle>{props.name}</ProductTitle>
+      <div className="productTitle">{props.name}</div>
       <Border height="8px" />
-      <ProductWrapper>
-        <ProductText current>현재가</ProductText>
-        <ProductPrice current>{comma(props.currentPrice)} 원</ProductPrice>
-        {userInfo.isLogin && props.auctionStatus !== 'AUCTION_COMPLETED' && (
-          <button
-            onClick={openModal}
-            style={{
-              border: '1px solid #6E44FF',
-              color: '#6E44FF',
-              backgroundColor: 'white',
-              borderRadius: 5
-            }}
-          >
-            입찰 취소 요청
+      <div className="productPriceWrapper">
+        <div className="priceType current">현재가</div>
+        <div className="price current">{comma(props.currentPrice)} 원</div>
+        {userInfo.isLogin &&
+          props.auctionStatus !== 'AUCTION_COMPLETED' &&
+          props.userType !== 'SELLER' && (
+            <button onClick={openModal} className="trade">
+              입찰 취소
+            </button>
+          )}
+        {userInfo.isLogin && props.userType == 'SELLER' && (
+          <button onClick={closeAuction} className="trade">
+            현재가로 경매 마감하기
           </button>
         )}
-      </ProductWrapper>
-      <ProductWrapper>
-        <ProductText>시작가</ProductText>
-        <ProductPrice>{comma(props.startingPrice)} 원</ProductPrice>
-      </ProductWrapper>
+      </div>
+      <div className="productPriceWrapper">
+        <div className="priceType">시작가</div>
+        <div className="price">{comma(props.startingPrice)} 원</div>
+      </div>
       <BidHistory bidHistoryCount={props.bidHistoryCount} link={props.url} />
-      {/* <ProductWrapper>
-        <ProductText>내입찰가</ProductText>
-        <ProductPrice>{comma(props.currentPrice)} 원</ProductPrice>
-      </ProductWrapper> */}
+
       <Border height="8px" />
       <ScreenWrapper>
         <Modal
@@ -332,7 +344,7 @@ const ProductInfoForBuyer = props => {
                       }}
                       onClick={cancelBid}
                     >
-                      입찰 취소 요청
+                      입찰 취소
                     </Button>
                   </>
                 )}
@@ -348,8 +360,37 @@ const ProductInfoForBuyer = props => {
           )}
         </Modal>
       </ScreenWrapper>
-    </List>
+    </ProductInfoWrapper>
   );
 };
 
+const ProductInfoWrapper = styled.div`
+  width: 100%;
+  .profile {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    div {
+      margin-left: 10px;
+    }
+  }
+  .productPriceWrapper {
+    display: flex;
+    .trade {
+      border: 1px solid #6e44ff;
+      color: #6e44ff;
+      background-color: white;
+      border-radius: 5px;
+    }
+  }
+  .priceType + .price {
+    margin-left: 1rem;
+    flex: 1;
+    margin-bottom: 10px;
+  }
+  .current {
+    font-size: 20px;
+  }
+`;
 export default ProductInfo;

@@ -1,25 +1,70 @@
 import React from 'react';
 import auctionComplete from 'assets/img/auctionComplete.png';
 import styled from 'styled-components';
+
+const Slider = ({
+  ImageList,
+  big,
+  auctionStatus,
+  onRemove,
+  type,
+  children
+}) => {
+  return ImageList ? (
+    <SliderWrapper>
+      <SliderContainer>
+        {ImageList.map((img, index) => {
+          return type !== 'detail' ? (
+            <ImgWrapper>
+              <RemoveBtn onRemove={onRemove} name={img.name} />
+              <SliderImage src={img.src} big={big ? true : false} key={index} />
+            </ImgWrapper>
+          ) : (
+            <>
+              <ImgWrapperBig>
+                <SliderImage src={img} big={big ? true : false} key={index} />
+              </ImgWrapperBig>
+            </>
+          );
+        })}
+      </SliderContainer>
+      {auctionStatus && (
+        <Complete>
+          <img style={{ width: '20%' }} src={auctionComplete} alt="no" />
+        </Complete>
+      )}
+      {children}
+    </SliderWrapper>
+  ) : null;
+};
 const SliderWrapper = styled.div`
   position: relative;
   overflow: auto;
-
   width: 100%;
+  /* .imgcount {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  } */
 `;
 const SliderContainer = styled.div`
+  position: relative;
   display: flex;
-  width: 100%;
-  height: 100%;
+  overflow: auto;
 `;
 
 const SliderImage = styled.img`
-  width: 100%;
-  height: 100%;
-  max-width: ${props => (props.big ? '400px' : '100px')};
-  max-height: ${props => (props.big ? '400px' : '100px')};
+  width: ${props => (props.big ? '100vw' : '100%')};
+  max-width: 400px;
+  height: ${props => (props.big ? '100vw' : '100%')};
+  max-height: 400px;
 `;
-
+const ImgWrapperBig = styled.div`
+  position: relative;
+  width: 100%;
+  height: 400px;
+  margin-top: 5px;
+`;
 const ImgWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -50,37 +95,5 @@ const Complete = styled.div`
   position: absolute;
   top: 0;
 `;
-
-const Slider = ({
-  ImageList,
-  big,
-  auctionStatus,
-  onRemove,
-  type,
-  children
-}) => {
-  return ImageList ? (
-    <SliderWrapper>
-      <SliderContainer>
-        {ImageList.map((img, index) => {
-          return type !== 'detail' ? (
-            <ImgWrapper>
-              <RemoveBtn onRemove={onRemove} name={img.name} />
-              <SliderImage src={img.src} big={big ? true : false} key={index} />
-            </ImgWrapper>
-          ) : (
-            <SliderImage src={img} big={big ? true : false} key={index} />
-          );
-        })}
-      </SliderContainer>
-      {auctionStatus && (
-        <Complete>
-          <img style={{ width: '20%' }} src={auctionComplete} alt="no" />
-        </Complete>
-      )}
-      {children}
-    </SliderWrapper>
-  ) : null;
-};
 
 export default Slider;

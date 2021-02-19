@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { BsTriangleFill } from 'react-icons/bs';
 import Date from 'lib/Utils/date-utils';
+import { HiUserCircle } from 'react-icons/hi';
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
 import { Modal } from 'Components/Organisms';
 import { REQUEST_URL } from 'Constants/server';
@@ -9,6 +10,7 @@ import { ScreenWrapper } from 'Components/Atoms';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useFetch } from 'Hooks/useFetch';
+import { useHistory } from 'react-router-dom';
 //TODO: 토큰없이 접근 가능하도록 고쳐야함
 import { useSelector } from 'react-redux';
 
@@ -32,30 +34,91 @@ const HistoryWrapper = styled.div`
   width: 100%;
 `;
 
-const HistoryItem = styled.div`
-  flex: 1;
-  padding: 10px;
-`;
-
 const HistoryInfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   border-bottom: solid 1px #eaeaea;
   align-items: center;
+  justify-content: space-around;
+  padding: 5px;
+  .button {
+    border: none;
+    padding: 2px;
+    border-radius: 4px;
+    color: #6e44ff;
+    font-size: 10px;
+    width: 100%;
+  }
+  .username {
+    font-size: 10px;
+  }
+  .userinfowrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .porfile {
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const HistoryInfo = ({ item }) => {
+  const userInfo = useSelector(state => state.user);
+  const history = useHistory();
+  console.log(item);
+
+  async function openChat() {
+    const res = await fetch(
+      `${REQUEST_URL}chat-room/${userInfo.id}/${item.userId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          AUTH_TOKEN: userInfo.accessToken
+        },
+        body: JSON.stringify({
+          name: item.userName
+        })
+      }
+    );
+    const data = await res.json();
+    history.push(`/chat/${data.roomId}/`);
+    console.log(data);
+  }
+
+  function goProfile() {
+    history.push(`/profile/${item.userId}`);
+  }
+
   return (
     <HistoryInfoWrapper>
-      <HistoryItem>
+      <div className="item">
         {new Date(item.createdDate).format('yyyy-MM-dd')}
-      </HistoryItem>
-      <HistoryItem>{comma(item.bidPrice)} 원 </HistoryItem>
+      </div>
+      <div className="userinfowrapper">
+        <div className="porfile">
+          <HiUserCircle size={25} style={{ marginRight: 5 }} color="#6E44FF" />
+          {/* <button className="item button" onClick={goProfile}>
+            프로필 보기
+          </button> */}
+        </div>
+        <div>
+          <div className="username">{item.userName}</div>
+          <button className="item button" onClick={openChat}>
+            채팅하기
+          </button>
+        </div>
+      </div>
+      <div className="item">{comma(item.bidPrice)} 원 </div>
       <BsTriangleFill color="#FF2F2F" />
     </HistoryInfoWrapper>
   );
 };
-const HistoryList = ({ link, data, isLoading }) => {
+const HistoryList = ({ data, isLoading }) => {
   return (
     isLoading && (
       <HistoryWrapper>

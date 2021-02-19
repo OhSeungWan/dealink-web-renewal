@@ -1,5 +1,5 @@
 import {
-  Biddging,
+  Bidding,
   Modal,
   Nextrankchange,
   ProductDetail,
@@ -42,6 +42,7 @@ const ProductDetailPresenter = props => {
             link={auctionItemdata.url}
             fetchData={props.fetchData}
           />
+          {/* <div className="imgcount">asdf</div> */}
         </Slider>
         <ProductInfo type={'buyer'} {...auctionItemdata} />
         <Share
@@ -51,21 +52,45 @@ const ProductDetailPresenter = props => {
 
         <ProductDetail {...auctionItemdata} />
         <Border height="8px" />
-
+        <div
+          style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          <button
+            style={{
+              width: '70px',
+              marginBottom: 10,
+              border: 'none',
+              backgroundColor: '#6E44FF',
+              color: 'white',
+              borderRadius: 5
+            }}
+            onClick={() => {
+              setTimeout(() => {
+                alert(
+                  '신고접수가 완료되었습니다. 내용 검토후 조치될 예정입니다.'
+                );
+              }, 800);
+            }}
+          >
+            신고하기
+          </button>
+          <div style={{ fontSize: 10 }}>
+            부적절한 컨텐츠가 포함된 경우 해당 게시물을 신고할수 있습니다.
+            무분별한 신고는 서비스 제한의 원인이 될 수 있습니다.
+          </div>
+        </div>
         <Terms />
         {!auctionStatus ? (
           <>
             <Button
-              className={
-                props.userInfo.isLogin ? 'login-dobid-btn' : 'dobid-btn'
-              }
+              className={props.userInfo ? 'login-dobid-btn' : 'dobid-btn'}
               style={{ position: 'fixed', bottom: 10 }}
               onClick={props.openModal}
               primary
               common
             >
               입찰 GO!
-            </Button>{' '}
+            </Button>
             <img
               src={beforeBid}
               style={{
@@ -95,8 +120,8 @@ const ProductDetailPresenter = props => {
           closeModal={props.closeModal}
         >
           {!auctionStatus ? (
-            props.userInfo.isLogin ? (
-              <Biddging
+            props.userInfo && props.userInfo !== 'undefined' ? (
+              <Bidding
                 data={auctionItemdata}
                 userInfo={props.userInfo}
                 closeModal={props.closeModal}

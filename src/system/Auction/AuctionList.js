@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import AuctionItem from 'system/Auction/AuctionItem';
+import { REQUEST_URL } from 'Constants/server';
 import mainbanner from 'assets/img/mainbanner.png';
 import styled from 'styled-components';
 
@@ -24,7 +25,7 @@ const AuctionList = () => {
     const { value } = e.target;
     setSortKey(SortKey[value]);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=0&size=20&sort=${SortKey[value]},ASC`
+      `${REQUEST_URL}auction/list?page=0&size=20&sort=${SortKey[value]},ASC`
     );
     const data = await res.json();
     setAuctionList(data.content);
@@ -35,7 +36,7 @@ const AuctionList = () => {
   const getAuctionList = async () => {
     console.log(pageStateRef.current);
     const res = await fetch(
-      `https://rest.dealink.co.kr/auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey},ASC`
+      `${REQUEST_URL}auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey},ASC`
     );
     const data = await res.json();
     setPageState(pageStateRef.current + 1);

@@ -172,7 +172,7 @@ const MyLinkInfo = () => {
   ];
   const [selected, setSelected] = useState(selectList[0].status);
   const [data, isLoading, refetch] = useFetch(
-    `https://rest.dealink.co.kr/user/${userInfo.id}/${selected}`,
+    `${REQUEST_URL}user/${userInfo.id}/${selected}`,
 
     {
       method: 'GET',

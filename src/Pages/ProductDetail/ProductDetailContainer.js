@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 const ProductDetailContainer = () => {
   const [firstTime, setFirstTime] = useState(true);
   const [isSee, setIsSee] = useState(getCookie('isSee'));
-
+  const isLogin = useSelector(state => state.user.isLogin);
   const closeFirstModal = () => {
     setFirstTime(false);
   };
@@ -20,16 +20,16 @@ const ProductDetailContainer = () => {
     setCookie('isSee', 'true', 1);
   };
   const { url } = useParams();
-  const userInfo = useSelector(state => state.user);
+  const userInfo = sessionStorage.getItem('userId');
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   //로그인 하지 않은 사용자일 경우
   const userId =
-    userInfo.id !== 'undefined' && userInfo.id !== 'null' && userInfo.id
-      ? userInfo.id
+    userInfo !== 'undefined' && userInfo !== 'null' && userInfo
+      ? userInfo
       : '0';
 
-  const [data, isLoading, { refetch }] = useFetch(
+  const [data, isLoading, refetch] = useFetch(
     `${REQUEST_URL}user/${userId}/auction/${url}`
   );
 
@@ -43,11 +43,14 @@ const ProductDetailContainer = () => {
   };
 
   const openModal = () => {
-    sessionStorage.setItem('before', location.pathname);
-    localStorage.setItem('before', location.pathname);
-    setCookie('before', location.pathname, 1);
+    if (!isLogin) {
+      sessionStorage.setItem('before', location.pathname);
+      localStorage.setItem('before', location.pathname);
+      setCookie('before', location.pathname, 1);
+    }
     setIsOpen(true);
   };
+
   return (
     isLoading && (
       <ProductDetailPresenter

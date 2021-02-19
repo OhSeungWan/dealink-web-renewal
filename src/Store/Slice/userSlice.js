@@ -41,6 +41,7 @@ export const fetchUserByCode = createAsyncThunk(
     const res = await userApi.fetchByCode(code);
     const data = await res.json();
     console.log(data);
+    console.log('2');
     sessionStorage.setItem('userInfo', data.accessToken);
     sessionStorage.setItem('accessToken', data.accessToken);
     sessionStorage.setItem('userId', data.id);
@@ -52,6 +53,7 @@ export const fetchUserByCode = createAsyncThunk(
 export const fetchUser = createAsyncThunk(
   'users/fetchByCode',
   async accessToken => {
+    console.log(accessToken);
     const res = await fetch(`${REQUEST_URL}user/refresh`, {
       headers: { AUTH_TOKEN: accessToken }
     });
