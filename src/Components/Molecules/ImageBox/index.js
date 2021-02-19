@@ -48,18 +48,6 @@ const ImageBox = ({ url, type, onChange }) => {
     }
   };
 
-  // useEffect(()=>{
-  //   if(imglist){
-  //     const List =[];
-  //     imglist.map((img)=>{
-  //       List.push({
-  //         src:img, name:
-  //       })
-  //     })
-  //   }
-  // },[])
-  //TODO: Think about refect , 이미지 업로드 개수 제한 적용해야함
-  //이미지 슬라이드에 들어갈 썸네일 생성
   const setThumbnail = event => {
     [...event.target.files].map(file => {
       var reader = new FileReader();

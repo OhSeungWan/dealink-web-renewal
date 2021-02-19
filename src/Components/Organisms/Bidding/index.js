@@ -8,6 +8,7 @@ import bidComplete from 'assets/img/bidComplete.png';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useInput } from 'Hooks/useInput';
+import { useSelector } from 'react-redux';
 
 const Container = styled.div`
   display: flex;
@@ -17,10 +18,11 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Bidding = ({ data, userInfo, isOpen }) => {
+const Bidding = ({ data, isOpen }) => {
   const [value, setValue] = useInput({});
   const [productPrice, setProductPrice] = useState('');
   const [complete, setIsComplete] = useState(!isOpen);
+  const userInfo = useSelector(state => state.user);
 
   const onChange = e => {
     e.preventDefault();
@@ -28,7 +30,11 @@ const Bidding = ({ data, userInfo, isOpen }) => {
     const price = value;
     const formattingPrice = price.replace(/[^0-9]/g, '');
     setValue(name, formattingPrice);
-    setProductPrice(`${comma(formattingPrice)}`);
+    if (formattingPrice > 100) {
+      setProductPrice(`${comma(Math.ceil(formattingPrice / 100) * 100)}`);
+    } else {
+      setProductPrice(`${comma(formattingPrice)}`);
+    }
   };
 
   const biddingHandler = async () => {
@@ -88,6 +94,9 @@ const Bidding = ({ data, userInfo, isOpen }) => {
       </div>
 
       <Text>입찰 금액</Text>
+      <div style={{ fontSize: 12, padding: 5, textAlign: 'left' }}>
+        입찰 금액은 100원 단위로 입찰 가능합니다
+      </div>
       <div
         style={{
           display: 'flex',

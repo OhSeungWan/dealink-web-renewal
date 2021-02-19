@@ -1,6 +1,6 @@
 import AccountInfo from 'Components/Organisms/AccountInfo';
 import AuctionOptions from 'Components/Organisms/AuctionOptions';
-import Biddging from 'Components/Organisms/Bidding';
+import Bidding from 'Components/Organisms/Bidding';
 import CancelBid from 'Components/Organisms/CancelBid';
 import Modal from 'Components/Organisms/Modal';
 import MyLinkInfo from 'Components/Organisms/MyLinkInfo';
@@ -13,7 +13,7 @@ export {
   AccountInfo,
   Modal,
   ProductDetail,
-  Biddging,
+  Bidding,
   MyLinkInfo,
   Nextrankchange,
   CancelBid

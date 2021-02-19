@@ -10,9 +10,9 @@ export const TimerItem = ({ small, closingTime, link }) => {
     moment.duration(moment(closingTime).diff(moment())).clone()
   );
 
-  const handleCompleteAuction = async () => {
-    await fetch(`https://rest.dealink.co.kr/auction/${link}`);
-  };
+  // const handleCompleteAuction = async () => {
+  //   await fetch(`https://rest.dealink.co.kr/auction/${link}`);
+  // };
 
   const remainTime = moment
     .duration(moment(closingTime).diff(moment()))
@@ -25,9 +25,9 @@ export const TimerItem = ({ small, closingTime, link }) => {
     remainTime > 0 ? 1000 : null
   );
 
-  if (remainTime <= 0) {
-    handleCompleteAuction();
-  }
+  // if (remainTime <= 0) {
+  //   handleCompleteAuction();
+  // }
 
   return (
     <TimeWrapper>
