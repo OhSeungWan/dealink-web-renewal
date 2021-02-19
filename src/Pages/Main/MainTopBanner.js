@@ -5,7 +5,20 @@ import React from 'react';
 import eventBanner from 'assets/img/eventBanner.png';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
+const iOS = () => {
+  return [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod',
+    'MacIntel'
+  ].includes(navigator.platform);
+  // ||
+  // // iPad on iOS 13 detection
+  // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+};
 const MainTopBanner = () => {
   const userInfo = useSelector(state => state.user);
   const location = useLocation();
@@ -31,6 +44,12 @@ const MainTopBanner = () => {
       <Border height={'8px'} />
       <div style={{ fontSize: 20, fontWeight: 400 }}>딜링크에 상품등록</div>
       <Border height={'1px'} />
+      {iOS() && (
+        <div style={{ fontSize: 10, width: '90%' }}>
+          * 부적절한 내용 및 이미지의 게시물은 경고 없이 삭제되며 해당 사용자의
+          서비스가 제한됩니다.
+        </div>
+      )}
     </>
   );
 };
