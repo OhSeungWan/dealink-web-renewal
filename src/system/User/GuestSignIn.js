@@ -21,7 +21,7 @@ const GuestSignIn = () => {
       return;
     }
     const pn = phoneNumber.replace(/\D/g, '');
-    alert(pn);
+    alert('완료');
     dispatch(guest(phoneNumber));
     history.push('/');
   };

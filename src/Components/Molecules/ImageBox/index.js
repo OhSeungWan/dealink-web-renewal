@@ -122,7 +122,11 @@ const ImageBox = ({ url, type, onChange }) => {
           />
         </form>
       </ImgContainer>
-      <Slider ImageList={imageList} onRemove={remove}></Slider>
+      <Slider
+        ImageList={imageList}
+        onRemove={remove}
+        auctionStatus={'PROCEEDING'}
+      />
     </div>
   ) : (
     <ImgContainer>

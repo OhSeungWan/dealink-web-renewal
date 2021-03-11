@@ -10,10 +10,14 @@ const Profile = () => {
   const { userId } = useParams();
   const [profileDate, setprofileData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const accessToken = sessionStorage.getItem('accessToken');
 
   async function getProfile() {
     setLoading(false);
-    const res = await fetch(`${REQUEST_URL}user/${userId}`);
+    const res = await fetch(`${REQUEST_URL}user/${userId}`, {
+      headers: { AUTH_TOKEN: accessToken }
+    });
+
     const data = await res.json();
     setprofileData(data);
     console.log(data);

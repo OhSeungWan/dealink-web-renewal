@@ -31,7 +31,6 @@ const ProductInfo = props => {
       history.push('/SignIn');
     }
   };
-
   return !props.type ? (
     <StyledList className="productinfo" alignCenter={true}>
       <Text className="name">상품사진</Text>
@@ -39,6 +38,7 @@ const ProductInfo = props => {
         type="upload"
         onChange={props.onChange}
         imglist={props.value.imageList}
+        auctionStatus={'PROCEEDING'}
       />
       <Text className="name">상품명</Text>
       <Input
@@ -60,26 +60,26 @@ const ProductInfo = props => {
         onClick={confirmLogin}
       />
       <Text className="name">상품가격</Text>
-      <div className="explain">
+      {/* <div className="explain">
         딜링크는 무료나눔 플렛폼으로 최초등록 가격은 100원입니다.
       </div>
       <div className="explain">
         추후 다른사람의 입찰을 통해 가격이 올라갈수 있습니다.
-      </div>
+      </div> */}
       <div className="price">
         <Input
           type="tel"
-          // value={comma(props.value.productPrice)}
-          value={comma(100)}
+          value={comma(props.value.productPrice)}
+          // value={comma(100)}
           name="productPrice"
           id="productPrice"
-          placeholder={'시작가를 입력해주세요.'}
+          placeholder={'상품의 가격을 입력해주세요.'}
           onChange={onChange}
           onClick={confirmLogin}
-        ></Input>
+        />
         <div className="suffix">원</div>
       </div>
-      <Border height="8px" />
+      {/* <Border height="8px" /> */}
     </StyledList>
   ) : (
     <ProductInfoForBuyer {...props} />

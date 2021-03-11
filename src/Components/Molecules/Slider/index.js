@@ -28,7 +28,7 @@ const Slider = ({
           );
         })}
       </SliderContainer>
-      {auctionStatus && (
+      {auctionStatus !== 'PROCEEDING' && (
         <Complete>
           <img style={{ width: '20%' }} src={auctionComplete} alt="no" />
         </Complete>
@@ -56,7 +56,7 @@ const SliderContainer = styled.div`
 const SliderImage = styled.img`
   width: ${props => (props.big ? '100vw' : '100%')};
   max-width: 400px;
-  height: ${props => (props.big ? '100vw' : '100%')};
+  height: ${props => (props.big ? '400px' : '100px')};
   max-height: 400px;
 `;
 const ImgWrapperBig = styled.div`

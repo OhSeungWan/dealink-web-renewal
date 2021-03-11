@@ -2,6 +2,7 @@ import { Container, ScreenWrapper } from 'Components/Atoms';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AuctionDetail from 'Pages/ProductDetail';
 import ChatList from 'Pages/Chat/ChatList';
 import ChatOne from 'Pages/Chat/ChatOne';
 import GuestSignIn from 'system/User/GuestSignIn';
@@ -9,31 +10,23 @@ import Home from 'Pages/Home';
 import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
 import MyLink from 'Pages/MyLink';
-import ProductDetail from 'Pages/ProductDetail';
 import Profile from 'Pages/Profile';
 import SignIn from 'Pages/SignIn';
 import Terms from 'Pages/Terms';
+import WebSocketContext from 'lib/Context/WebSocket';
 import { fetchUser } from 'Store/Slice/userSlice';
+import { getCookie } from 'lib/Cookies';
+import { useContext } from 'react';
 import { useEffect } from 'react';
 
-const getCookie = cookie_name => {
-  var x, y;
-  var val = document.cookie.split(`;`);
-
-  for (var i = 0; i < val.length; i++) {
-    x = val[i].substr(0, val[i].indexOf(`=`));
-    y = val[i].substr(val[i].indexOf(`=`) + 1);
-    x = x.replace(/^\s+|\s+$/g, '');
-
-    if (x === cookie_name) {
-      return unescape(y);
-    }
-  }
-};
 const MainRouter = () => {
+  const { ws, openSocket } = useContext(WebSocketContext);
+
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.user.isLogin);
   const status = useSelector(state => state.user.status);
+  const userId = useSelector(state => state.user.id);
+
   const userType = useSelector(state => state.user.type);
 
   useEffect(() => {
@@ -42,6 +35,14 @@ const MainRouter = () => {
     }
   }, []);
 
+  useEffect(() => {
+    // alert('router');
+    // alert(sessionStorage.getItem('userId'));
+    if (userId && userId != null && userId != 'undefined') {
+      openSocket(sessionStorage.getItem('userId'));
+    }
+  }, [userId]);
+
   return (
     <Switch>
       <Route exact path="/" component={Home}></Route>
@@ -49,8 +50,14 @@ const MainRouter = () => {
       <Route exact path="/Survey" component={Main}></Route>
       <Route exact path="/SignIn" component={SignIn}></Route>
       <Route
+        exact
+        path="/detail/:type/:userIndex/:url"
+        component={AuctionDetail}
+      ></Route>
+
+      <Route
         path="/Product/:type/:userIndex/:url"
-        component={ProductDetail}
+        component={AuctionDetail}
       ></Route>
       <Route path="/SignIn/:code" component={SignIn}></Route>
       <Route path="/Terms" component={Terms}></Route>
@@ -58,7 +65,18 @@ const MainRouter = () => {
       <PrivateRoute path="/chatlist" isLogin={isLogin} status={status}>
         <ChatList />
       </PrivateRoute>
-      <PrivateRoute path="/chat/:roomId" isLogin={isLogin} status={status}>
+      <PrivateRoute
+        path="/chat/:roomId/:auctionId/:userId/:reciverId"
+        isLogin={isLogin}
+        status={status}
+      >
+        <ChatOne />
+      </PrivateRoute>
+      <PrivateRoute
+        path="/chat/:roomId/:reciverId"
+        isLogin={isLogin}
+        status={status}
+      >
         <ChatOne />
       </PrivateRoute>
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>

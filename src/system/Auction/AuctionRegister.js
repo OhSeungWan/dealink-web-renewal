@@ -8,28 +8,16 @@ import { Button } from 'Components/Atoms';
 import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';
 import { fetchUser } from 'Store/Slice/userSlice';
+import { getCookie } from 'lib/Cookies';
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useProduct } from 'Hooks/useProduct';
 
-const getCookie = cookie_name => {
-  var x, y;
-  var val = document.cookie.split(`;`);
-
-  for (var i = 0; i < val.length; i++) {
-    x = val[i].substr(0, val[i].indexOf(`=`));
-    y = val[i].substr(val[i].indexOf(`=`) + 1);
-    x = x.replace(/^\s+|\s+$/g, '');
-
-    if (x === cookie_name) {
-      return unescape(y);
-    }
-  }
-};
 const AuctionRegister = () => {
   const userInfo = useSelector(state => state.user);
   const history = useHistory();
   const dispatch = useDispatch();
+  const userType = useSelector(state => state.user.type);
 
   const [value, setValue, loading, setLoading, validate] = useProduct();
   const [modalData, setModalData] = useState();
@@ -45,12 +33,7 @@ const AuctionRegister = () => {
     setIsOpen(true);
   };
   const calcClosingDate = () => {
-    const closingDate = moment()
-      .add(value.d, 'days')
-      .add(value.h, 'hours')
-      .add(value.m, 'minutes')
-      .add(value.s, 'seconds')
-      .format('yyyy-MM-DD HH:mm:ss');
+    const closingDate = moment().add(100, 'days').format('yyyy-MM-DD HH:mm:ss');
 
     return closingDate;
   };
@@ -64,8 +47,8 @@ const AuctionRegister = () => {
     form.append(
       'auctionInfoRequest',
       JSON.stringify({
-        // startingPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 시작가
-        startingPrice: 100, // 경매 시작가 100원 고정
+        startingPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 시작가
+        // startingPrice: 100, // 경매 시작가 100원 고정
         currentPrice: value.productPrice.replace(/[^0-9]/g, ''), // 경매 현재가
         closingTime: calcClosingDate(), // 경매 마감시간
         tradingMethod: '직거래', //
@@ -90,6 +73,7 @@ const AuctionRegister = () => {
     const data = await auctionApi.registerAuction(userInfo.id, {
       method: 'POST',
       headers: {
+        GUEST: 'TRUE',
         AUTH_TOKEN: userInfo.accessToken
       },
       body: fromData

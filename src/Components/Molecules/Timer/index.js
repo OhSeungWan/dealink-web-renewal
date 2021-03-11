@@ -1,44 +1,8 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import { GiAlarmClock } from 'react-icons/gi';
 import moment from 'moment';
 import { useInterval } from 'Hooks/useInterval';
-
-export const TimerItem = ({ small, closingTime, link }) => {
-  const [time, setTime] = useState(
-    moment.duration(moment(closingTime).diff(moment())).clone()
-  );
-
-  // const handleCompleteAuction = async () => {
-  //   await fetch(`https://rest.dealink.co.kr/auction/${link}`);
-  // };
-
-  const remainTime = moment
-    .duration(moment(closingTime).diff(moment()))
-    .as('ms');
-
-  useInterval(
-    () => {
-      setTime(moment.duration(moment(closingTime).diff(moment())).clone());
-    },
-    remainTime > 0 ? 1000 : null
-  );
-
-  // if (remainTime <= 0) {
-  //   handleCompleteAuction();
-  // }
-
-  return (
-    <TimeWrapper>
-      <TimeDisplay
-        remainTime={remainTime}
-        small={small ? true : false}
-        time={time}
-      ></TimeDisplay>
-    </TimeWrapper>
-  );
-};
 
 const Timer = props => {
   const {
@@ -64,6 +28,37 @@ const Timer = props => {
     <TimeSetter>
       <TimerInput auctionInput={auctionInput} onChange={onChange} />
     </TimeSetter>
+  );
+};
+
+export const TimerItem = ({ small, closingTime }) => {
+  const [time, setTime] = useState(
+    moment.duration(moment(closingTime).diff(moment())).clone()
+  );
+
+  // const handleCompleteAuction = async () => {
+  //   await fetch(`https://rest.dealink.co.kr/auction/${link}`);
+  // };
+
+  const remainTime = moment
+    .duration(moment(closingTime).diff(moment()))
+    .as('ms');
+
+  useInterval(
+    () => {
+      setTime(moment.duration(moment(closingTime).diff(moment())).clone());
+    },
+    remainTime > 0 ? 1000 : null
+  );
+
+  return (
+    <TimeWrapper>
+      <TimeDisplay
+        remainTime={remainTime}
+        small={small ? true : false}
+        time={time}
+      ></TimeDisplay>
+    </TimeWrapper>
   );
 };
 
@@ -119,23 +114,31 @@ const TimerInput = ({ auctionInput, onChange }) => {
 };
 
 export const TimeDisplay = ({ time, small, remainTime }) => {
-  const format = t => {
+  const format = (t, type) => {
+    if (type === 'day') {
+      if (parseInt(t) > 0) {
+        return `D-${String(t)}`;
+      } else {
+        return '';
+      }
+    }
     return String(t).length < 2 ? '0' + String(t) : String(t);
   };
 
   return (
-    <TimeDisplayWrapper small={small}>
-      {/* <GiAlarmClock
-        size={small ? 17 : 25}
-        style={{ padding: small ? 1 : 5 }}
-        color="black"
-      /> */}
+    <TimeDisplayWrapper small={true}>
       {remainTime > 0 ? (
         <>
-          <div className="text">{format(time.days())}일 </div>
-          <div className="text">{format(time.hours())}:</div>
-          <div className="text">{format(time.minutes())}:</div>
-          <div className="text">{format(time.seconds())}남음</div>
+          <div className="text">
+            {`${format(time.days(), 'day')}`}&nbsp;&nbsp;
+          </div>
+          {format(time.hours()) <= 0 && (
+            <>
+              <div className="text">{format(time.hours())}:</div>
+              <div className="text">{format(time.minutes())}:</div>
+              <div className="text">{format(time.seconds())}남음</div>
+            </>
+          )}
         </>
       ) : (
         <div className="text">경매 종료</div>

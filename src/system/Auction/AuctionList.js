@@ -2,14 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import AuctionItem from 'system/Auction/AuctionItem';
 import { REQUEST_URL } from 'Constants/server';
+import acamain from 'assets/img/acamain.png';
 import mainbanner from 'assets/img/mainbanner.png';
 import styled from 'styled-components';
 
 const AuctionList = () => {
   const [auctionList, setAuctionList] = useState([]);
   const [page, setPage] = useState(0);
-  const [sortKey, setSortKey] = useState('createdDate');
-  const [loading, setLoading] = useState(false);
+  const [sortKey, setSortKey] = useState({ key: 'createdDate', order: 'ASC' });
   const pageStateRef = useRef(page);
 
   const setPageState = data => {
@@ -18,14 +18,14 @@ const AuctionList = () => {
   };
   const handleChageSortKey = async e => {
     const SortKey = {
-      new: 'createdDate',
-      closing: 'closingTime',
-      price: 'currentPrice'
+      new: { key: 'createdDate', order: 'DESC' },
+      closing: { key: 'closingTime', order: 'ASC' },
+      price: { key: 'currentPrice', order: 'ASC' }
     };
     const { value } = e.target;
     setSortKey(SortKey[value]);
     const res = await fetch(
-      `${REQUEST_URL}auction/list?page=0&size=20&sort=${SortKey[value]},ASC`
+      `${REQUEST_URL}auction/list?page=0&size=20&sort=${SortKey[value].key},${SortKey[value].order}`
     );
     const data = await res.json();
     setAuctionList(data.content);
@@ -36,7 +36,7 @@ const AuctionList = () => {
   const getAuctionList = async () => {
     console.log(pageStateRef.current);
     const res = await fetch(
-      `${REQUEST_URL}auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey},ASC`
+      `${REQUEST_URL}auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey.key},${sortKey.order}`
     );
     const data = await res.json();
     setPageState(pageStateRef.current + 1);
@@ -68,11 +68,11 @@ const AuctionList = () => {
 
   return (
     <>
-      <img src={mainbanner} width="100%" />
+      <img src={acamain} width="100%" />
       <FilterWrapper className="filter-wrapper">
         <div className="title">
-          <div>나눔스토리를 </div>
-          <div>이웃과 공유하세요</div>
+          <div>우리 사무실엔 </div>
+          <div>이런 것도 있다!</div>
         </div>
         <select name="fruits" onChange={handleChageSortKey}>
           <option value="new">신규 등록순</option>
@@ -81,6 +81,7 @@ const AuctionList = () => {
         </select>
       </FilterWrapper>
       <AuctionListWrapper>
+        <AuctionItem type="Event" />
         {auctionList.map((auction, index) => {
           return <AuctionItem auction={auction} key={index} loading={index} />;
         })}

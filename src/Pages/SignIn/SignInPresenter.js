@@ -8,16 +8,19 @@ import loginBanner from 'assets/img/loginBanner.png';
 import styled from 'styled-components';
 
 const iOS = () => {
-  return [
-    'iPad Simulator',
-    'iPhone Simulator',
-    'iPod Simulator',
-    'iPad',
-    // 'iPhone',
-    'iPod'
-  ].includes(navigator.platform);
-  // ||
-  // // iPad on iOS 13 detection
+  return (
+    [
+      'iPad Simulator',
+      'iPhone Simulator',
+      'iPod Simulator',
+      'iPad',
+      'iPhone',
+      'iPod',
+      `Mac`
+    ].includes(navigator.platform) ||
+    (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+  );
+  // iPad on iOS 13 detection
   // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
 };
 

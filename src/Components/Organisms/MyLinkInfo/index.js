@@ -92,8 +92,8 @@ const MyLink = ({ data, selected }) => {
   };
 
   const auctionStatusEnum = {
-    AUCTION_COMPLETED: '경매 종료',
-    PROCEEDING: '경매 진행중'
+    AUCTION_COMPLETED: '판매 종료',
+    PROCEEDING: '판매 진행중'
   };
 
   return (
@@ -118,7 +118,7 @@ const MyLinkList = ({ linklist, selected }) => {
       <NoHistory style={{ color: '#6E44FF', fontSize: 23, padding: 5 }}>
         ´༎ຶਊ ༎ຶ`
       </NoHistory>
-      <NoHistory>아직 참여한 이력이 없어요</NoHistory>
+      <NoHistory>아직 등록한 상품이 없어요</NoHistory>
     </NoHistoryWrapper>
   );
 };
@@ -167,8 +167,8 @@ const Container = styled.div`
 const MyLinkInfo = () => {
   const userInfo = useSelector(state => state.user);
   const selectList = [
-    { name: '입찰', status: 'purchase' },
-    { name: '판매', status: 'sale' }
+    { name: '관심 상품', status: 'purchase' },
+    { name: '판매 상품', status: 'sale' }
   ];
   const [selected, setSelected] = useState(selectList[0].status);
   const [data, isLoading, refetch] = useFetch(

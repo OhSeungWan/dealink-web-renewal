@@ -10,6 +10,10 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 .App {
   font-family: 'Noto Sans KR', sans-serif;
 }

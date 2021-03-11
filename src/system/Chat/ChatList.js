@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { HiUserCircle } from 'react-icons/hi';
 import { REQUEST_URL } from 'Constants/server';
+import { WebSocketProvider } from 'lib/Context/WebSocket';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
@@ -18,15 +19,19 @@ const ChatList = () => {
       headers: { AUTH_TOKEN: accessToken }
     });
     // const res = await fetch(`${Json_Server}ChatList`);
-
-    const data = await res.json();
-    console.log(data);
-    setRoomChatList(data);
+    if (res.ok) {
+      const data = await res.json();
+      console.log(data);
+      setRoomChatList(data);
+    } else {
+      setRoomChatList([]);
+    }
     setLoading(true);
   }
 
-  function handleClickChatRoom(roomId) {
-    history.push(`chat/${roomId}`);
+  function handleClickChatRoom(roomId, recipientId) {
+    console.log(roomId);
+    history.push(`chat/${roomId}/${recipientId}`);
   }
 
   useEffect(() => {
@@ -36,18 +41,21 @@ const ChatList = () => {
   return (
     loading && (
       <ChatlistWrapper>
+        {chatRoomList.length === 0 && <div>채팅 목록이 없습니다.</div>}
         {chatRoomList.map((chatRoom, index) => {
           return (
             <div
               className="item"
               key={index}
-              onClick={() => handleClickChatRoom(chatRoom.roomId)}
+              onClick={() =>
+                handleClickChatRoom(chatRoom.roomId, chatRoom.recipientId)
+              }
             >
               <div className="image-wrapper">
                 <HiUserCircle size={30} color="#6E44FF" />
               </div>
               <div className="content-wrapper">
-                <div>{chatRoom.userName}</div>
+                <div>{chatRoom.roomName}</div>
                 <div className="lastmessage">{chatRoom.message}</div>
               </div>
             </div>

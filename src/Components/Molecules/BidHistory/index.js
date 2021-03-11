@@ -102,9 +102,9 @@ const HistoryInfo = ({ item }) => {
       <div className="userinfowrapper">
         <div className="porfile">
           <HiUserCircle size={25} style={{ marginRight: 5 }} color="#6E44FF" />
-          {/* <button className="item button" onClick={goProfile}>
+          <button className="item button" onClick={goProfile}>
             프로필 보기
-          </button> */}
+          </button>
         </div>
         <div>
           <div className="username">{item.userName}</div>
@@ -118,6 +118,7 @@ const HistoryInfo = ({ item }) => {
     </HistoryInfoWrapper>
   );
 };
+
 const HistoryList = ({ data, isLoading }) => {
   return (
     isLoading && (
@@ -154,7 +155,7 @@ const BidHistory = ({ link }) => {
     isLoading && (
       <>
         <Wrapper onClick={modalOpen}>
-          <Text>누적 입찰수</Text>
+          <Text>누적 관심수</Text>
           <Text style={{ color: 'red' }}>{data.length}회</Text>
           <Text style={{ fontSize: 17 }}>
             경매기록 확인
@@ -167,7 +168,7 @@ const BidHistory = ({ link }) => {
             <Modal
               isOpen={isOpen}
               closeModal={closeModal}
-              title={'경매기록'}
+              title={'관심 준 사람들'}
               height={60}
             >
               <HistoryList link={link} data={data} isLoading={isLoading} />

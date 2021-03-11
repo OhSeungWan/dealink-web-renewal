@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import SignInPresenter from 'Pages/SignIn/SignInPresenter';
+import WebSocketContext from 'lib/Context/WebSocket';
 import { fetchUserByCode } from 'Store/Slice/userSlice';
 import { useDispatch } from 'react-redux';
 
 const SignInContainer = () => {
+  const { ws, openSocket } = useContext(WebSocketContext);
+
   const { Kakao } = window;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -19,10 +22,19 @@ const SignInContainer = () => {
 
   const initUserInfo = async before => {
     if (!code) return; // 인가 코드 없다면 리턴.
-    console.log('1');
     await signIn();
-    console.log('done');
-
+    console.log(sessionStorage.getItem('userId'));
+    // openSocket(sessionStorage.getItem('userId'));
+    if (window.ReactNativeWebView) {
+      // alert('message to RN ');
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: 'pushRegister',
+          userId: sessionStorage.getItem('userId'),
+          accessToken: sessionStorage.getItem('accessToken')
+        })
+      );
+    }
     if (before && before !== 'undefined') {
       console.log(before);
       history.push(before);
@@ -36,8 +48,8 @@ const SignInContainer = () => {
   // TODO: 리다이렉트 url 변경해야함
   const SignUp = async () => {
     await Kakao.Auth.authorize({
-      redirectUri: 'https://www.dealink.co.kr/SignIn'
-      // redirectUri: 'http://192.168.0.107:3000/SignIn'
+      // redirectUri: 'https://www.dealink.co.kr/SignIn'
+      redirectUri: 'http://192.168.0.107:3000/SignIn'
     });
   };
 

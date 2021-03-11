@@ -5,7 +5,7 @@ const MainBody = () => {
   return (
     <>
       <AuctionRegister />
-      <img src={afterBid} width="100%" alt="no" />
+      {/* <img src={afterBid} width="100%" alt="no" /> */}
     </>
   );
 };

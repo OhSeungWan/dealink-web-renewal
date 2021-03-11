@@ -1,23 +1,24 @@
 import { AuctionOptions, ProductInfo } from 'Components/Organisms';
-import { List, Timer } from 'Components/Molecules';
 
 import React from 'react';
 import styled from 'styled-components';
+// import { List, Timer } from 'Components/Molecules';
+
 
 const AuctionRegisterInputForm = props => {
   const { value, onChange } = props;
   return (
     <>
       <ProductInfo value={value} onChange={onChange} />
-      <List alignCenter={true}>
-        <TimerTitleWrapper>
-          <TimerText>경매 진행기간</TimerText>
+      {/* <List alignCenter={true}> */}
+      {/* <TimerTitleWrapper> */}
+      {/* <TimerText>경매 진행기간</TimerText>
           <TimerText style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
             경매 진행 시간을 설정해 주세요.
-          </TimerText>
-        </TimerTitleWrapper>
-        <Timer isSet={false} auctionInput={value} onChange={onChange} />
-      </List>
+          </TimerText> */}
+      {/* </TimerTitleWrapper> */}
+      {/* <Timer isSet={false} auctionInput={value} onChange={onChange} /> */}
+      {/* </List> */}
       <AuctionOptions value={value} onChange={onChange} />
     </>
   );

@@ -4,11 +4,16 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { WebSocketProvider } from 'lib/Context/WebSocket';
 import reportWebVitals from './reportWebVitals';
+
+// Add an import if you installed from npm
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <WebSocketProvider>
+      <App />
+    </WebSocketProvider>
   </BrowserRouter>,
   document.getElementById('root')
 );
