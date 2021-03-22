@@ -1,6 +1,6 @@
 import { Container, ScreenWrapper } from 'Components/Atoms';
 
-import Header from 'system/Header/Header';
+import Header from 'domain/Header/Header';
 import { MyLinkInfo } from 'Components/Organisms';
 import React from 'react';
 
@@ -8,7 +8,7 @@ const MyLinkPresenter = () => {
   return (
     <ScreenWrapper>
       <Header />
-      <Container style={{ marginTop: 150 }}>
+      <Container style={{ marginTop: 50 }}>
         <MyLinkInfo />
       </Container>
     </ScreenWrapper>

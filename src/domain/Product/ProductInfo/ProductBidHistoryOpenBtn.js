@@ -1,10 +1,11 @@
+import React, { useEffect } from 'react';
 import {
+  closeModal,
   openModal,
   useAuctionDetailDispatch
 } from 'Pages/ProductDetail/AuctionDetailContext';
 
 import { IoIosArrowDroprightCircle } from 'react-icons/io';
-import React from 'react';
 import styled from 'styled-components';
 
 const ProductBidHistoryOpenBtn = ({ auction }) => {
@@ -13,15 +14,18 @@ const ProductBidHistoryOpenBtn = ({ auction }) => {
   function handleClick() {
     openModal(dispatch, 'bidHistory');
   }
+  useEffect(() => {
+    return () => closeModal(dispatch);
+  }, []);
 
   return (
     <ProductBidHistoryOpenBtnWrapper onClick={handleClick}>
       <div className="wrapper">
-        <div className="title">누적 관심수</div>
-        <div className="count">{auction.bidHistoryCount}개</div>
+        <div className="title">찜 </div>
+        <div className="count">{auction.bidHistoryCount}명</div>
       </div>
       <div className="wrapper">
-        <div className="confirm">관심 확인</div>
+        <div className="confirm">찜한사람 확인하기</div>
         <IoIosArrowDroprightCircle className="icon" size={25} />
       </div>
     </ProductBidHistoryOpenBtnWrapper>

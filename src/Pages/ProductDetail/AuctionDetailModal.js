@@ -1,4 +1,5 @@
 import { Bidding, Modal, Nextrankchange } from 'Components/Organisms';
+import { Border, ScreenWrapper } from 'Components/Atoms';
 import React, { useEffect } from 'react';
 import {
   closeModal,
@@ -9,8 +10,7 @@ import {
 } from 'Pages/ProductDetail/AuctionDetailContext';
 
 import AuctionDetailFirstModal from './AuctionDetailFirstModal';
-import BidHistoryList from 'system/Bid/BidhistoryList';
-import { ScreenWrapper } from 'Components/Atoms';
+import BidHistoryList from 'domain/Bid/BidhistoryList';
 import { getCookie } from 'lib/Cookies';
 
 const AuctionDetailModal = () => {
@@ -35,13 +35,40 @@ const AuctionDetailModal = () => {
   }, [dispatch, content]);
 
   useEffect(() => {
-    // openFirstModal();
+    var userAgent = navigator.userAgent.toLowerCase();
+    const iOS = () => {
+      return [
+        'iPad Simulator',
+        'iPhone Simulator',
+        'iPod Simulator',
+        'iPad',
+        'iPhone',
+        'iPod'
+        // 'MacIntel'
+      ].includes(navigator.platform);
+      // ||
+      // // iPad on iOS 13 detection
+      // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    };
+    var browser = false;
+
+    if (userAgent.indexOf('edge') > -1) {
+      browser = true;
+    } else if (userAgent.indexOf('whale') > -1) {
+      browser = true;
+    } else if (userAgent.indexOf('chrome') > -1) {
+      browser = true;
+    } else if (userAgent.indexOf('firefox') > -1) {
+      browser = true;
+    } else {
+      browser = true;
+    }
+    if (browser && !iOS) openFirstModal();
   }, []);
 
-  if (loading) return <div>로딩중..</div>;
+  if (loading) return null;
   if (error) return <div>에러가 발생했습니다</div>;
 
-  console.log(content);
   return (
     open && (
       <ScreenWrapper>
@@ -52,7 +79,7 @@ const AuctionDetailModal = () => {
           <Modal
             isOpen={open}
             closeModal={_closeModal}
-            title={'관심 준 사람들'}
+            title={'찜한 사람들'}
             height={60}
           >
             <BidHistoryList data={bidHistory} auction={auction} />

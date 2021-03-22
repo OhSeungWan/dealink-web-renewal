@@ -21,7 +21,9 @@ const ChatList = () => {
     // const res = await fetch(`${Json_Server}ChatList`);
     if (res.ok) {
       const data = await res.json();
+      console.log(`chatList `);
       console.log(data);
+
       setRoomChatList(data);
     } else {
       setRoomChatList([]);
@@ -30,7 +32,6 @@ const ChatList = () => {
   }
 
   function handleClickChatRoom(roomId, recipientId) {
-    console.log(roomId);
     history.push(`chat/${roomId}/${recipientId}`);
   }
 
@@ -53,11 +54,13 @@ const ChatList = () => {
             >
               <div className="image-wrapper">
                 <HiUserCircle size={30} color="#6E44FF" />
+                <div>{chatRoom.recipientName}</div>
               </div>
               <div className="content-wrapper">
-                <div>{chatRoom.roomName}</div>
+                <div>상품명 : {chatRoom.roomName}</div>
                 <div className="lastmessage">{chatRoom.message}</div>
               </div>
+              {chatRoom.count > 0 && <New>{chatRoom.count}</New>}
             </div>
           );
         })}
@@ -66,12 +69,17 @@ const ChatList = () => {
   );
 };
 
-// {
-//     "id": 1,
-//     "roomId": "RandomChatRoom1",
-//     "profileImagePathList": [],
-//     "name": "신애정"
-// },
+const New = styled.div`
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff4d12;
+  font-size: 12px;
+  padding: 2px 7px;
+  border-radius: 70%;
+`;
+
 const ChatlistWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -84,11 +92,13 @@ const ChatlistWrapper = styled.div`
     align-items: center;
     padding: 5px 0px;
 
+    border-bottom: solid 1px #e5e6e8;
+
     .lastmessage {
-      font-size: 10px;
+      font-size: 12px;
     }
     .image-wrapper {
-      flex: 1;
+      flex: 2;
       font-size: 10px;
       display: flex;
       flex-direction: column;

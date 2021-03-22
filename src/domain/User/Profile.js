@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 
 import { AiOutlineRight } from 'react-icons/ai';
 import { HiUserCircle } from 'react-icons/hi';
 import { REQUEST_URL } from 'Constants/server';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
 
 const Profile = () => {
   const { userId } = useParams();
   const [profileDate, setprofileData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
   const accessToken = sessionStorage.getItem('accessToken');
 
   async function getProfile() {
@@ -19,8 +20,8 @@ const Profile = () => {
     });
 
     const data = await res.json();
-    setprofileData(data);
     console.log(data);
+    setprofileData(data);
     setLoading(true);
   }
 
@@ -37,7 +38,10 @@ const Profile = () => {
           <div className="username">{profileDate.name}</div>
         </div>
         <hr className="hr1" />
-        <div className="saleslist">
+        <div
+          className="saleslist"
+          onClick={() => history.push(`/MyLink/${userId}`)}
+        >
           {`판매상품(${profileDate.auctionLinkResponseList.length}개)`}
           <AiOutlineRight />
         </div>

@@ -16,6 +16,7 @@
     "msw": "^0.24.2",
     "pushy-sdk-web": "^1.0.71",
     "react": "^17.0.1",
+    "react-confirm-alert": "^2.7.0",
     "react-cookie": "^4.0.3",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^17.0.1",

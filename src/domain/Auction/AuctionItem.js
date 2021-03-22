@@ -1,7 +1,6 @@
+import { AiFillHeart } from 'react-icons/ai';
 import Event from 'assets/img/Event.png';
 import React from 'react';
-import { TimerItem } from 'Components/Molecules/Timer';
-import arrow from 'assets/img/arrow.png';
 import { comma } from 'lib/Utils/comma-utils';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
@@ -16,6 +15,7 @@ const AuctionItem = ({ auction, type }) => {
     history.push(`/Product/info/0/${auction.url}`);
   };
 
+  // console.log(auction);
   return (
     <AcutionItemWrapper onClick={onClick} type={type}>
       <div className="item-wrapper">
@@ -32,15 +32,41 @@ const AuctionItem = ({ auction, type }) => {
           className="img"
           src={type === 'Event' ? Event : auction.imagePath}
         />
+        {type !== 'Event' && auction.status === 'AUCTION_COMPLETED' && (
+          <CompleteFade>
+            <div>판매종료</div>
+          </CompleteFade>
+        )}
         <div className="bidcount">
-          {type !== 'Event' && <img src={arrow} height={12} />}
-          <div>{type === 'Event' ? '이벤트' : `${auction.count}건`}</div>
+          {type !== 'Event' && <AiFillHeart size={12} />}
+          {type === 'Event' ? '이벤트' : `${auction.count}`}
         </div>
       </div>
       <AuctionItemContents auction={auction} type={type} />
     </AcutionItemWrapper>
   );
 };
+
+const CompleteFade = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(133, 131, 131, 0.7);
+  height: 100%;
+
+  div {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    /* border-radius: 5px; */
+    color: #ff5800;
+    font-size: 12px;
+    padding: 5px;
+    background-color: #f5f5f7;
+    border: 1px solid #ff5800;
+  }
+`;
 
 const AuctionItemContents = ({ auction, type }) => {
   return (
@@ -105,8 +131,8 @@ const AcutionItemWrapper = styled.div`
       bottom: 5px;
       right: 5px;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       border: 1px solid #ff5800;
       font-size: 12px;
       font-weight: 900;

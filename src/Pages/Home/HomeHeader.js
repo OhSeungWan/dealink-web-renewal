@@ -1,4 +1,4 @@
-import Header from 'system/Header/Header';
+import Header from 'domain/Header/Header';
 import React from 'react';
 
 const HomeHeader = () => {

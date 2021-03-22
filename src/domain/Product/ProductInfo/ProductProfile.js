@@ -25,7 +25,6 @@ const ProductProfile = ({ auction }) => {
     );
     const data = await res.json();
     history.push(`/chat/${data.roomId}/`);
-    console.log(data);
   }
   return (
     <ProductProfileWrapper>

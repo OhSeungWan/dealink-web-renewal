@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 const BidHistoryList = ({ data, auction }) => {
   return (
     <BidHistoryListWrapper>
-      {data.length === 0 && <div>경매 기록이 존재 하지 않습니다.</div>}
+      {data.length === 0 && <div>아직 찜한 사람이 없어요.</div>}
       {data.map((item, index) => {
         return <BidHistoryItem item={item} key={index} auction={auction} />;
       })}
@@ -21,53 +21,41 @@ const BidHistoryList = ({ data, auction }) => {
 const BidHistoryItem = ({ item, auction }) => {
   const history = useHistory();
   const userId = sessionStorage.getItem('userId');
-  const accessToken = sessionStorage.getItem('accessToken');
 
   async function openChat() {
-    const res = await fetch(
-      `${REQUEST_URL}chat-room/${auction.id}/${userId}/${item.userId}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          AUTH_TOKEN: accessToken
-        }
+    history.push(`/chat/open/${auction.id}/${userId}/${item.userId}`, {
+      info: {
+        productImage: auction.imageUrls[0],
+        productName: auction.name,
+        productPrice: auction.startingPrice,
+        productUrl: auction.url
       }
-    );
-    const data = await res.json();
-    history.push(`/chat/${data.roomId}/`);
-    console.log(data);
+    });
   }
 
   function goProfile(id) {
     history.push(`/profile/${id}`);
   }
 
-  const time = moment(item.createdDate).format('YYYY-MM-DD H:mm');
-
+  const time = moment(item.createdDate).format('MM.DD H:mm');
   return (
     <>
       <div className="bidHistoryItem">
         <div className="time">{time}</div>
-        <div className="wrapper">
-          <HiUserCircle
-            className="profileIcon"
-            size={20}
-            color="#6e44ff"
-            style={{ flex: 1 }}
-          />
+        <div className="profilewrapper">
+          <HiUserCircle className="profileIcon" size={36} color="#6e44ff" />
           <div className="userName">{item.userName}</div>
         </div>
         <div className="wrapper">
           <div className="chatBtn" onClick={() => goProfile(item.userId)}>
             프로필 보기
           </div>
-          <div className="chatBtn" onClick={openChat}>
-            채팅하기
-          </div>
+          {auction.userId == userId && (
+            <div className="chatBtn" onClick={openChat}>
+              채팅하기
+            </div>
+          )}
         </div>
-        {/* <div className="price">{comma(item.bidPrice)}원</div> */}
-        <AiFillHeart color="#FF2F2F" style={{ flex: 1 }} />
       </div>
       <hr />
     </>
@@ -83,43 +71,50 @@ const BidHistoryListWrapper = styled.div`
     border: solid 1px #f5f5f7;
     width: 100%;
   }
-
+  .profilewrapper {
+    width: 100%;
+    display: flex;
+    text-align: left;
+    align-items: center;
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
   .bidHistoryItem {
     padding: 10px 0px;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
   }
   .time {
-    font-size: 14px;
-    flex: 3;
+    color: #a09fa7;
+    width: 100%;
+    font-size: 12px;
+    text-align: left;
   }
   .chatBtn {
     width: 100%;
     text-align: center;
-    border: 1px solid #6e44ff;
+    border: 1px solid #a09fa7;
     border-radius: 5px;
-    color: #6e44ff;
+    color: black;
+    padding: 6px 54px;
   }
-  .profileBtn {
-    width: 80%;
-    text-align: center;
-    border: 1px solid #6e44ff;
-    border-radius: 5px;
-    color: #6e44ff;
-    font-size: 10px;
-    background-color: white;
+  .chatBtn + .chatBtn {
+    margin-left: 10px;
   }
   .userName {
     margin-bottom: 2px;
+    font-size: 12px;
+    margin-left: 14px;
   }
   .wrapper {
-    flex: 3;
+    text-align: left;
+    width: 100%;
     font-size: 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     text-overflow: ellipsis;
     white-space: nowrap;

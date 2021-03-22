@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const ProductDetail = ({ auction }) => {
   return (
     <ProductDetailWrapper>
-      <TransactionMethod method={auction.tradingMethod} />
+      {/* <TransactionMethod method={auction.tradingMethod} /> */}
       <div style={{ padding: 15 }}>
         <div className="description">{auction.description}</div>
       </div>
@@ -13,7 +13,6 @@ const ProductDetail = ({ auction }) => {
 };
 
 const TransactionMethod = ({ method }) => {
-  console.log(method);
   return (
     <div className="TransactionMethod">
       <div className="title">거래방식</div>

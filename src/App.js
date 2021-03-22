@@ -2,6 +2,7 @@ import 'moment-timezone';
 
 import React, { useContext, useEffect, useState } from 'react';
 
+import { ChatProvider } from 'domain/Chat/ChatContext';
 import { CookiesProvider } from 'react-cookie';
 import MainRouter from 'Routers/MainRouter';
 import { Provider } from 'react-redux';
@@ -10,16 +11,16 @@ import WebSocketContext from 'lib/Context/WebSocket';
 import store from 'Store';
 import theme from 'Styles/Theme';
 
+// var userAgent = navigator.userAgent.toLowerCase();
+// console.log(userAgent);
+// alert(userAgent);
+
 function App() {
   useEffect(() => {
-    // openSocket(sessionStorage.getItem('userId'));
-    // window.postMessage('안녕하세요');
     if (window.ReactNativeWebView) {
-      // alert('message to RN ');
       window.ReactNativeWebView.postMessage(
         JSON.stringify({
-          type: 'REQ_CAMERA_PERMISSION',
-          userId: sessionStorage.getItem('userId')
+          userId: '1'
         })
       );
     }
@@ -29,7 +30,9 @@ function App() {
     <Provider store={store}>
       <CookiesProvider>
         <ThemeProvider theme={theme}>
-          <MainRouter />
+          <ChatProvider>
+            <MainRouter />
+          </ChatProvider>
         </ThemeProvider>
       </CookiesProvider>
     </Provider>

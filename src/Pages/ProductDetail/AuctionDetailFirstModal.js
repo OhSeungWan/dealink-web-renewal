@@ -1,25 +1,56 @@
 import AuctionDetailModal from 'assets/img/AuctionDetailModal.png';
 import React from 'react';
+import popup1 from 'assets/img/popup1.png';
+import popup2 from 'assets/img/popup2.png';
 import { setCookie } from 'lib/Cookies';
 import styled from 'styled-components';
-
+const iOS = () => {
+  return [
+    'iPad Simulator',
+    'iPhone Simulator',
+    'iPod Simulator',
+    'iPad',
+    'iPhone',
+    'iPod',
+    'MacIntel'
+  ].includes(navigator.platform);
+  // ||
+  // // iPad on iOS 13 detection
+  // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+};
 const AuctionDetailFirstModal = ({ ...props }) => {
   function doNotSeeToday() {
     props.closeModal();
     setCookie('notSeeAgainToday', true, 1);
   }
+
+  const onClick = () => {
+    if (iOS()) {
+      window.location.href =
+        'https://apps.apple.com/kr/app/apple-store/id1552343126';
+    } else {
+      window.location.href =
+        'https://play.google.com/store/apps/details?id=com.dealink';
+    }
+  };
   return (
     <ModalContainer>
       <div className="wrapper">
-        <img src={AuctionDetailModal} width={'90%'} alt="no" />
-        <div className="btnWrapper">
+        <img src={popup1} width={'90%'} alt="no" onClick={onClick} />
+        <img
+          src={popup2}
+          width={'90%'}
+          style={{ marginTop: 5 }}
+          onClick={doNotSeeToday}
+        />
+        {/* <div className="btnWrapper">
           <div className="btn" onClick={doNotSeeToday}>
             오늘하루 그만보기
           </div>
           <div className="btn" onClick={props.closeModal}>
             닫기
           </div>
-        </div>
+        </div> */}
       </div>
     </ModalContainer>
   );

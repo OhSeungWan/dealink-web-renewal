@@ -7,7 +7,6 @@ export async function getAuctionDetail(dispatch, userId, url) {
   dispatch({ type: `GET_AUCTION` });
   try {
     const response = await axios.get(`${REQUEST_URL}user/${1}/auction/${url}`);
-    console.log(response.data);
     dispatch({ type: `GET_AUCTION_SUCCESS`, data: response.data });
   } catch (e) {
     dispatch({ type: `GET_AUCTION_ERROR`, error: e });
@@ -34,7 +33,6 @@ export async function registerAuctionComment(
         headers: { AUTH_TOKEN: accessToken }
       }
     );
-    console.log(response.data);
     dispatch({ type: `REGISTER_AUCTION_COMMENT_SUCCESS`, data: response.data });
   } catch (e) {
     dispatch({ type: `REGISTER_AUCTION_COMMENT_ERROR`, error: e });
@@ -52,7 +50,6 @@ export async function getAuctionComment(dispatch, auctionIndex) {
         headers: { AUTH_TOKEN: accessToken }
       }
     );
-    console.log(response.data);
     dispatch({ type: `GET_AUCTION_COMMENT_SUCCESS`, data: response.data });
   } catch (e) {
     dispatch({ type: `GET_AUCTION_COMMENT_ERROR`, error: e });
@@ -66,7 +63,6 @@ export async function getAuctionBidHistory(dispatch, link) {
     const response = await axios.get(`${REQUEST_URL}auction/${link}/history`, {
       headers: { AUTH_TOKEN: accessToken }
     });
-    console.log(response.data);
     dispatch({ type: `GET_AUCTION_BIDHISTORY_SUCCESS`, data: response.data });
   } catch (e) {
     dispatch({ type: `GET_AUCTION_BIDHISTORY_ERROR`, error: e });
@@ -151,18 +147,18 @@ function AuctionDetailReducer(state, action) {
     case 'REGISTER_AUCTION_COMMENT':
       return {
         ...state,
-        bid: loadingState
+        comment: loadingState
       };
     case 'REGISTER_AUCTION_COMMENT_SUCCESS':
       return {
         ...state,
-        bid: success(action.data)
+        comment: success(action.data)
       };
 
     case 'REGISTER_AUCTION_COMMENT_ERROR':
       return {
         ...state,
-        bid: error(action.error)
+        comment: error(action.error)
       };
     case 'GET_AUCTION_COMMENT':
       return {

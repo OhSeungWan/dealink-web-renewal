@@ -1,4 +1,4 @@
-import AuctionRegister from 'system/Auction/AuctionRegister';
+import AuctionRegister from 'domain/Auction/AuctionRegister';
 import React from 'react';
 import afterBid from 'assets/img/afterBid.png';
 const MainBody = () => {

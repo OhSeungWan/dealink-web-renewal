@@ -2,8 +2,8 @@ import { Container, ScreenWrapper } from 'Components/Atoms';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AuctionRegisterInputForm from 'system/Auction/AuctionRegisterInputForm';
-import AuctionRegisterModal from 'system/Auction/AuctionRegisterModal';
+import AuctionRegisterInputForm from 'domain/Auction/AuctionRegisterInputForm';
+import AuctionRegisterModal from 'domain/Auction/AuctionRegisterModal';
 import { Button } from 'Components/Atoms';
 import { Loading } from 'Components/Organisms/Modal';
 import { auctionApi } from 'Apis/auctionApi';

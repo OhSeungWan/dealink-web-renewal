@@ -6,12 +6,13 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser
 } from 'react-icons/ai';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { BannerTop } from 'Components/Molecules';
 import { BiLogIn } from 'react-icons/bi';
 import { Button } from 'Components/Atoms';
+import ChatContext from 'domain/Chat/ChatContext';
 import { GrClose } from 'react-icons/gr';
 import { HiMenu } from 'react-icons/hi';
 import acaimg from 'assets/img/aca.png';
@@ -62,6 +63,8 @@ const Header = ({ banner, front }) => {
 
 const HeaderHambugerMenuBtn = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { actions, state } = useContext(ChatContext);
+  const [isNew, setIsNew] = useState(false);
   const openMenu = () => {
     setMenuOpen(true);
   };
@@ -69,17 +72,48 @@ const HeaderHambugerMenuBtn = () => {
     setMenuOpen(false);
   };
 
+  useEffect(() => {
+    actions.getChatList();
+  }, []);
+
+  useEffect(() => {
+    if (state.chatRoomList.find(chatRoom => chatRoom.count > 0)) {
+      setIsNew(true);
+    }
+  }, [state.chatRoomList]);
+
   return (
     <HambugerWrapper>
-      <HiMenu onClick={openMenu} />
-      {menuOpen && <MenuList closeMenu={closeMenu} />}
+      <div style={{ position: 'relative' }}>
+        <HiMenu onClick={openMenu} />
+        {isNew && <NewCircle></NewCircle>}
+      </div>
+      {menuOpen && <MenuList closeMenu={closeMenu} isNew={isNew} />}
     </HambugerWrapper>
   );
 };
+const NewCircle = styled.div`
+  position: absolute;
+  font-size: 5px;
+  top: 3px;
+  right: -3px;
+  background-color: #ff4d12;
+  padding: 5px 5px;
+  border-radius: 70%;
+`;
 
+const NewCircleInList = styled.div`
+  position: absolute;
+  font-size: 5px;
+  top: 40%;
+  left: 50%;
+  background-color: #ff4d12;
+  padding: 5px 5px;
+  border-radius: 70%;
+`;
 const HambugerWrapper = styled.div``;
 
-const MenuList = ({ closeMenu }) => {
+const MenuList = ({ closeMenu, isNew }) => {
   const isLogin = useSelector(state => state.user.isLogin);
   const userId = sessionStorage.getItem('userId');
 
@@ -102,7 +136,8 @@ const MenuList = ({ closeMenu }) => {
     {
       name: '채팅내역',
       link: '/chatlist',
-      icon: <AiOutlineComment size={28} fontWeight={700} />
+      icon: <AiOutlineComment size={28} fontWeight={700} />,
+      isNew: isNew
     },
     {
       name: '자유 게시판',
@@ -124,7 +159,12 @@ const MenuList = ({ closeMenu }) => {
         {(!userId || userId == 'undefined') && <SignInLink />}
         {menuList.map(menu => {
           return (
-            <MenuItem name={menu.name} link={menu.link} icon={menu.icon} />
+            <MenuItem
+              name={menu.name}
+              link={menu.link}
+              icon={menu.icon}
+              isNew={menu.isNew}
+            />
           );
         })}
       </MenuListWrapper>
@@ -142,7 +182,7 @@ const MenuListWrapper = styled.div`
   height: 100vh;
   font-size: 16px;
   background-color: white;
-  box-shadow: 0px 0px 20px 0px #000000;
+  box-shadow: 0px 0px 5px 0px #000000;
 `;
 
 const FadeOut = styled.div`
@@ -153,7 +193,7 @@ const FadeOut = styled.div`
   right: 0;
   height: 100vh;
   font-size: 16px;
-  background-color: rgba(222, 222, 222, 0.6);
+  /* background-color: rgba(222, 222, 222, 0.6); */
 `;
 
 const HeaderColumnWrapper = styled.div`
@@ -162,7 +202,7 @@ const HeaderColumnWrapper = styled.div`
   width: 100%;
 `;
 
-const MenuItem = ({ link, name, icon }) => {
+const MenuItem = ({ link, name, icon, isNew }) => {
   const history = useHistory();
   const location = useLocation().pathname;
   const pathName = location === '' ? '/' : location;
@@ -181,11 +221,13 @@ const MenuItem = ({ link, name, icon }) => {
     <MenuItemWrapper onClick={onClick} selected={pathName === link}>
       <div className="icon">{icon}</div>
       <div className="name">{name}</div>
+      {isNew && <NewCircleInList />}
     </MenuItemWrapper>
   );
 };
 
 const MenuItemWrapper = styled.div`
+  position: relative;
   text-align: left;
   background-color: ${props => (props.selected ? '#F5F5F7' : '')};
   color: ${props => (props.selected ? '#6E44FF' : 'black')};

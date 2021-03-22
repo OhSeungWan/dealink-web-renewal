@@ -33,6 +33,10 @@ const ProductInfo = props => {
   };
   return !props.type ? (
     <StyledList className="productinfo" alignCenter={true}>
+      <div style={{ fontSize: 10, width: '90%' }}>
+        * 부적절한 내용 및 이미지의 게시물은 경고 없이 삭제되며 해당 사용자의
+        서비스가 제한됩니다.
+      </div>
       <Text className="name">상품사진</Text>
       <ImageBox
         type="upload"
@@ -109,6 +113,7 @@ const StyledList = styled.div`
   }
 
   .price {
+    margin-bottom: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,7 +176,6 @@ const ProductInfoForBuyer = props => {
     // // );
     const data = await res.json();
     alert('경매가 마감 되었습니다.');
-    console.log(data);
   }
 
   async function getBidList() {
@@ -179,7 +183,6 @@ const ProductInfoForBuyer = props => {
       headers: { AUTH_TOKEN: userInfo.accessToken }
     });
     const data = await res.json();
-    console.log(data);
     setBidList(data);
   }
 

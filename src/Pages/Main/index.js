@@ -10,7 +10,7 @@ const MainContainer = () => {
     <ScreenWrapper>
       <MainHeader />
       <Container>
-        <MainTopBanner />
+        {/* <MainTopBanner /> */}
         <MainBody />
       </Container>
     </ScreenWrapper>

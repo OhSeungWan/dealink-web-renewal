@@ -8,17 +8,17 @@ import {
 
 import { HiUserCircle } from 'react-icons/hi';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 const ProductComment = ({ auction }) => {
   const state = useAuctionDetailState();
-
+  const history = useHistory();
   const [input, setInput] = useState('');
   const [typingCount, setTypingCount] = useState(0);
   const dispatch = useAuctionDetailDispatch();
   const userId = sessionStorage.getItem('userId');
 
   const { data: comment, loading, error } = state.comment;
-  console.log(comment);
   function handleInputChange(e) {
     const { value } = e.target;
     const count = value.length;
@@ -33,6 +33,7 @@ const ProductComment = ({ auction }) => {
       await getAuctionComment(dispatch, auction.id);
     } else {
       alert('로그인이 필요합니다.');
+      history.push('/SignIn');
     }
     setTypingCount(0);
     setInput('');
@@ -64,7 +65,7 @@ const ProductComment = ({ auction }) => {
         </div>
       </div>
 
-      {!loading && comment && (
+      {!loading && comment && comment.length > 0 && (
         <div className="commentList">
           {comment.map((item, index) => {
             return <CommentItem item={item} key={index} />;

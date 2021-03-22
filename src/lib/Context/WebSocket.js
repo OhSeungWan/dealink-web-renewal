@@ -1,108 +1,72 @@
-import React, { createContext, useRef, useState } from 'react';
+import React, { createContext, useRef } from 'react';
+
+import { WebSocketUrl } from 'Constants/server';
 
 const WebSocketContext = createContext(null);
 
 const WebSocketProvider = ({ children }) => {
   const userId = sessionStorage.getItem('userId');
-  const webSocketUrl = `ws://192.168.0.102:8080/ws/chat?userId=${userId}`;
+  const webSocket = `${WebSocketUrl}/ws/chat?userId=${userId}`;
 
   let ws = useRef();
 
-  function waitForSocketConnection(socket, callback) {
-    setTimeout(function () {
-      if (socket.readyState === 1) {
-        console.log('Connection is made');
-        if (callback != null) {
-          callback();
-        }
-      } else {
-        console.log('wait for connection...');
-        waitForSocketConnection(socket, callback);
-      }
-    }, 5); // wait 5 milisecond for the connection...
-  }
+  // function waitForSocketConnection(socket, callback) {
+  //   setTimeout(function () {
+  //     if (socket.readyState === 1) {
+  //       console.log('Connection is made');
+  //       if (callback != null) {
+  //         callback();
+  //       }
+  //     } else {
+  //       console.log('wait for connection...');
+  //       waitForSocketConnection(socket, callback);
+  //     }
+  //   }, 5); // wait 5 milisecond for the connection...
+  // }
 
   function openSocket(userId) {
-    // alert('openSocket');
-    // alert(userId);
-    // alert('userId:');
-    // alert(userId);
-    const webSocketUrl = `ws://192.168.0.102:8080/ws/chat?userId=${userId}`;
-    // alert(webSocketUrl);
-    ws.current = new WebSocket(webSocketUrl);
+    const webSocket = `${WebSocketUrl}/ws/chat?userId=${userId}`;
+    // const webSocketUrl = `wss://rest.dealink.co.kr/ws/chat?userId=${userId}`;
+    console.log(ws.current);
+    ws.current = new WebSocket(webSocket);
     ws.current.onopen = () => {
-      // alert('open');
-      console.log('connected to ' + webSocketUrl);
-      ws.current.send(
-        JSON.stringify({
-          messageType: 'CONNECT',
-          roomId: '',
-          senderName: '',
-          senderId: userId,
-          recipientId: '',
-          message: ''
-        })
-      );
+      console.log('connected to ' + webSocket);
     };
     // }
 
     ws.current.onclose = error => {
       // alert('close');
-      console.log('disconnect from ' + webSocketUrl);
+      console.log('disconnect from ' + webSocket);
       ws.current.close();
       console.log(error);
     };
 
     ws.current.onerror = error => {
       // alert(error);
-      console.log('connection error ' + webSocketUrl);
+      console.log('connection error ' + webSocket);
       console.log(error);
       ws.current.close();
-    };
-
-    ws.current.onmessage = e => {
-      console.log('asdfasfd');
-      const data = JSON.parse(e.data);
-      // if (data.message !== '') addItem(data);
-      console.log(data);
     };
   }
 
   if (!ws.current) {
     if (userId && userId != 'undefined' && ws.current?.readyState != 0) {
-      ws.current = new WebSocket(webSocketUrl);
+      ws.current = new WebSocket(webSocket);
 
       ws.current.onopen = () => {
-        console.log('connected to ' + webSocketUrl);
-        ws.current.send(
-          JSON.stringify({
-            messageType: 'CONNECT',
-            roomId: '',
-            senderName: '',
-            senderId: userId,
-            recipientId: '',
-            message: ''
-          })
-        );
+        console.log('connected to ' + webSocket);
       };
       // }
 
       ws.current.onclose = error => {
-        console.log('disconnect from ' + webSocketUrl);
+        console.log('disconnect from ' + webSocket);
         ws.current.close();
         console.log(error);
       };
       ws.current.onerror = error => {
-        console.log('connection error ' + webSocketUrl);
+        console.log('connection error ' + webSocket);
         console.log(error);
         ws.current.close();
-      };
-
-      ws.current.onmessage = e => {
-        console.log('asdfasfd');
-        const data = JSON.parse(e.data);
-        // if (data.message !== '') addItem(data);
-        console.log(data);
       };
     }
   }

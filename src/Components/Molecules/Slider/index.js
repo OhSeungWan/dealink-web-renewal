@@ -28,15 +28,46 @@ const Slider = ({
           );
         })}
       </SliderContainer>
+      {type == 'detail' && (
+        <DotWrap>
+          {ImageList.map((img, index) => {
+            return <Dot className="dot" nth={index} />;
+          })}
+        </DotWrap>
+      )}
       {auctionStatus !== 'PROCEEDING' && (
         <Complete>
-          <img style={{ width: '20%' }} src={auctionComplete} alt="no" />
+          <CompleteCircle>판매종료</CompleteCircle>
+          {/* <img style={{ width: '20%' }} src={auctionComplete} alt="no" /> */}
         </Complete>
       )}
       {children}
     </SliderWrapper>
   ) : null;
 };
+const DotWrap = styled.div`
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+`;
+const Dot = styled.div`
+  border: solid 1px #eaeaea;
+  margin-right: 10px;
+  width: 8px;
+  height: 8px;
+  background-color: #6e44ff;
+  z-index: 9;
+  border-radius: 70%;
+`;
+const CompleteCircle = styled.div`
+  padding: 10% 5%;
+  background-color: #f7ff69;
+  border-radius: 70%;
+  color: #6e44ff;
+`;
 const SliderWrapper = styled.div`
   position: relative;
   overflow: auto;
@@ -60,6 +91,7 @@ const SliderImage = styled.img`
   max-height: 400px;
 `;
 const ImgWrapperBig = styled.div`
+  /* overflow: hidden; */
   position: relative;
   width: 100%;
   height: 400px;
@@ -80,7 +112,6 @@ const Btn = styled.button`
 `;
 const RemoveBtn = ({ onRemove, name }) => {
   const onClick = () => {
-    console.log(name);
     onRemove(name);
   };
   return <Btn onClick={onClick}>x</Btn>;

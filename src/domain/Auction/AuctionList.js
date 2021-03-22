@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import AuctionItem from 'system/Auction/AuctionItem';
+import AuctionItem from 'domain/Auction/AuctionItem';
 import { REQUEST_URL } from 'Constants/server';
 import acamain from 'assets/img/acamain.png';
 import mainbanner from 'assets/img/mainbanner.png';
@@ -9,7 +9,8 @@ import styled from 'styled-components';
 const AuctionList = () => {
   const [auctionList, setAuctionList] = useState([]);
   const [page, setPage] = useState(0);
-  const [sortKey, setSortKey] = useState({ key: 'createdDate', order: 'ASC' });
+  const [sortKey, setSortKey] = useState({ key: 'createdDate', order: 'DESC' });
+  const [loading, setLoading] = useState(false);
   const pageStateRef = useRef(page);
 
   const setPageState = data => {
@@ -30,17 +31,20 @@ const AuctionList = () => {
     const data = await res.json();
     setAuctionList(data.content);
     setPageState(1);
-    console.log('reset');
   };
 
   const getAuctionList = async () => {
+    setLoading(true);
     console.log(pageStateRef.current);
     const res = await fetch(
       `${REQUEST_URL}auction/list?page=${pageStateRef.current}&size=20&sort=${sortKey.key},${sortKey.order}`
     );
     const data = await res.json();
-    setPageState(pageStateRef.current + 1);
+    if (!data.empty) {
+      setPageState(pageStateRef.current + 1);
+    }
     setAuctionList(list => list.concat(data.content));
+    setLoading(false);
   };
 
   const infiniteScroll = () => {
@@ -53,7 +57,7 @@ const AuctionList = () => {
       document.body.scrollTop
     );
     let clientHeight = document.documentElement.clientHeight;
-    if (scrollTop + clientHeight >= scrollHeight) {
+    if (scrollTop + clientHeight >= scrollHeight && !loading) {
       getAuctionList();
     }
   };
@@ -75,8 +79,8 @@ const AuctionList = () => {
           <div>이런 것도 있다!</div>
         </div>
         <select name="fruits" onChange={handleChageSortKey}>
+          {/* <option value="closing">마감 순</option> */}
           <option value="new">신규 등록순</option>
-          <option value="closing">마감 순</option>
           <option value="price">가격 순</option>
         </select>
       </FilterWrapper>

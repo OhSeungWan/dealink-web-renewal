@@ -68,26 +68,6 @@ const AuctionOptions = props => {
         />
       </List>
 
-      {/* <div style={{ display: 'flex', width: '90%', alignItems: 'center' }}>
-        <div>배송 방식</div>
-        <div style={{ color: '#A09FA7', marginLeft: 10, fontSize: 13 }}>
-          중복 선택 불가
-        </div>
-      </div>
-      <List spaceAround direction="row">
-        <CheckButton
-          name="deposit"
-          text="무통장입금"
-          onClick={CheckPaymentHandler}
-          checked={paymentMethod}
-        />
-        <CheckButton
-          name="card"
-          text="카드결제"
-          onClick={CheckPaymentHandler}
-          checked={paymentMethod}
-        />
-      </List> */}
       <Border height="8px" />
     </List>
   );

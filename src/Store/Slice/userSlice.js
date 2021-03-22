@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { REQUEST_URL } from 'Constants/server';
-import axios from 'axios';
 import { userApi } from 'Apis/userApi';
 
 const setCookie = (name, value, days) => {

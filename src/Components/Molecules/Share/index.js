@@ -53,10 +53,9 @@ const iOS = () => {
   // (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
 };
 const Share = ({ url, data }) => {
-  const value = useState(url);
   const [copied, setCopied] = useState(false);
   const { Kakao } = window;
-  //TODO: 카카오 로그인 리펙토링
+
   const sendLink = () => {
     Kakao.Link.sendDefault({
       objectType: 'commerce',
@@ -95,22 +94,22 @@ const Share = ({ url, data }) => {
           </ShareImageContainer>
         )}
         <ShareImageContainer>
-          <FacebookShareButton url={value}>
+          <FacebookShareButton url={url}>
             <ShareImage src={btnFaceBook} />
           </FacebookShareButton>
         </ShareImageContainer>
         <ShareImageContainer>
-          <LineShareButton url={value}>
+          <LineShareButton url={url}>
             <ShareImage src={btnLine} />
           </LineShareButton>
         </ShareImageContainer>
         <ShareImageContainer>
-          <TwitterShareButton url={value}>
+          <TwitterShareButton url={url}>
             <ShareImage src={btnTwiter} />
           </TwitterShareButton>
         </ShareImageContainer>
         <ShareImageContainer>
-          <CopyToClipboard text={value} onCopy={() => setCopied(true)}>
+          <CopyToClipboard text={url} onCopy={() => setCopied(true)}>
             <ShareImage src={btnCopy} />
           </CopyToClipboard>
         </ShareImageContainer>

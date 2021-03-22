@@ -2,8 +2,8 @@ import { AuctionOptions, ProductInfo } from 'Components/Organisms';
 
 import React from 'react';
 import styled from 'styled-components';
-// import { List, Timer } from 'Components/Molecules';
 
+// import { List, Timer } from 'Components/Molecules';
 
 const AuctionRegisterInputForm = props => {
   const { value, onChange } = props;
@@ -19,7 +19,7 @@ const AuctionRegisterInputForm = props => {
       {/* </TimerTitleWrapper> */}
       {/* <Timer isSet={false} auctionInput={value} onChange={onChange} /> */}
       {/* </List> */}
-      <AuctionOptions value={value} onChange={onChange} />
+      {/* <AuctionOptions value={value} onChange={onChange} /> */}
     </>
   );
 };

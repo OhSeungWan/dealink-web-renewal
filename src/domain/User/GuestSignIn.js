@@ -1,7 +1,7 @@
 import { Container, ScreenWrapper } from 'Components/Atoms';
 import React, { useState } from 'react';
 
-import Header from 'system/Header/Header';
+import Header from 'domain/Header/Header';
 import { guest } from 'Store/Slice/userSlice';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';

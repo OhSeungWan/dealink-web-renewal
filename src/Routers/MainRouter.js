@@ -3,9 +3,10 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AuctionDetail from 'Pages/ProductDetail';
+import ChatContext from 'domain/Chat/ChatContext';
 import ChatList from 'Pages/Chat/ChatList';
 import ChatOne from 'Pages/Chat/ChatOne';
-import GuestSignIn from 'system/User/GuestSignIn';
+import GuestSignIn from 'domain/User/GuestSignIn';
 import Home from 'Pages/Home';
 import { Loading } from 'Components/Organisms/Modal';
 import Main from 'Pages/Main';
@@ -21,6 +22,7 @@ import { useEffect } from 'react';
 
 const MainRouter = () => {
   const { ws, openSocket } = useContext(WebSocketContext);
+  const { actions, state } = useContext(ChatContext);
 
   const dispatch = useDispatch();
   const isLogin = useSelector(state => state.user.isLogin);
@@ -79,6 +81,9 @@ const MainRouter = () => {
       >
         <ChatOne />
       </PrivateRoute>
+      <Route path="/MyLink/:userId">
+        <MyLink />
+      </Route>
       <PrivateRoute path="/MyLink" isLogin={isLogin} status={status}>
         <MyLink />
       </PrivateRoute>
@@ -125,7 +130,7 @@ export const PrivateRoute = ({ children, isLogin, status, ...rest }) => {
 export const PrivateContents = ({ children, location, ...rest }) => {
   const isLogin = useSelector(state => state.user.isLogin);
   const status = useSelector(state => state.user.status);
-  localStorage.setItem('location', location);
+  // console.log(location)
   return status === 'idle' ? (
     <Route
       {...rest}

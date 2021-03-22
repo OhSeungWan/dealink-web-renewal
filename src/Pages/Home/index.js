@@ -1,6 +1,6 @@
 import { Container, ScreenWrapper } from 'Components/Atoms';
 
-import AuctionList from 'system/Auction/AuctionList';
+import AuctionList from 'domain/Auction/AuctionList';
 import HomeHeader from 'Pages/Home/HomeHeader';
 import React from 'react';
 

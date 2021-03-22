@@ -1,8 +1,8 @@
 import { Container, ScreenWrapper } from 'Components/Atoms';
 
 // import HomeHeader from 'Pages/Home/HomeHeader';
-import ChatOne from 'system/Chat/ChatOne';
-import Header from 'system/Header/Header';
+import ChatOne from 'domain/Chat/ChatOne';
+import Header from 'domain/Header/Header';
 import React from 'react';
 
 const ChatOneContainer = () => {
